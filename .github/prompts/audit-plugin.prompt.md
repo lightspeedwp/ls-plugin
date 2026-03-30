@@ -30,7 +30,7 @@ Review the following areas and produce a structured report:
 - Are there any obvious accessibility issues?
 
 ### 5. General
-- Are any `{{PLACEHOLDER}}` tokens still unreplaced?
+- Are any placeholder tokens (e.g. `{{...}}` style) still unreplaced?
 - Is the `CHANGELOG.md` up to date?
 - Are there any unused files or folders?
 

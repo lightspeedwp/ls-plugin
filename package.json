@@ -1,7 +1,7 @@
 {
-  "name": "{{PACKAGE_NAME}}",
+  "name": "ls-plugin",
   "version": "0.1.0",
-  "description": "{{PLUGIN_DESCRIPTION}}",
+  "description": "LightSpeed Site Plugin provides custom blocks and site-specific functionality for the LightSpeed website, separate from theme responsibilities.",
   "type": "module",
   "private": true,
   "scripts": {

@@ -1,6 +1,6 @@
 # docs
 
-This folder contains **end-user documentation** for {{PLUGIN_NAME}}.
+This folder contains **end-user documentation** for LightSpeed Site Plugin.
 
 ---
 

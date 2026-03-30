@@ -1,6 +1,6 @@
 # .agents
 
-This folder contains portable agent-specific assets for {{PLUGIN_NAME}}.
+This folder contains portable agent-specific assets for LightSpeed Site Plugin.
 These assets are designed to be reusable across different AI systems and tools.
 
 ---

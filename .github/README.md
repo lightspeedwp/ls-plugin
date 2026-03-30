@@ -1,6 +1,6 @@
 # .github
 
-This folder contains GitHub-native AI and repository workflow infrastructure for {{PLUGIN_NAME}}.
+This folder contains GitHub-native AI and repository workflow infrastructure for LightSpeed Site Plugin.
 
 ---
 

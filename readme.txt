@@ -1,6 +1,6 @@
-=== {{PLUGIN_NAME}} ===
-Contributors: {{AUTHOR_NAME}}
-Tags: blocks, gutenberg, {{PLUGIN_SLUG}}
+=== LightSpeed Site Plugin ===
+Contributors: LightSpeed
+Tags: blocks, gutenberg, ls-plugin
 Requires at least: 6.4
 Tested up to: 6.7
 Requires PHP: 8.0
@@ -8,11 +8,11 @@ Stable tag: 0.1.0
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-{{PLUGIN_DESCRIPTION}}
+LightSpeed Site Plugin provides custom blocks and site-specific functionality for the LightSpeed website, separate from theme responsibilities.
 
 == Description ==
 
-{{PLUGIN_DESCRIPTION}}
+LightSpeed Site Plugin provides custom blocks and site-specific functionality for the LightSpeed website, separate from theme responsibilities.
 
 == Installation ==
 

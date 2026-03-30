@@ -1,6 +1,6 @@
 # .github/tasks
 
-This folder contains task lists and AI-maintained work tracking for {{PLUGIN_NAME}}.
+This folder contains task lists and AI-maintained work tracking for LightSpeed Site Plugin.
 
 ---
 

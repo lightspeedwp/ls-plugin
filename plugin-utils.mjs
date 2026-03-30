@@ -2,7 +2,7 @@
 /**
  * plugin-utils.mjs
  *
- * Plugin validation and utility CLI for {{PLUGIN_NAME}}.
+ * Plugin validation and utility CLI for LightSpeed Site Plugin.
  * Run with: node plugin-utils.mjs <command>
  *
  * Commands:
@@ -348,7 +348,7 @@ function securityScan() {
 
 /**
  * scan-placeholders
- * Check for unreplaced {{PLACEHOLDER}} tokens.
+ * Check for unreplaced double-brace tokens.
  */
 function scanPlaceholders() {
   log.heading( 'Scanning for unreplaced placeholder tokens…' );
@@ -389,7 +389,7 @@ function scanPlaceholders() {
  */
 function showHelp() {
   console.log( `
-${colours.bold}plugin-utils.mjs — {{PLUGIN_NAME}} validation and utility CLI${colours.reset}
+${colours.bold}plugin-utils.mjs — LightSpeed Site Plugin validation and utility CLI${colours.reset}
 
 Usage:
   node plugin-utils.mjs <command>
@@ -398,7 +398,7 @@ Commands:
   ${colours.cyan}validate-plugin${colours.reset}    Validate plugin structure and headers
   ${colours.cyan}validate-schema${colours.reset}    Validate block.json and JSON files
   ${colours.cyan}security-scan${colours.reset}      Scan PHP files for risky patterns
-  ${colours.cyan}scan-placeholders${colours.reset}  Check for unreplaced {{PLACEHOLDER}} tokens
+  ${colours.cyan}scan-placeholders${colours.reset}  Check for unreplaced double-brace tokens
   ${colours.cyan}help${colours.reset}               Show this help message
 ` );
 }

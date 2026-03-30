@@ -1,6 +1,6 @@
 # .agents/agents
 
-This folder contains agent persona definitions for {{PLUGIN_NAME}}.
+This folder contains agent persona definitions for LightSpeed Site Plugin.
 
 ---
 

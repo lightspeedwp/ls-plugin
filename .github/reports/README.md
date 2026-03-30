@@ -1,6 +1,6 @@
 # .github/reports
 
-This folder contains **developer and AI-generated reports** for {{PLUGIN_NAME}}.
+This folder contains **developer and AI-generated reports** for LightSpeed Site Plugin.
 
 ---
 

@@ -1,11 +1,11 @@
 {
-  "name": "{{PACKAGE_NAME}}",
+  "name": "lightspeedwp/ls-plugin",
   "type": "wordpress-plugin",
   "license": "GPL-2.0-or-later",
   "authors": [
     {
-      "name": "{{AUTHOR_NAME}}",
-      "homepage": "{{AUTHOR_URI}}"
+      "name": "LightSpeed",
+      "homepage": "https://lightspeedwp.agency/"
     }
   ],
   "require": {

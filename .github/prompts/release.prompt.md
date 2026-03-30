@@ -18,8 +18,8 @@ Perform the following steps to prepare a release:
 
 ### 3. Update version numbers
 Update the version number in:
-- `{{PLUGIN_SLUG}}.php` — `Version:` header field
-- `{{PLUGIN_SLUG}}.php` — `{{NAMESPACE}}_VERSION` constant
+- `ls-plugin.php` — `Version:` header field
+- `ls-plugin.php` — `LS_PLUGIN_VERSION` constant
 - `package.json` — `version` field
 - `readme.txt` — `Stable tag:` field
 
@@ -46,4 +46,4 @@ git push && git push --tags
 
 - Follow [SemVer](https://semver.org/): MAJOR.MINOR.PATCH.
 - Security fixes should be PATCH or MINOR releases with a `Security` changelog entry.
-- Do not release with unreplaced `{{PLACEHOLDER}}` tokens.
+- Do not release with any unreplaced placeholder tokens.

@@ -19,7 +19,7 @@ Always escape before output. Match the escaping function to the context:
 echo esc_html( $text );             // Plain text output
 echo esc_attr( $attribute );        // HTML attribute values
 echo esc_url( $url );               // URLs in href/src
-echo esc_html__( 'String', '{{TEXT_DOMAIN}}' );  // Translated plain text
+echo esc_html__( 'String', 'ls-plugin' );  // Translated plain text
 echo wp_kses_post( $html );         // HTML content (limited tags)
 ```
 
@@ -42,9 +42,9 @@ $html  = wp_kses_post( wp_unslash( $_POST['content'] ) );
 Wrap all user-facing strings:
 
 ```php
-esc_html__( 'String', '{{TEXT_DOMAIN}}' )
-esc_html_e( 'String', '{{TEXT_DOMAIN}}' )
-esc_attr__( 'String', '{{TEXT_DOMAIN}}' )
+esc_html__( 'String', 'ls-plugin' )
+esc_html_e( 'String', 'ls-plugin' )
+esc_attr__( 'String', 'ls-plugin' )
 ```
 
 ## Security
@@ -57,5 +57,5 @@ esc_attr__( 'String', '{{TEXT_DOMAIN}}' )
 ## File structure
 
 - PHP includes go in `inc/`.
-- Class files: `inc/class-{{plugin-slug}}-name.php`.
+- Class files: `inc/class-ls-plugin-name.php`.
 - Load includes from the main plugin file via `plugins_loaded`.
