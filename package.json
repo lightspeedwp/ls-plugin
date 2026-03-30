@@ -1,0 +1,27 @@
+{
+  "name": "{{PACKAGE_NAME}}",
+  "version": "0.1.0",
+  "description": "{{PLUGIN_DESCRIPTION}}",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "wp-scripts build",
+    "start": "wp-scripts start",
+    "plugin:validate": "node plugin-utils.mjs validate-plugin",
+    "schema:validate": "node plugin-utils.mjs validate-schema",
+    "security:scan": "node plugin-utils.mjs security-scan",
+    "lint": "npm run lint:js && npm run lint:css && npm run lint:json",
+    "lint:js": "wp-scripts lint-js src",
+    "lint:css": "wp-scripts lint-style src",
+    "lint:json": "wp-scripts lint-md-docs . --ext=.json || true",
+    "i18n": "wp-scripts makepot",
+    "packages-update": "wp-scripts packages-update",
+    "help": "node plugin-utils.mjs help"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "devDependencies": {
+    "@wordpress/scripts": "^30.0.0"
+  }
+}

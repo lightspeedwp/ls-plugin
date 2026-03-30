@@ -1,0 +1,69 @@
+version: 2
+
+# Reviews are enabled and set to a draft-aware, plugin-focused review profile.
+reviews:
+  request_changes_workflow: false
+  high_level_summary: true
+  poem: false
+  review_status: true
+  collapse_walkthrough: false
+
+# Language and tone
+language: en-US
+tone_instructions: "Be direct and professional. Focus on practical WordPress plugin quality."
+
+# Path-level review instructions
+path_instructions:
+  - path: "{{PLUGIN_SLUG}}.php"
+    instructions: |
+      Review the main plugin bootstrap file.
+      Check for: valid plugin header with all required fields, direct access protection (ABSPATH check),
+      correct version constant, safe loading of includes, no business logic in the bootstrap.
+      Confirm text domain matches the plugin slug.
+
+  - path: "inc/**/*.php"
+    instructions: |
+      Review PHP include files.
+      Check for: correct escaping (esc_html__, esc_attr__, wp_kses_post, etc.),
+      sanitisation and validation of input, translation function usage, no direct database queries without $wpdb,
+      correct use of WordPress hooks and filters.
+
+  - path: "src/**/*.js"
+    instructions: |
+      Review JavaScript source files.
+      Check for: correct use of wp.element or vanilla JS, no jQuery dependency unless justified,
+      no hardcoded strings (use wp.i18n), accessibility-aware DOM interactions.
+
+  - path: "src/**/*.css"
+    instructions: |
+      Review CSS source files.
+      Check for: no use of !important unless justified, responsive-first approach,
+      use of CSS custom properties where appropriate, accessible colour contrast considerations.
+
+  - path: "blocks/**/block.json"
+    instructions: |
+      Review block registration JSON files.
+      Check for: valid schema reference, correct category and icon, editorScript/style/viewScript paths,
+      meaningful attributes, supports declarations, correct textdomain in titles and descriptions.
+
+  - path: "patterns/*.php"
+    instructions: |
+      Review block pattern PHP files.
+      Check for: correct escaping of any dynamic output, translation function usage,
+      pattern header comments (Title, Slug, Categories), clean markup.
+
+  - path: "AGENTS.md"
+    instructions: |
+      Review the AI agent guidance document.
+      Check for: clarity, completeness, placeholder consistency, accurate command references,
+      correct folder references for prompts, reports, tasks, docs, skills, and agents.
+
+  - path: "README.md"
+    instructions: |
+      Review the root README.
+      Check for: clear quick start, accurate command table, correct placeholder references,
+      sensible repo map, correct folder descriptions.
+
+# What CodeRabbit should focus on for this repo
+chat:
+  auto_reply: true

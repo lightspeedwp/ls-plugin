@@ -1,0 +1,7 @@
+{
+  "*.php": ["composer run phpcs --", "composer run phplint --"],
+  "src/**/*.js": ["npm run lint:js --"],
+  "src/**/*.css": ["npm run lint:css --"],
+  "blocks/**/block.json": ["npm run lint:json --"],
+  "*.json": ["npm run lint:json --"]
+}
