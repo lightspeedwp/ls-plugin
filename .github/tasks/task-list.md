@@ -1,6 +1,6 @@
 # Task List
 
-Active tasks for {{PLUGIN_NAME}}.
+Active tasks for LightSpeed Site Plugin.
 Update this file as work progresses.
 
 ---
@@ -11,9 +11,6 @@ Update this file as work progresses.
 
 ## Pending
 
-- [ ] Replace all `{{PLACEHOLDER}}` tokens with real values
-- [ ] Rename `{{PLUGIN_SLUG}}.php` to match the actual plugin slug
-- [ ] Update `CHANGELOG.md` with the actual release date
 - [ ] Update `CODEOWNERS` with real GitHub usernames
 - [ ] Update `docs/README.md` with the plugin's documentation structure
 - [ ] Run `npm run plugin:validate` and resolve any warnings
@@ -21,4 +18,6 @@ Update this file as work progresses.
 
 ## Completed
 
-<!-- Move tasks here when done — do not delete them -->
+- [x] Replace all placeholder tokens with real values
+- [x] Rename main plugin bootstrap to `ls-plugin.php`
+- [x] Update `CHANGELOG.md` with the initial release date

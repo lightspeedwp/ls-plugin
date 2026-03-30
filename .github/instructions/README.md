@@ -1,6 +1,6 @@
 # .github/instructions
 
-This folder contains file-type-specific GitHub Copilot instruction files for {{PLUGIN_NAME}}.
+This folder contains file-type-specific GitHub Copilot instruction files for LightSpeed Site Plugin.
 
 ---
 

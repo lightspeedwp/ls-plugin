@@ -1,47 +1,22 @@
-# {{PLUGIN_NAME}}
+# LightSpeed Site Plugin
 
-> LightSpeed WordPress block plugin starter — lean, block-ready, AI-workflow-aware.
+> Custom blocks and site-specific functionality for the LightSpeed website — separate from theme responsibilities.
 
 ---
 
 ## What this repo is
 
-A production-aware starter template for building custom WordPress plugins at LightSpeed.
-It is **not** a WordPress.org submission starter and does not include submission-specific bureaucracy.
+The LightSpeed Site Plugin is the canonical home for custom WordPress blocks and site-specific PHP functionality for [lightspeedwp.agency](https://lightspeedwp.agency/).
 
-It is intentionally lighter than `block-plugin-scaffold` while still providing:
+It is **not** a theme and does not contain theme-layer concerns.
+It is **not** a monorepo.
+It is a **single plugin in a single repo**, intentionally lean and block-first.
 
-- a valid WordPress plugin skeleton
-- a block-ready folder structure
-- practical PHP and JS linting and validation
-- AI-ready workflows with prompts, reports, tasks, and agent personas
-- clear placeholder conventions throughout
+Responsibilities covered by this plugin:
 
----
-
-## Who it is for
-
-LightSpeed developers building custom WordPress plugins — for client and commercial work.
-Also suitable for use by AI agents working within a structured, well-documented repo.
-
----
-
-## What it includes
-
-| Area | Description |
-|---|---|
-| `{{PLUGIN_SLUG}}.php` | Main plugin bootstrap file |
-| `uninstall.php` | Safe plugin uninstall stub |
-| `inc/` | Optional PHP include files |
-| `src/` | Source files for block and plugin assets |
-| `blocks/` | Built or registered block asset directories |
-| `assets/` | Static CSS, JS, images, and icons |
-| `patterns/` | WordPress block patterns |
-| `templates/` | Optional block templates |
-| `languages/` | Translation files |
-| `docs/` | End-user documentation |
-| `.github/` | GitHub-native AI and workflow infrastructure |
-| `.agents/` | Portable agent skills and personas |
+- Custom Gutenberg blocks specific to the LightSpeed site
+- Site-specific PHP functionality that does not belong in the theme
+- Shared non-theme behaviour for the LightSpeed website
 
 ---
 
@@ -54,53 +29,22 @@ Also suitable for use by AI agents working within a structured, well-documented 
 
 ---
 
-## Quick start
+## Getting started
 
 ```bash
-# 1. Use this template via GitHub (recommended):
-#    Click "Use this template" on the GitHub repo page,
-#    or clone and replace placeholders manually:
-git clone https://github.com/{{GITHUB_ORG}}/{{REPO_NAME}}.git my-plugin
-cd my-plugin
-
-# 2. Replace all {{PLACEHOLDER}} tokens (see Customise placeholders below)
-#    Rename {{PLUGIN_SLUG}}.php to match your actual plugin slug.
-
-# 3. Install Node dependencies
+# Install Node dependencies
 npm install
 
-# 4. Install Composer dependencies
+# Install Composer dependencies
 composer install
 
-# 5. Validate the plugin scaffold
+# Validate the plugin structure
 npm run plugin:validate
 
-# 6. Lint your code
+# Lint all code
 npm run lint
 composer run phpcs
 ```
-
----
-
-## Customise placeholders
-
-Search and replace these tokens across the entire repo before starting work:
-
-| Placeholder | Example value |
-|---|---|
-| `{{PLUGIN_NAME}}` | `My Awesome Plugin` |
-| `{{PLUGIN_SLUG}}` | `my-awesome-plugin` |
-| `{{TEXT_DOMAIN}}` | `my-awesome-plugin` |
-| `{{PLUGIN_URI}}` | `https://example.com/plugins/my-awesome-plugin` |
-| `{{PLUGIN_DESCRIPTION}}` | `A useful WordPress plugin.` |
-| `{{AUTHOR_NAME}}` | `LightSpeed` |
-| `{{AUTHOR_URI}}` | `https://lightspeedwp.agency` |
-| `{{NAMESPACE}}` | `MY_AWESOME_PLUGIN` |
-| `{{PACKAGE_NAME}}` | `lightspeedwp/my-awesome-plugin` |
-| `{{REPO_NAME}}` | `my-awesome-plugin` |
-| `{{GITHUB_ORG}}` | `lightspeedwp` |
-
-Also rename `{{PLUGIN_SLUG}}.php` to match your actual plugin slug.
 
 ---
 
@@ -108,7 +52,7 @@ Also rename `{{PLUGIN_SLUG}}.php` to match your actual plugin slug.
 
 ```
 /
-├── {{PLUGIN_SLUG}}.php         Main plugin bootstrap
+├── ls-plugin.php               Main plugin bootstrap
 ├── uninstall.php               Plugin uninstall handler
 ├── plugin-utils.mjs            Plugin validation and utility CLI
 ├── package.json                Node tooling and scripts
@@ -157,15 +101,14 @@ Also rename `{{PLUGIN_SLUG}}.php` to match your actual plugin slug.
 
 ---
 
-## What to edit first
+## Plugin constants
 
-1. Replace all placeholders (see table above).
-2. Rename `{{PLUGIN_SLUG}}.php` to your plugin slug.
-3. Update `CHANGELOG.md` with your real start date.
-4. Update `docs/README.md` with your plugin's documentation structure.
-5. Update `CODEOWNERS` with real GitHub usernames.
-6. Add your PHP includes to `inc/` and load them from the main plugin file.
-7. Add blocks to `src/blocks/` and register them in the main plugin file.
+| Constant | Value |
+|---|---|
+| `LS_PLUGIN_VERSION` | Current plugin version |
+| `LS_PLUGIN_PLUGIN_FILE` | Absolute path to `ls-plugin.php` |
+| `LS_PLUGIN_PLUGIN_DIR` | Absolute path to the plugin directory |
+| `LS_PLUGIN_PLUGIN_URL` | URL to the plugin directory |
 
 ---
 
@@ -186,6 +129,5 @@ Also rename `{{PLUGIN_SLUG}}.php` to match your actual plugin slug.
 
 ## Notes
 
-- This repo is **not** packaged specifically for WordPress.org submission.
 - `composer.lock` is not committed (this is a plugin, not a deployment artefact).
 - `package-lock.json` is committed to pin Node dependencies.

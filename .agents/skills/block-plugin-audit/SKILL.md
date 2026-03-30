@@ -64,7 +64,7 @@ Use this skill when:
 
 ### 6. General quality
 
-- Check for unreplaced `{{PLACEHOLDER}}` tokens.
+- Check for any unreplaced placeholder tokens (e.g. double-brace `{{ }}` style).
 - Check that `CHANGELOG.md` is up to date.
 - Check for unused files or stale commented-out code.
 

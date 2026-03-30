@@ -31,10 +31,10 @@ Use `wp_enqueue_style()` and `wp_enqueue_script()` with versioning:
 
 ```php
 wp_enqueue_style(
-    '{{PLUGIN_SLUG}}-frontend',
-    {{NAMESPACE}}_PLUGIN_URL . 'assets/css/frontend.css',
+    'ls-plugin-frontend',
+    LS_PLUGIN_PLUGIN_URL . 'assets/css/frontend.css',
     [],
-    {{NAMESPACE}}_VERSION
+    LS_PLUGIN_VERSION
 );
 ```
 

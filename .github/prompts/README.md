@@ -1,6 +1,6 @@
 # .github/prompts
 
-This folder contains GitHub Copilot prompt files for {{PLUGIN_NAME}}.
+This folder contains GitHub Copilot prompt files for LightSpeed Site Plugin.
 These are reusable starting points for common development workflows.
 
 ---

@@ -14,7 +14,7 @@ tone_instructions: "Be direct and professional. Focus on practical WordPress plu
 
 # Path-level review instructions
 path_instructions:
-  - path: "{{PLUGIN_SLUG}}.php"
+  - path: "ls-plugin.php"
     instructions: |
       Review the main plugin bootstrap file.
       Check for: valid plugin header with all required fields, direct access protection (ABSPATH check),

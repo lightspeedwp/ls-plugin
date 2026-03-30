@@ -25,8 +25,8 @@ Create a new block with the following details:
 
 - Use `block.json` for all asset declarations — no manual `wp_enqueue_*` for block assets.
 - Escape all PHP output in render callbacks.
-- Use `{{TEXT_DOMAIN}}` as the text domain for all translated strings.
-- Block name must be `{{PLUGIN_SLUG}}/{{block-slug}}`.
+- Use `ls-plugin` as the text domain for all translated strings.
+- Block name must be `ls-plugin/{block-slug}`.
 - Run `npm run build` after creating source files.
 - Register the block in the main plugin file using `register_block_type()`.
 

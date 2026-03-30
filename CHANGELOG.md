@@ -23,11 +23,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [0.1.0] - YYYY-MM-DD
+## [0.1.0] - 2025-01-01
 
 ### Added
-- Initial plugin scaffold with placeholder structure.
-- Block-ready `src/blocks/` and `blocks/` folder layout.
+- Initial plugin structure with block-ready folder layout.
 - `plugin-utils.mjs` for plugin validation, schema checks, and security scanning.
 - Composer-based PHP quality tooling (PHPCS, PHPCBF, PHP lint).
 - `.github/` folder with Copilot instructions, prompts, reports, tasks, and workflows.
@@ -36,5 +35,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-[Unreleased]: https://github.com/{{GITHUB_ORG}}/{{REPO_NAME}}/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/{{GITHUB_ORG}}/{{REPO_NAME}}/releases/tag/v0.1.0
+[Unreleased]: https://github.com/lightspeedwp/ls-plugin/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/lightspeedwp/ls-plugin/releases/tag/v0.1.0

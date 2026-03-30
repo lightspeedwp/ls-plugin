@@ -1,16 +1,16 @@
 # GitHub Copilot Instructions
 
-This file configures GitHub Copilot for the {{PLUGIN_NAME}} repository.
+This file configures GitHub Copilot for the LightSpeed Site Plugin repository.
 Read [`AGENTS.md`](../AGENTS.md) for full agent guidance.
 
 ---
 
 ## Repo overview
 
-This is a LightSpeed WordPress block plugin starter.
+This is the LightSpeed Site Plugin — custom blocks and site-specific functionality for [lightspeedwp.agency](https://lightspeedwp.agency/).
 - One plugin, one repo.
 - Block-ready but not locked into a large block framework.
-- Uses placeholder tokens (`{{DOUBLE_BRACES}}`) throughout — replace before production.
+- Plugin slug: `ls-plugin`, text domain: `ls-plugin`, constant prefix: `LS_PLUGIN_`.
 
 ---
 
@@ -28,7 +28,7 @@ This is a LightSpeed WordPress block plugin starter.
 
 | What | Where |
 |---|---|
-| Main plugin bootstrap | `{{PLUGIN_SLUG}}.php` |
+| Main plugin bootstrap | `ls-plugin.php` |
 | PHP includes | `inc/` |
 | Block source files | `src/blocks/` |
 | Built block assets | `blocks/` |

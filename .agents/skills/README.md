@@ -1,6 +1,6 @@
 # .agents/skills
 
-This folder contains portable, reusable agent skills for {{PLUGIN_NAME}}.
+This folder contains portable, reusable agent skills for LightSpeed Site Plugin.
 
 ---
 

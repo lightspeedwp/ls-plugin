@@ -8,7 +8,7 @@ applyTo: "**"
 
 | File | Purpose |
 |---|---|
-| `{{PLUGIN_SLUG}}.php` | Main plugin bootstrap — valid WordPress plugin header required |
+| `ls-plugin.php` | Main plugin bootstrap — valid WordPress plugin header required |
 | `uninstall.php` | Plugin uninstall handler — keep conservative, no data deletion by default |
 | `plugin-utils.mjs` | Plugin validation and utility CLI |
 | `package.json` | Node scripts and dev dependencies |
@@ -21,7 +21,7 @@ applyTo: "**"
 
 - Must contain a valid WordPress plugin header.
 - Must include `defined( 'ABSPATH' ) || exit;` direct access protection.
-- Define plugin constants: `{{NAMESPACE}}_VERSION`, `{{NAMESPACE}}_PLUGIN_DIR`, `{{NAMESPACE}}_PLUGIN_URL`.
+- Define plugin constants: `LS_PLUGIN_VERSION`, `LS_PLUGIN_PLUGIN_DIR`, `LS_PLUGIN_PLUGIN_URL`.
 - Load includes via `plugins_loaded` — not at the top level.
 - Keep the bootstrap lean — no business logic.
 
@@ -40,12 +40,12 @@ applyTo: "**"
 | `.github/` | GitHub-native workflows, instructions, prompts, reports, tasks |
 | `.agents/` | Portable agent skills and personas |
 
-## Placeholder consistency
+## Token consistency
 
-All `{{PLACEHOLDER}}` tokens must be replaced consistently:
-- Text domain = plugin slug everywhere.
-- Namespace = consistent uppercase constant prefix.
-- Package name = consistent in package.json and composer.json.
+Plugin-specific values are already set for this repo:
+- Text domain: `ls-plugin` (matches plugin slug)
+- Constant prefix: `LS_PLUGIN_`
+- Composer package: `lightspeedwp/ls-plugin`
 
 ## What NOT to do
 

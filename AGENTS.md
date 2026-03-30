@@ -7,12 +7,16 @@ Read this file first before making any changes.
 
 ## Repo Purpose
 
-This is a LightSpeed WordPress block plugin starter repository.
-It provides a clean, lean scaffold for building custom WordPress plugins — with a bias toward Gutenberg block development.
+This is the LightSpeed Site Plugin repository — the canonical home for custom WordPress blocks and site-specific functionality for [lightspeedwp.agency](https://lightspeedwp.agency/).
 
-It is **not** a WordPress.org submission starter.
+It is **not** a WordPress.org submission plugin.
 It is **not** a monorepo.
 It is a **single plugin in a single repo**.
+
+Responsibilities:
+- Custom Gutenberg blocks for the LightSpeed website
+- Site-specific PHP functionality that does not belong in the theme
+- Shared non-theme behaviour for the LightSpeed site
 
 ---
 
@@ -20,7 +24,7 @@ It is a **single plugin in a single repo**.
 
 ```
 /
-├── {{PLUGIN_SLUG}}.php         Main plugin bootstrap — rename to match your slug
+├── ls-plugin.php               Main plugin bootstrap
 ├── uninstall.php               Plugin uninstall stub — keep conservative
 ├── plugin-utils.mjs            Node CLI for validation, schema checks, and security scanning
 ├── package.json                Node scripts and dev dependencies
@@ -54,30 +58,18 @@ It is a **single plugin in a single repo**.
 
 ---
 
-## Placeholder Conventions
+## Plugin Identity
 
-All placeholder tokens use `{{DOUBLE_BRACES}}` format.
-These must be replaced before the plugin is used in production.
-
-| Placeholder | Purpose |
+| Property | Value |
 |---|---|
-| `{{PLUGIN_NAME}}` | Human-readable plugin name |
-| `{{PLUGIN_SLUG}}` | URL-safe slug (lowercase, hyphens) |
-| `{{TEXT_DOMAIN}}` | WordPress text domain — must match slug |
-| `{{PLUGIN_URI}}` | Plugin URI |
-| `{{PLUGIN_DESCRIPTION}}` | One-sentence plugin description |
-| `{{AUTHOR_NAME}}` | Author or organisation name |
-| `{{AUTHOR_URI}}` | Author website URL |
-| `{{NAMESPACE}}` | PHP constant namespace prefix (uppercase, underscores) |
-| `{{PACKAGE_NAME}}` | Composer/npm package name |
-| `{{REPO_NAME}}` | GitHub repository name |
-| `{{GITHUB_ORG}}` | GitHub organisation name |
-
-**Rules:**
-- Text domain and slug must always match.
-- Namespace must be uppercase and underscore-separated.
-- Do not leave required metadata blank — use placeholders.
-- Keep placeholders consistent across all files.
+| Plugin name | `LightSpeed Site Plugin` |
+| Plugin slug | `ls-plugin` |
+| Text domain | `ls-plugin` |
+| PHP function prefix | `ls_plugin_` |
+| PHP constant prefix | `LS_PLUGIN_` |
+| Composer package | `lightspeedwp/ls-plugin` |
+| GitHub repo | `lightspeedwp/ls-plugin` |
+| Plugin URI | `https://lightspeedwp.agency/` |
 
 ---
 
@@ -85,10 +77,10 @@ These must be replaced before the plugin is used in production.
 
 - Keep PHP minimal unless there is a clear need.
 - PHP include files go in `inc/`.
-- Load includes from `{{PLUGIN_SLUG}}_init()` via `plugins_loaded`.
+- Load includes from `ls_plugin_init()` via `plugins_loaded`.
 - Use WordPress coding standards (tabs for indentation in PHP).
 - Do not add a PHP autoloader unless genuinely needed.
-- Class files go in `inc/` — name them `class-{{plugin-slug}}-name.php`.
+- Class files go in `inc/` — name them `class-ls-plugin-name.php`.
 
 ### Escaping output (required)
 
@@ -118,16 +110,16 @@ $int   = absint( $_POST['number'] );
 Always wrap strings for translation:
 
 ```php
-esc_html__( 'String', '{{TEXT_DOMAIN}}' )
-esc_html_e( 'String', '{{TEXT_DOMAIN}}' )
+esc_html__( 'String', 'ls-plugin' )
+esc_html_e( 'String', 'ls-plugin' )
 ```
 
 ---
 
 ## Block Development
 
-- Source block files go in `src/blocks/{{block-name}}/`.
-- Built block assets go in `blocks/{{block-name}}/`.
+- Source block files go in `src/blocks/{block-name}/`.
+- Built block assets go in `blocks/{block-name}/`.
 - Each block must have a valid `block.json` file.
 - Register blocks using `register_block_type()` with the path to `block.json`.
 - Use `@wordpress/scripts` for building block assets.
@@ -138,7 +130,7 @@ esc_html_e( 'String', '{{TEXT_DOMAIN}}' )
 Example block registration:
 
 ```php
-register_block_type( {{NAMESPACE}}_PLUGIN_DIR . 'blocks/my-block' );
+register_block_type( LS_PLUGIN_PLUGIN_DIR . 'blocks/my-block' );
 ```
 
 ---

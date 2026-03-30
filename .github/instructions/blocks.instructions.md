@@ -6,8 +6,8 @@ applyTo: "**/{blocks,src/blocks}/**"
 
 ## Block structure
 
-Each block lives in its own directory under `src/blocks/{{block-name}}/`.
-Built assets are output to `blocks/{{block-name}}/`.
+Each block lives in its own directory under `src/blocks/{block-name}/`.
+Built assets are output to `blocks/{block-name}/`.
 
 Typical block directory:
 
@@ -26,9 +26,9 @@ Every block must have a `block.json` file with:
 
 - `$schema`: reference the WordPress block schema
 - `apiVersion`: use `3`
-- `name`: `{{PLUGIN_SLUG}}/block-name`
+- `name`: `ls-plugin/block-name`
 - `title`, `description`, `category`, `icon`
-- `textdomain`: `{{TEXT_DOMAIN}}`
+- `textdomain`: `ls-plugin`
 - `editorScript`, `style`, `viewScript` as appropriate
 - `supports` and `attributes` declarations
 
@@ -38,12 +38,12 @@ Example:
 {
   "$schema": "https://schemas.wp.org/trunk/block.json",
   "apiVersion": 3,
-  "name": "{{PLUGIN_SLUG}}/my-block",
+  "name": "ls-plugin/my-block",
   "title": "My Block",
   "category": "text",
   "icon": "block-default",
   "description": "A short block description.",
-  "textdomain": "{{TEXT_DOMAIN}}",
+  "textdomain": "ls-plugin",
   "editorScript": "file:./index.js",
   "style": "file:./style.css",
   "supports": {
@@ -58,7 +58,7 @@ Example:
 Register blocks in the main plugin file or a dedicated `inc/` file:
 
 ```php
-register_block_type( {{NAMESPACE}}_PLUGIN_DIR . 'blocks/my-block' );
+register_block_type( LS_PLUGIN_PLUGIN_DIR . 'blocks/my-block' );
 ```
 
 Do not manually register scripts and styles when `block.json` handles it.
@@ -68,9 +68,9 @@ Do not manually register scripts and styles when `block.json` handles it.
 For `render_callback` blocks:
 
 ```php
-function {{PLUGIN_SLUG}}_render_my_block( $attributes, $content, $block ) {
+function ls_plugin_render_my_block( $attributes, $content, $block ) {
     $title = isset( $attributes['title'] ) ? sanitize_text_field( $attributes['title'] ) : '';
-    return '<div class="wp-block-{{PLUGIN_SLUG}}-my-block">' . esc_html( $title ) . '</div>';
+    return '<div class="wp-block-ls-plugin-my-block">' . esc_html( $title ) . '</div>';
 }
 ```
 
