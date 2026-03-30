@@ -21,7 +21,7 @@ applyTo: "**"
 
 - Must contain a valid WordPress plugin header.
 - Must include `defined( 'ABSPATH' ) || exit;` direct access protection.
-- Define plugin constants: `LS_PLUGIN_VERSION`, `LS_PLUGIN_PLUGIN_DIR`, `LS_PLUGIN_PLUGIN_URL`.
+- Define plugin constants: `LS_PLUGIN_VERSION`, `LS_PLUGIN_PLUGIN_FILE`, `LS_PLUGIN_PLUGIN_DIR`, `LS_PLUGIN_PLUGIN_URL`.
 - Load includes via `plugins_loaded` — not at the top level.
 - Keep the bootstrap lean — no business logic.
 
