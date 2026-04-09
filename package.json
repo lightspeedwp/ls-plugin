@@ -5,8 +5,9 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "build": "wp-scripts build",
-    "start": "wp-scripts start",
+    "build": "wp-scripts build --webpack-config webpack.config.js",
+    "build:production": "NODE_ENV=production npm run build",
+    "start": "wp-scripts start --webpack-config webpack.config.js",
     "plugin:validate": "node plugin-utils.mjs validate-plugin",
     "schema:validate": "node plugin-utils.mjs validate-schema",
     "security:scan": "node plugin-utils.mjs security-scan",
@@ -22,6 +23,7 @@
     "node": ">=20.0.0"
   },
   "devDependencies": {
-    "@wordpress/scripts": "^30.0.0"
+    "@wordpress/scripts": "^30.0.0",
+    "webpack-remove-empty-scripts": "^1.0.0"
   }
 }
