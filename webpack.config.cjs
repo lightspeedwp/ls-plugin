@@ -4,9 +4,10 @@ const path = require( 'path' );
 
 module.exports = {
 	...defaultConfig,
-	entry: {
+	entry: () => ( {
+		...( typeof defaultConfig.entry === 'function' ? defaultConfig.entry() : defaultConfig.entry ),
 		'js/style-switcher': path.resolve( process.cwd(), 'src/js', 'style-switcher.js' ),
-	},
+	} ),
 	output: {
 		...defaultConfig.output,
 		path: path.resolve( process.cwd(), 'build' ),

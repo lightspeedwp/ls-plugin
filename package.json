@@ -5,9 +5,9 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "build": "wp-scripts build --webpack-config webpack.config.js",
+    "build": "wp-scripts build --config webpack.config.cjs",
     "build:production": "NODE_ENV=production npm run build",
-    "start": "wp-scripts start --webpack-config webpack.config.js",
+    "start": "wp-scripts start --config webpack.config.cjs",
     "plugin:validate": "node plugin-utils.mjs validate-plugin",
     "schema:validate": "node plugin-utils.mjs validate-schema",
     "security:scan": "node plugin-utils.mjs security-scan",
