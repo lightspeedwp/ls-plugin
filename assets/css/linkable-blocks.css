@@ -1,0 +1,23 @@
+.ls-plugin-linkable-block.is-linked {
+	position: relative;
+	cursor: pointer !important;
+}
+
+.ls-plugin-linkable-block.is-linked:hover {
+	cursor: pointer;
+}
+
+.ls-plugin-linkable-block.is-linked .ls-plugin-linkable-block__anchor {
+	position: absolute !important;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	padding: 0;
+	overflow: hidden;
+	clip: rect( 0, 0, 0, 0 );
+	clip-path: inset( 50% );
+	border: 0;
+	white-space: nowrap;
+	pointer-events: none;
+	text-decoration: none;
+}
