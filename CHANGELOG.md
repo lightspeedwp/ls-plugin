@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Added a Style Switcher block with selectable theme style variations and configurable icon display behaviour.
 
 ### Changed
 

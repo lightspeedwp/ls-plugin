@@ -353,7 +353,7 @@ class LS_Plugin_Style_Switcher {
 	 * @return array<int, array<string, string>> SelectControl options.
 	 */
 	private function get_available_style_variations() {
-		$styles_dir = trailingslashit( get_template_directory() ) . 'styles/';
+		$styles_dir = trailingslashit( get_stylesheet_directory() ) . 'styles/';
 		$files      = glob( $styles_dir . '*.json' ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 		$options    = array();
 
@@ -449,13 +449,13 @@ class LS_Plugin_Style_Switcher {
 			$sanitized_slug = $this->get_default_dark_style_slug();
 		}
 
-		$path = trailingslashit( get_template_directory() ) . 'styles/' . $sanitized_slug . '.json';
+		$path = trailingslashit( get_stylesheet_directory() ) . 'styles/' . $sanitized_slug . '.json';
 
 		if ( file_exists( $path ) ) {
 			return $path;
 		}
 
-		return trailingslashit( get_template_directory() ) . 'styles/' . $this->get_default_dark_style_slug() . '.json';
+		return trailingslashit( get_stylesheet_directory() ) . 'styles/' . $this->get_default_dark_style_slug() . '.json';
 	}
 
 	/**
