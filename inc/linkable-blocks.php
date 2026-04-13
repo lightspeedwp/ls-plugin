@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) || exit;
  * @return string[]
  */
 function ls_plugin_get_linkable_block_names() {
-	return array( 'core/group', 'core/column', 'core/cover', 'core/block' );
+	return array( 'core/group', 'core/column', 'core/cover' );
 }
 
 /**
@@ -55,6 +55,16 @@ function ls_plugin_register_linkable_block_assets() {
 		'ls-plugin-linkable-blocks-editor',
 		'ls-plugin',
 		LS_PLUGIN_PLUGIN_DIR . 'languages'
+	);
+
+	wp_add_inline_script(
+		'ls-plugin-linkable-blocks-editor',
+		'window.lsPluginLinkableBlocks = ' . wp_json_encode(
+			array(
+				'supportedBlocks' => array_values( ls_plugin_get_linkable_block_names() ),
+			)
+		) . ';',
+		'before'
 	);
 
 	wp_register_script(
@@ -130,7 +140,9 @@ function ls_plugin_resolve_linkable_block_url( $attrs, $context ) {
 		$post_id = isset( $context['postId'] ) ? absint( $context['postId'] ) : 0;
 
 		if ( $post_id ) {
-			return (string) get_permalink( $post_id );
+			$permalink = get_permalink( $post_id );
+
+			return ( false === $permalink ) ? '' : $permalink;
 		}
 
 		$permalink = get_permalink();
@@ -155,6 +167,55 @@ function ls_plugin_resolve_linkable_block_url( $attrs, $context ) {
 }
 
 /**
+ * Builds an accessible label for a linkable block anchor.
+ *
+ * @param array  $attrs   Block attributes.
+ * @param array  $context Block context.
+ * @param string $url     Resolved URL.
+ * @return string
+ */
+function ls_plugin_get_linkable_block_accessible_label( $attrs, $context, $url ) {
+	$link_destination = $attrs['linkDestination'] ?? '';
+	$label            = '';
+
+	if ( 'post' === $link_destination ) {
+		$post_id = isset( $context['postId'] ) ? absint( $context['postId'] ) : 0;
+		$title   = $post_id ? get_the_title( $post_id ) : get_the_title();
+
+		if ( is_string( $title ) ) {
+			$label = trim( wp_strip_all_tags( $title ) );
+		}
+	} elseif ( 'term' === $link_destination ) {
+		$term_id = isset( $context['termId'] ) ? absint( $context['termId'] ) : 0;
+		$term    = $term_id ? get_term( $term_id ) : null;
+
+		if ( $term instanceof WP_Term ) {
+			$label = trim( wp_strip_all_tags( $term->name ) );
+		}
+	}
+
+	if ( '' !== $label ) {
+		return sprintf(
+			/* translators: %s: linked content title. */
+			__( 'Open %s', 'ls-plugin' ),
+			$label
+		);
+	}
+
+	$host = wp_parse_url( $url, PHP_URL_HOST );
+
+	if ( is_string( $host ) && '' !== $host ) {
+		return sprintf(
+			/* translators: %s: linked website host name. */
+			__( 'Open link to %s', 'ls-plugin' ),
+			sanitize_text_field( $host )
+		);
+	}
+
+	return __( 'Open linked content', 'ls-plugin' );
+}
+
+/**
  * Builds link markup for a supported block.
  *
  * @param array $attrs   Block attributes.
@@ -168,14 +229,21 @@ function ls_plugin_get_linkable_block_markup( $attrs, $context ) {
 		return '';
 	}
 
-	$target = '_blank' === ( $attrs['linkTarget'] ?? '' ) ? '_blank' : '_self';
-	$rel    = '_blank' === $target ? ' rel="noopener noreferrer"' : '';
+	$target        = '_blank' === ( $attrs['linkTarget'] ?? '' ) ? '_blank' : '_self';
+	$rel           = '_blank' === $target ? 'noopener noreferrer' : '';
+	$label         = ls_plugin_get_linkable_block_accessible_label( $attrs, $context, $url );
+	$rel_attribute = '';
+
+	if ( '' !== $rel ) {
+		$rel_attribute = sprintf( ' rel="%s"', esc_attr( $rel ) );
+	}
 
 	return sprintf(
-		'<a class="wp-block__link ls-plugin-linkable-block__anchor" href="%1$s" target="%2$s"%3$s data-expand-click-area tabindex="-1" aria-hidden="true">&nbsp;</a>',
+		'<a class="wp-block__link ls-plugin-linkable-block__anchor" href="%1$s" target="%2$s"%3$s data-expand-click-area><span class="screen-reader-text">%4$s</span></a>',
 		esc_url( $url ),
 		esc_attr( $target ),
-		$rel
+		$rel_attribute,
+		esc_html( $label )
 	);
 }
 
@@ -212,9 +280,15 @@ function ls_plugin_render_linkable_blocks( $block_content, $block, $instance ) {
 
 	$processor->add_class( 'is-linked' );
 	$processor->add_class( 'ls-plugin-linkable-block' );
-	$tag_name      = strtolower( $processor->get_tag() );
+
+	$tag_name = $processor->get_tag();
+
+	if ( ! is_string( $tag_name ) || '' === $tag_name ) {
+		return $block_content;
+	}
+
 	$block_content = $processor->get_updated_html();
-	$closing_tag   = sprintf( '</%s>', $tag_name );
+	$closing_tag   = sprintf( '</%s>', strtolower( $tag_name ) );
 	$closing_pos   = strrpos( $block_content, $closing_tag );
 
 	if ( false === $closing_pos ) {

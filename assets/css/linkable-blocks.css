@@ -1,14 +1,10 @@
 .ls-plugin-linkable-block.is-linked {
 	position: relative;
-	cursor: pointer !important;
-}
-
-.ls-plugin-linkable-block.is-linked:hover {
 	cursor: pointer;
 }
 
 .ls-plugin-linkable-block.is-linked .ls-plugin-linkable-block__anchor {
-	position: absolute !important;
+	position: absolute;
 	width: 1px;
 	height: 1px;
 	margin: -1px;
@@ -20,4 +16,16 @@
 	white-space: nowrap;
 	pointer-events: none;
 	text-decoration: none;
+}
+
+.ls-plugin-linkable-block.is-linked .ls-plugin-linkable-block__anchor:focus-visible {
+	inset: 0;
+	width: auto;
+	height: auto;
+	margin: 0;
+	clip: auto;
+	clip-path: none;
+	outline: 2px solid currentColor;
+	outline-offset: 2px;
+	z-index: 1;
 }

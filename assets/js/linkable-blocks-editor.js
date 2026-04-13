@@ -20,7 +20,12 @@
 	var PanelBody = wp.components.PanelBody;
 	var Popover = wp.components.Popover;
 	var ToolbarButton = wp.components.ToolbarButton;
-	var supportedBlocks = [ 'core/group', 'core/column', 'core/cover', 'core/block' ];
+	// `window.lsPluginLinkableBlocks` is injected by the plugin outside this file.
+	// Expected shape: { supportedBlocks: string[] }, where each item is a block name
+	// such as `core/group` or `ls-plugin/example`.
+	var supportedBlocks = window.lsPluginLinkableBlocks && Array.isArray( window.lsPluginLinkableBlocks.supportedBlocks )
+		? window.lsPluginLinkableBlocks.supportedBlocks
+		: [];
 
 	if ( ! LinkControl ) {
 		return;
@@ -32,6 +37,83 @@
 
 	function mergeClassNames( currentClassName, nextClassName ) {
 		return [ currentClassName, nextClassName ].filter( Boolean ).join( ' ' );
+	}
+
+	function clearLinkAttributes() {
+		return {
+			href: undefined,
+			linkDestination: undefined,
+			linkTarget: undefined
+		};
+	}
+
+	function getCustomLinkAttributes( nextValue ) {
+		var nextUrl = nextValue && nextValue.url ? nextValue.url : '';
+		var opensInNewTab = !! ( nextValue && nextValue.opensInNewTab );
+
+		return {
+			href: nextUrl || undefined,
+			linkDestination: nextUrl ? 'custom' : undefined,
+			linkTarget: opensInNewTab ? '_blank' : undefined
+		};
+	}
+
+	function getContextualLinkAttributes( destination ) {
+		return {
+			href: undefined,
+			linkDestination: destination,
+			linkTarget: undefined
+		};
+	}
+
+	function getLinkControlValue( attributes ) {
+		return {
+			url: attributes.href,
+			opensInNewTab: attributes.linkTarget === '_blank'
+		};
+	}
+
+	function getCustomLinkControl( attributes, setAttributes, key ) {
+		return createElement( LinkControl, {
+			key: key,
+			value: getLinkControlValue( attributes ),
+			onChange: function ( nextValue ) {
+				setAttributes( getCustomLinkAttributes( nextValue ) );
+			},
+			onRemove: function () {
+				setAttributes( clearLinkAttributes() );
+			}
+		} );
+	}
+
+	function getLinkOptionsMenu( setAttributes, isInsideTermsQuery, key ) {
+		return createElement(
+			'div',
+			{
+				key: key,
+				className: 'ls-plugin-linkable-blocks__menu'
+			},
+			createElement(
+				MenuGroup,
+				null,
+				createElement( MenuItem, {
+					icon: 'media-document',
+					onClick: function () {
+						setAttributes( getContextualLinkAttributes( 'post' ) );
+					},
+					info: __( 'Use when this block sits inside a Query Loop.', 'ls-plugin' )
+				}, __( 'Link to current post', 'ls-plugin' ) ),
+				isInsideTermsQuery
+					? createElement( MenuItem, {
+						icon: 'tag',
+						onClick: function () {
+							setAttributes( getContextualLinkAttributes( 'term' ) );
+						},
+						info: __( 'Use when this block sits inside a Terms Query block.', 'ls-plugin' )
+					}, __( 'Link to current term', 'ls-plugin' ) )
+					: null
+			)
+		);
 	}
 
 	function addLinkAttributes( settings ) {
@@ -72,9 +154,7 @@
 				icon: 'no-alt',
 				label: __( 'Remove link', 'ls-plugin' ),
 				onClick: function () {
-					setAttributes( {
-						linkDestination: undefined
-					} );
+					setAttributes( clearLinkAttributes() );
 				}
 			} )
 		);
@@ -92,65 +172,10 @@
 				initialOpen: true
 			},
 			linkDestination !== 'post' && linkDestination !== 'term'
-				? createElement( LinkControl, {
-					value: {
-						url: href,
-						opensInNewTab: linkTarget === '_blank'
-					},
-					onChange: function ( nextValue ) {
-						var nextUrl = nextValue && nextValue.url ? nextValue.url : '';
-						var opensInNewTab = !! ( nextValue && nextValue.opensInNewTab );
-
-						setAttributes( {
-							href: nextUrl || undefined,
-							linkDestination: nextUrl ? 'custom' : undefined,
-							linkTarget: opensInNewTab ? '_blank' : undefined
-						} );
-					},
-					onRemove: function () {
-						setAttributes( {
-							href: undefined,
-							linkDestination: undefined,
-							linkTarget: undefined
-						} );
-					}
-				} )
+				? getCustomLinkControl( attributes, setAttributes, 'inspector-custom-link-control' )
 				: null,
 			! href && ! linkDestination
-				? createElement(
-					'div',
-					{
-						className: 'ls-plugin-linkable-blocks__menu'
-					},
-					createElement(
-						MenuGroup,
-						null,
-						createElement( MenuItem, {
-							icon: 'media-document',
-							onClick: function () {
-								setAttributes( {
-									linkDestination: 'post',
-									href: undefined,
-									linkTarget: undefined
-								} );
-							},
-							info: __( 'Use when this block sits inside a Query Loop.', 'ls-plugin' )
-						}, __( 'Link to current post', 'ls-plugin' ) ),
-						isInsideTermsQuery
-							? createElement( MenuItem, {
-								icon: 'tag',
-								onClick: function () {
-									setAttributes( {
-										linkDestination: 'term',
-										href: undefined,
-										linkTarget: undefined
-									} );
-								},
-								info: __( 'Use when this block sits inside a Terms Query block.', 'ls-plugin' )
-							}, __( 'Link to current term', 'ls-plugin' ) )
-							: null
-					)
-				)
+				? getLinkOptionsMenu( setAttributes, isInsideTermsQuery, 'inspector-link-options' )
 				: null,
 			linkDestination === 'post' || linkDestination === 'term'
 				? getSelectionPanel( attributes, setAttributes )
@@ -206,77 +231,22 @@
 
 			if ( isEditingURL ) {
 				var popoverChildren = [];
+				var hasContextualLink = linkDestination === 'post' || linkDestination === 'term';
+				var hasLinkValue = !! href || hasContextualLink;
 
-				if ( linkDestination !== 'post' && linkDestination !== 'term' ) {
+				if ( ! hasContextualLink ) {
 					popoverChildren.push(
-						createElement( LinkControl, {
-							key: 'custom-link-control',
-							value: {
-								url: href,
-								opensInNewTab: linkTarget === '_blank'
-							},
-							onChange: function ( nextValue ) {
-								var nextUrl = nextValue && nextValue.url ? nextValue.url : '';
-								var opensInNewTab = !! ( nextValue && nextValue.opensInNewTab );
-
-								props.setAttributes( {
-									href: nextUrl || undefined,
-									linkDestination: nextUrl ? 'custom' : undefined,
-									linkTarget: opensInNewTab ? '_blank' : undefined
-								} );
-							},
-							onRemove: function () {
-								props.setAttributes( {
-									href: undefined,
-									linkDestination: undefined,
-									linkTarget: undefined
-								} );
-							}
-						} )
+						getCustomLinkControl( attributes, props.setAttributes, 'toolbar-custom-link-control' )
 					);
 				}
 
-				if ( ! href && ! linkDestination ) {
+				if ( ! hasLinkValue ) {
 					popoverChildren.push(
-						createElement(
-							'div',
-							{
-								key: 'link-options',
-								className: 'ls-plugin-linkable-blocks__menu'
-							},
-							createElement(
-								MenuGroup,
-								null,
-								createElement( MenuItem, {
-									icon: 'media-document',
-									onClick: function () {
-										props.setAttributes( {
-											linkDestination: 'post',
-											href: undefined,
-											linkTarget: undefined
-										} );
-									},
-									info: __( 'Use when this block sits inside a Query Loop.', 'ls-plugin' )
-								}, __( 'Link to current post', 'ls-plugin' ) ),
-								isInsideTermsQuery
-									? createElement( MenuItem, {
-										icon: 'tag',
-										onClick: function () {
-											props.setAttributes( {
-												linkDestination: 'term',
-												href: undefined,
-												linkTarget: undefined
-											} );
-										},
-										info: __( 'Use when this block sits inside a Terms Query block.', 'ls-plugin' )
-									}, __( 'Link to current term', 'ls-plugin' ) )
-									: null
-							)
-						)
+						getLinkOptionsMenu( props.setAttributes, isInsideTermsQuery, 'toolbar-link-options' )
 					);
 				}
 
-				if ( linkDestination === 'post' || linkDestination === 'term' ) {
+				if ( hasContextualLink ) {
 					popoverChildren.push(
 						getSelectionPanel( attributes, props.setAttributes )
 					);
