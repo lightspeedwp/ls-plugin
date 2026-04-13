@@ -29,6 +29,10 @@
 		"darkStyleSlug": {
 			"type": "string",
 			"default": "dark"
+		},
+		"iconBehavior": {
+			"type": "string",
+			"default": "current"
 		}
 	}
 }

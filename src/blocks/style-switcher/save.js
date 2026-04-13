@@ -4,16 +4,18 @@ import { __ } from '@wordpress/i18n';
 import { MoonIcon, SunIcon } from './icons.js';
 
 export default function save( { attributes } ) {
-	const { size, darkStyleSlug } = attributes;
+	const { size, darkStyleSlug, iconBehavior } = attributes;
 	const classes = size ? `is-${ size }` : '';
 	const inputId = 'ls-plugin-style-switcher-input';
 	const selectedDarkStyle = darkStyleSlug || 'dark';
+	const selectedIconBehavior = iconBehavior || 'current';
 
 	return (
 		<div
 			{ ...useBlockProps.save( {
 				className: classes,
 				'data-style-variation': selectedDarkStyle,
+				'data-icon-behavior': selectedIconBehavior,
 			} ) }
 		>
 			<label
@@ -25,6 +27,7 @@ export default function save( { attributes } ) {
 					type="checkbox"
 					className="wp-block-ls-plugin-style-switcher__input"
 					data-style-variation={ selectedDarkStyle }
+					data-icon-behavior={ selectedIconBehavior }
 					role="switch"
 					aria-label={ __(
 						'Switch to dark mode, currently light',

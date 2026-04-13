@@ -5,7 +5,7 @@ import { __ } from '@wordpress/i18n';
 import { MoonIcon, SunIcon } from './icons.js';
 
 export default function Edit( { attributes, setAttributes } ) {
-	const { size, darkStyleSlug } = attributes;
+	const { size, darkStyleSlug, iconBehavior } = attributes;
 	const sizeClass = size ? `is-${ size }` : '';
 	const inputId = 'ls-plugin-style-switcher-input';
 	const blockData = window.lsPluginStyleSwitcherBlockData || {};
@@ -14,15 +14,38 @@ export default function Edit( { attributes, setAttributes } ) {
 		: [];
 	const defaultDarkStyleSlug = blockData.defaultDarkStyleSlug || 'dark';
 	const selectedDarkStyle = darkStyleSlug || defaultDarkStyleSlug;
+	const selectedIconBehavior = iconBehavior || 'current';
 	const blockProps = useBlockProps( {
 		className: sizeClass,
 		'data-style-variation': selectedDarkStyle,
+		'data-icon-behavior': selectedIconBehavior,
 	} );
 
 	return (
 		<>
 			<InspectorControls>
 				<PanelBody title={ __( 'Switcher Settings', 'ls-plugin' ) }>
+					<SelectControl
+						label={ __( 'Icon Display', 'ls-plugin' ) }
+						value={ selectedIconBehavior }
+						options={ [
+							{
+								label: __( 'Current Style Icon', 'ls-plugin' ),
+								value: 'current',
+							},
+							{
+								label: __( 'Switch-To Style Icon', 'ls-plugin' ),
+								value: 'switch-to',
+							},
+						] }
+						onChange={ ( value ) =>
+							setAttributes( { iconBehavior: value } )
+						}
+						help={ __(
+							'Switch-To style shows the Moon icon by default and Sun for the style you are switching to.',
+							'ls-plugin'
+						) }
+					/>
 					<SelectControl
 						label={ __( 'Dark Style Variation', 'ls-plugin' ) }
 						value={ selectedDarkStyle }
@@ -77,6 +100,7 @@ export default function Edit( { attributes, setAttributes } ) {
 							type="checkbox"
 							className="wp-block-ls-plugin-style-switcher__input"
 							data-style-variation={ selectedDarkStyle }
+							data-icon-behavior={ selectedIconBehavior }
 							role="switch"
 							aria-checked="false"
 							aria-label={ __(

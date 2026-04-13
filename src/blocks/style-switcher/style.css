@@ -77,17 +77,32 @@ html.dark-mode .wp-block-ls-plugin-style-switcher__input + .wp-block-ls-plugin-s
 body.dark-mode .wp-block-ls-plugin-style-switcher__input + .wp-block-ls-plugin-style-switcher__track .wp-block-ls-plugin-style-switcher__selector {
   transform: translateX(calc(var(--icon-size) * 1.25));
 }
-html.dark-mode .wp-block-ls-plugin-style-switcher__icon--light,
-body.dark-mode .wp-block-ls-plugin-style-switcher__icon--light {
+html.dark-mode .wp-block-ls-plugin-style-switcher[data-icon-behavior=current] .wp-block-ls-plugin-style-switcher__icon--light,
+body.dark-mode .wp-block-ls-plugin-style-switcher[data-icon-behavior=current] .wp-block-ls-plugin-style-switcher__icon--light {
   visibility: hidden;
 }
-html.dark-mode .wp-block-ls-plugin-style-switcher__icon--dark,
-body.dark-mode .wp-block-ls-plugin-style-switcher__icon--dark {
+html.dark-mode .wp-block-ls-plugin-style-switcher[data-icon-behavior=current] .wp-block-ls-plugin-style-switcher__icon--dark,
+body.dark-mode .wp-block-ls-plugin-style-switcher[data-icon-behavior=current] .wp-block-ls-plugin-style-switcher__icon--dark {
   visibility: visible;
+}
+html.dark-mode .wp-block-ls-plugin-style-switcher[data-icon-behavior=switch-to] .wp-block-ls-plugin-style-switcher__icon--light,
+body.dark-mode .wp-block-ls-plugin-style-switcher[data-icon-behavior=switch-to] .wp-block-ls-plugin-style-switcher__icon--light {
+  visibility: visible;
+}
+html.dark-mode .wp-block-ls-plugin-style-switcher[data-icon-behavior=switch-to] .wp-block-ls-plugin-style-switcher__icon--dark,
+body.dark-mode .wp-block-ls-plugin-style-switcher[data-icon-behavior=switch-to] .wp-block-ls-plugin-style-switcher__icon--dark {
+  visibility: hidden;
 }
 
 .wp-block-ls-plugin-style-switcher__icon--dark {
   visibility: hidden;
+}
+
+.wp-block-ls-plugin-style-switcher[data-icon-behavior=switch-to] .wp-block-ls-plugin-style-switcher__icon--light {
+  visibility: hidden;
+}
+.wp-block-ls-plugin-style-switcher[data-icon-behavior=switch-to] .wp-block-ls-plugin-style-switcher__icon--dark {
+  visibility: visible;
 }
 
 .wp-block-ls-plugin-style-switcher__input:focus-visible + .wp-block-ls-plugin-style-switcher__track {
