@@ -1,0 +1,98 @@
+.wp-block-ls-plugin-style-switcher {
+	width: fit-content;
+	--icon-size: 16px;
+	font-size: var(--icon-size);
+
+	&.is-medium {
+		--icon-size: 18px;
+	}
+
+	&.is-large {
+		--icon-size: 20px;
+	}
+}
+
+.wp-block-ls-plugin-style-switcher__label {
+	align-items: center;
+	display: flex;
+	margin: 0;
+}
+
+.wp-block-ls-plugin-style-switcher__input {
+	clip-path: inset(50%);
+	clip: rect(0 0 0 0);
+	height: 1px;
+	overflow: hidden;
+	position: absolute;
+	white-space: nowrap;
+	width: 1px;
+}
+
+.wp-block-ls-plugin-style-switcher__track {
+	align-items: center;
+	border-radius: 100px;
+	cursor: pointer;
+	display: flex;
+	height: calc(var(--icon-size) * 1.75);
+	line-height: 1;
+	padding: 0 calc(var(--icon-size) * 0.25);
+	position: relative;
+	transition: background-color var(--wp--custom--transition--duration, 200ms) ease-out;
+	width: calc(var(--icon-size) * 2.5);
+
+	&:not(.has-background) {
+		background: rgba(195, 195, 195, 0.3);
+	}
+
+	&:not(.has-background):hover {
+		background: rgba(195, 195, 195, 0.5);
+	}
+}
+
+.wp-block-ls-plugin-style-switcher__selector {
+	align-items: center;
+	border-radius: 100%;
+	display: flex;
+	height: calc(var(--icon-size) * 1.25);
+	justify-content: center;
+	transition: transform var(--wp--custom--transition--duration, 200ms) ease-out;
+	width: calc(var(--icon-size) * 1.25);
+	will-change: transform;
+}
+
+.wp-block-ls-plugin-style-switcher__icon {
+	backface-visibility: hidden;
+	border-radius: 100%;
+	color: currentcolor;
+	opacity: 1;
+	position: absolute;
+
+	&,
+	svg {
+		width: var(--icon-size);
+		height: var(--icon-size);
+	}
+}
+
+html.dark-mode,
+body.dark-mode {
+	.wp-block-ls-plugin-style-switcher__input + .wp-block-ls-plugin-style-switcher__track .wp-block-ls-plugin-style-switcher__selector {
+		transform: translateX(calc(var(--icon-size) * 1.25));
+	}
+
+	.wp-block-ls-plugin-style-switcher__icon--light {
+		visibility: hidden;
+	}
+
+	.wp-block-ls-plugin-style-switcher__icon--dark {
+		visibility: visible;
+	}
+}
+
+.wp-block-ls-plugin-style-switcher__icon--dark {
+	visibility: hidden;
+}
+
+.wp-block-ls-plugin-style-switcher__input:focus-visible + .wp-block-ls-plugin-style-switcher__track {
+	outline: -webkit-focus-ring-color auto 1px;
+}

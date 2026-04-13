@@ -8,37 +8,52 @@
  * Preference is stored in localStorage and mirrored to a cookie so
  * PHP can read it server-side for SSR button-label rendering.
  */
-( function () {
-	var data = window.lsPluginStyleData || {};
-	var storageKey = data.localStorageKey || 'ls_plugin_style_preference';
-	var defaultMode = data.defaultMode || 'light';
-	var darkClass = 'dark-mode';
-	var cookieName = '_ls_plugin_style';
+
+( () => {
+	const data = window.lsPluginStyleData || {};
+	const storageKey = data.localStorageKey || 'ls_plugin_style_preference';
+	const defaultMode = data.defaultMode || 'light';
+	const labelDark = data.labelDark || 'Dark Mode';
+	const labelLight = data.labelLight || 'Light Mode';
+	const switchToText = data.switchToText || 'Switch to %s';
+	const switchAriaDark =
+		data.switchAriaDark || 'Switch to dark mode, currently light';
+	const switchAriaLight =
+		data.switchAriaLight || 'Switch to light mode, currently dark';
+	const darkClass = 'dark-mode';
+	const cookieName = '_ls_plugin_style';
+	const blockInputSelector = '.wp-block-ls-plugin-style-switcher__input';
 
 	/**
-	 * Gets the current style preference from localStorage.
-	 *
-	 * @returns {string} 'dark' or 'light'
+	 * @param {string} modeLabel Mode label.
+	 * @return {string} Formatted action label.
+	 */
+	function formatSwitchTo( modeLabel ) {
+		return switchToText.replace( '%s', modeLabel );
+	}
+
+	/**
+	 * @return {string} Current mode.
 	 */
 	function getPreference() {
 		try {
-			return localStorage.getItem( storageKey ) || defaultMode;
-		} catch ( e ) {
+			return window.localStorage.getItem( storageKey ) || defaultMode;
+		} catch ( error ) {
 			return defaultMode;
 		}
 	}
 
 	/**
-	 * Persists the style preference to localStorage and a cookie.
-	 *
-	 * @param {string} mode
+	 * @param {string} mode Mode to persist.
+	 * @return {void}
 	 */
 	function persist( mode ) {
 		try {
-			localStorage.setItem( storageKey, mode );
-		} catch ( e ) {}
+			window.localStorage.setItem( storageKey, mode );
+		} catch ( error ) {
+			// Continue with cookie fallback for server-side reading.
+		}
 
-		// Mirror to cookie for PHP server-side detection.
 		document.cookie =
 			cookieName +
 			'=' +
@@ -48,84 +63,124 @@
 	}
 
 	/**
-	 * Adds or removes the dark class from a DOM element.
-	 *
-	 * @param {Element} element
-	 * @param {string}  mode
+	 * @param {Element|null} element Target element.
+	 * @param {string}       mode    Active mode.
+	 * @return {void}
 	 */
 	function applyToElement( element, mode ) {
 		if ( ! element ) {
 			return;
 		}
 
-		if ( 'dark' === mode ) {
-			element.classList.add( darkClass );
-		} else {
-			element.classList.remove( darkClass );
-		}
+		element.classList.toggle( darkClass, mode === 'dark' );
 	}
 
 	/**
-	 * Updates the switcher button label and icon to reflect the next toggle target.
-	 *
-	 * @param {string} currentMode
+	 * @param {string} currentMode Active mode.
+	 * @return {void}
 	 */
 	function updateButton( currentMode ) {
-		var button = document.getElementById( 'ls-plugin-style-switcher' );
+		const button = document.getElementById( 'ls-plugin-style-switcher' );
 
 		if ( ! button ) {
 			return;
 		}
 
-		var label = button.querySelector( '.ls-plugin-style-label' );
-		var iconLight = button.querySelector( '.ls-plugin-style-icon-light' );
-		var iconsDark = button.querySelectorAll( '.ls-plugin-style-icon-dark' );
-		var isDark = 'dark' === currentMode;
-		var nextLabel = isDark ? 'Light Mode' : 'Dark Mode';
+		const label = button.querySelector( '.ls-plugin-style-label' );
+		const iconLight = button.querySelector( '.ls-plugin-style-icon-light' );
+		const iconsDark = button.querySelectorAll(
+			'.ls-plugin-style-icon-dark'
+		);
+		const isDark = currentMode === 'dark';
+		const nextLabel = isDark ? labelLight : labelDark;
 
 		if ( label ) {
 			label.textContent = nextLabel;
 		}
 
-		button.setAttribute( 'aria-label', 'Switch to ' + nextLabel );
-		button.setAttribute( 'title', 'Switch to ' + nextLabel );
+		button.setAttribute( 'aria-label', formatSwitchTo( nextLabel ) );
+		button.setAttribute( 'title', formatSwitchTo( nextLabel ) );
 
 		if ( iconLight ) {
 			iconLight.style.display = isDark ? '' : 'none';
 		}
 
-		iconsDark.forEach( function ( icon ) {
+		iconsDark.forEach( ( icon ) => {
 			icon.style.display = isDark ? 'none' : '';
 		} );
 	}
 
 	/**
-	 * Toggles the style, persists it, and updates the UI.
+	 * @param {string} currentMode Active mode.
+	 * @return {void}
 	 */
-	function toggle() {
-		var next = 'dark' === getPreference() ? 'light' : 'dark';
+	function updateBlockInputs( currentMode ) {
+		const isDark = currentMode === 'dark';
+		const blockInputs = document.querySelectorAll( blockInputSelector );
 
-		persist( next );
-		applyToElement( document.documentElement, next );
-		applyToElement( document.body, next );
-		updateButton( next );
+		blockInputs.forEach( ( input ) => {
+			input.checked = isDark;
+			input.setAttribute( 'aria-checked', isDark ? 'true' : 'false' );
+			input.setAttribute(
+				'aria-label',
+				isDark ? switchAriaLight : switchAriaDark
+			);
+		} );
 	}
 
-	// Apply immediately to <html> — document.body is not available yet in <head>.
+	/**
+	 * @param {string} mode Active mode.
+	 * @return {void}
+	 */
+	function applyMode( mode ) {
+		applyToElement( document.documentElement, mode );
+		applyToElement( document.body, mode );
+		updateButton( mode );
+		updateBlockInputs( mode );
+
+		document.dispatchEvent(
+			new CustomEvent( 'ls-plugin-style-change', {
+				detail: { mode },
+			} )
+		);
+	}
+
+	/**
+	 * @return {void}
+	 */
+	function toggle() {
+		const next = getPreference() === 'dark' ? 'light' : 'dark';
+		persist( next );
+		applyMode( next );
+	}
+
+	/**
+	 * @param {boolean} isDark Whether dark mode should be enabled.
+	 * @return {void}
+	 */
+	function setModeFromInput( isDark ) {
+		const next = isDark ? 'dark' : 'light';
+
+		persist( next );
+		applyMode( next );
+	}
+
+	// Apply immediately to <html> before the body is available.
 	applyToElement( document.documentElement, getPreference() );
 
-	document.addEventListener( 'DOMContentLoaded', function () {
-		var preference = getPreference();
+	document.addEventListener( 'DOMContentLoaded', () => {
+		const preference = getPreference();
+		applyMode( preference );
 
-		// Mirror from <html> to <body> now that the DOM is ready.
-		applyToElement( document.body, preference );
-
-		var button = document.getElementById( 'ls-plugin-style-switcher' );
-
+		const button = document.getElementById( 'ls-plugin-style-switcher' );
 		if ( button ) {
 			button.addEventListener( 'click', toggle );
 		}
 
-		updateButton( preference );
+		document.querySelectorAll( blockInputSelector ).forEach( ( input ) => {
+			input.addEventListener( 'change', ( event ) => {
+				setModeFromInput( event.currentTarget.checked );
+			} );
+		} );
 	} );
-}() );
+} )();

@@ -38,9 +38,25 @@ class LS_Plugin_Style_Switcher {
 	 * @return void
 	 */
 	public function register_hooks() {
+		add_action( 'init', array( $this, 'register_block' ) );
 		add_action( 'wp_head', array( $this, 'output_dark_mode_css' ), 1 );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_script' ) );
 		add_filter( 'wp_theme_json_data_theme', array( $this, 'merge_dark_mode_theme_json' ), 200 );
+	}
+
+	/**
+	 * Registers the style switcher block from the built block assets.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return void
+	 */
+	public function register_block() {
+		$block_path = LS_PLUGIN_PLUGIN_DIR . 'build/blocks/style-switcher';
+
+		if ( file_exists( $block_path . '/block.json' ) ) {
+			register_block_type( $block_path );
+		}
 	}
 
 	/**
@@ -56,21 +72,33 @@ class LS_Plugin_Style_Switcher {
 	public function get_dark_mode_css() {
 		$dark_data = $this->get_dark_json_data();
 
-		if ( ! isset( $dark_data['settings']['color']['palette'] ) || ! is_array( $dark_data['settings']['color']['palette'] ) ) {
+		$declarations = '';
+
+		if ( isset( $dark_data['settings']['color']['palette'] ) && is_array( $dark_data['settings']['color']['palette'] ) ) {
+			foreach ( $dark_data['settings']['color']['palette'] as $color ) {
+				if ( ! isset( $color['slug'] ) || ! isset( $color['color'] ) ) {
+					continue;
+				}
+
+				$declarations .= "\t" . '--wp--preset--color--' . sanitize_key( $color['slug'] ) . ': ' . sanitize_hex_color( $color['color'] ) . ";\n";
+			}
+		}
+
+		if ( isset( $dark_data['settings']['custom'] ) && is_array( $dark_data['settings']['custom'] ) ) {
+			$declarations .= $this->build_custom_css_variables( $dark_data['settings']['custom'] );
+		}
+
+		if ( empty( $declarations ) && ! isset( $dark_data['styles']['color'] ) ) {
 			return '';
 		}
 
-		$css = 'html.dark-mode, body.dark-mode {' . "\n";
+		$css = '';
 
-		foreach ( $dark_data['settings']['color']['palette'] as $color ) {
-			if ( ! isset( $color['slug'] ) || ! isset( $color['color'] ) ) {
-				continue;
-			}
-
-			$css .= "\t" . '--wp--preset--color--' . sanitize_key( $color['slug'] ) . ': ' . sanitize_hex_color( $color['color'] ) . ";\n";
+		if ( ! empty( $declarations ) ) {
+			$css .= 'html.dark-mode, body.dark-mode {' . "\n";
+			$css .= $declarations;
+			$css .= '}' . "\n";
 		}
-
-		$css .= '}' . "\n";
 
 		if ( isset( $dark_data['styles']['color'] ) ) {
 			$css .= 'html.dark-mode, body.dark-mode {' . "\n";
@@ -138,6 +166,11 @@ class LS_Plugin_Style_Switcher {
 			array(
 				'localStorageKey' => 'ls_plugin_style_preference',
 				'defaultMode'    => 'light',
+				'labelLight'     => esc_html__( 'Light Mode', 'ls-plugin' ),
+				'labelDark'      => esc_html__( 'Dark Mode', 'ls-plugin' ),
+				'switchToText'   => esc_html__( 'Switch to %s', 'ls-plugin' ),
+				'switchAriaDark' => esc_html__( 'Switch to dark mode, currently light', 'ls-plugin' ),
+				'switchAriaLight'=> esc_html__( 'Switch to light mode, currently dark', 'ls-plugin' ),
 			)
 		);
 	}
@@ -183,8 +216,8 @@ class LS_Plugin_Style_Switcher {
 				</svg>
 			</button>',
 			esc_attr( $args['class'] ),
-			esc_attr( sprintf( 'Switch to %s', $next_mode_label ) ),
-			esc_attr( sprintf( 'Switch to %s', $next_mode_label ) ),
+			esc_attr( sprintf( esc_html__( 'Switch to %s', 'ls-plugin' ), $next_mode_label ) ),
+			esc_attr( sprintf( esc_html__( 'Switch to %s', 'ls-plugin' ), $next_mode_label ) ),
 			esc_html( $next_mode_label )
 		);
 	}
@@ -239,6 +272,10 @@ class LS_Plugin_Style_Switcher {
 
 		$overrides = array();
 
+		if ( isset( $dark_data['settings']['custom'] ) && is_array( $dark_data['settings']['custom'] ) ) {
+			$overrides['settings']['custom'] = $dark_data['settings']['custom'];
+		}
+
 		if ( isset( $dark_data['settings']['color'] ) && is_array( $dark_data['settings']['color'] ) ) {
 			$overrides['settings']['color'] = $dark_data['settings']['color'];
 		}
@@ -273,5 +310,33 @@ class LS_Plugin_Style_Switcher {
 		$data = json_decode( file_get_contents( $path ), true ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 
 		return is_array( $data ) ? $data : array();
+	}
+
+	/**
+	 * Converts theme.json `settings.custom` values into CSS variable declarations.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array  $custom_data Custom token data.
+	 * @param string $prefix      Variable name prefix.
+	 * @return string CSS declarations for custom variables.
+	 */
+	private function build_custom_css_variables( $custom_data, $prefix = '--wp--custom' ) {
+		$declarations = '';
+
+		foreach ( $custom_data as $key => $value ) {
+			$sanitized_key = sanitize_key( (string) $key );
+
+			if ( is_array( $value ) ) {
+				$declarations .= $this->build_custom_css_variables( $value, $prefix . '--' . $sanitized_key );
+				continue;
+			}
+
+			if ( is_scalar( $value ) && '' !== (string) $value ) {
+				$declarations .= "\t" . $prefix . '--' . $sanitized_key . ': ' . (string) $value . ";\n";
+			}
+		}
+
+		return $declarations;
 	}
 }
