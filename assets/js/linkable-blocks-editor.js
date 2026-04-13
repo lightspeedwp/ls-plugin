@@ -15,8 +15,6 @@
 	var InspectorControls = wp.blockEditor.InspectorControls;
 	var LinkControl = wp.blockEditor.__experimentalLinkControl;
 	var Button = wp.components.Button;
-	var MenuGroup = wp.components.MenuGroup;
-	var MenuItem = wp.components.MenuItem;
 	var PanelBody = wp.components.PanelBody;
 	var Popover = wp.components.Popover;
 	var ToolbarButton = wp.components.ToolbarButton;
@@ -86,33 +84,47 @@
 		} );
 	}
 
+	function getLinkOptionButton( label, icon, destination, setAttributes, key ) {
+		return createElement( Button, {
+			key: key,
+			className: 'ls-plugin-linkable-blocks__option',
+			icon: icon,
+			onClick: function () {
+				setAttributes( getContextualLinkAttributes( destination ) );
+			}
+		}, label );
+	}
+
 	function getLinkOptionsMenu( setAttributes, isInsideTermsQuery, key ) {
+		var optionChildren = [
+			getLinkOptionButton(
+				__( 'Link to current post', 'ls-plugin' ),
+				'admin-links',
+				'post',
+				setAttributes,
+				'post-link-option'
+			)
+		];
+
+		if ( isInsideTermsQuery ) {
+			optionChildren.push(
+				getLinkOptionButton(
+					__( 'Link to current term', 'ls-plugin' ),
+					'tag',
+					'term',
+					setAttributes,
+					'term-link-option'
+				)
+			);
+		}
+
 		return createElement(
 			'div',
 			{
 				key: key,
 				className: 'ls-plugin-linkable-blocks__menu'
 			},
-			createElement(
-				MenuGroup,
-				null,
-				createElement( MenuItem, {
-					icon: 'media-document',
-					onClick: function () {
-						setAttributes( getContextualLinkAttributes( 'post' ) );
-					},
-					info: __( 'Use when this block sits inside a Query Loop.', 'ls-plugin' )
-				}, __( 'Link to current post', 'ls-plugin' ) ),
-				isInsideTermsQuery
-					? createElement( MenuItem, {
-						icon: 'tag',
-						onClick: function () {
-							setAttributes( getContextualLinkAttributes( 'term' ) );
-						},
-						info: __( 'Use when this block sits inside a Terms Query block.', 'ls-plugin' )
-					}, __( 'Link to current term', 'ls-plugin' ) )
-					: null
-			)
+			optionChildren
 		);
 	}
 
@@ -168,6 +180,7 @@
 		return createElement(
 			PanelBody,
 			{
+				className: 'ls-plugin-linkable-blocks__panel',
 				title: __( 'Link settings', 'ls-plugin' ),
 				initialOpen: true
 			},
