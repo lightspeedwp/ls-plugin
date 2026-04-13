@@ -6,6 +6,8 @@ module.exports = {
 	...defaultConfig,
 	entry: () => ( {
 		...( typeof defaultConfig.entry === 'function' ? defaultConfig.entry() : defaultConfig.entry ),
+		'js/button-icon': path.resolve( process.cwd(), 'src/plugins/button-icon', 'index.js' ),
+		'css/button-icon': path.resolve( process.cwd(), 'src/plugins/button-icon', 'style.scss' ),
 		'js/style-switcher': path.resolve( process.cwd(), 'src/js', 'style-switcher.js' ),
 	} ),
 	output: {

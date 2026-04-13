@@ -50,3 +50,50 @@ function ls_plugin_init() {
 	$style_switcher->register_hooks();
 }
 add_action( 'plugins_loaded', 'ls_plugin_init' );
+
+/**
+ * Enqueues Button Icon editor assets.
+ *
+ * @return void
+ */
+function ls_plugin_enqueue_button_icon_editor_assets() {
+	$asset_path = LS_PLUGIN_PLUGIN_DIR . 'build/js/button-icon.asset.php';
+
+	if ( ! file_exists( $asset_path ) ) {
+		return;
+	}
+
+	$asset = include $asset_path;
+
+	wp_enqueue_script(
+		'ls-plugin-button-icon',
+		LS_PLUGIN_PLUGIN_URL . 'build/js/button-icon.js',
+		$asset['dependencies'] ?? array(),
+		$asset['version'] ?? LS_PLUGIN_VERSION,
+		true
+	);
+}
+add_action( 'enqueue_block_editor_assets', 'ls_plugin_enqueue_button_icon_editor_assets' );
+
+/**
+ * Enqueues Button Icon shared styles for front end and editor.
+ *
+ * @return void
+ */
+function ls_plugin_enqueue_button_icon_styles() {
+	$asset_path = LS_PLUGIN_PLUGIN_DIR . 'build/css/button-icon.asset.php';
+
+	if ( ! file_exists( $asset_path ) ) {
+		return;
+	}
+
+	$asset = include $asset_path;
+
+	wp_enqueue_style(
+		'ls-plugin-button-icon',
+		LS_PLUGIN_PLUGIN_URL . 'build/css/style-button-icon.css',
+		$asset['dependencies'] ?? array(),
+		$asset['version'] ?? LS_PLUGIN_VERSION
+	);
+}
+add_action( 'enqueue_block_assets', 'ls_plugin_enqueue_button_icon_styles' );
