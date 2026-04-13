@@ -25,6 +25,10 @@
     "size": {
       "type": "string",
       "default": "small"
+    },
+    "darkStyleSlug": {
+      "type": "string",
+      "default": "dark"
     }
   }
 }

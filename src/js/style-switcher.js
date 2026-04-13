@@ -12,7 +12,10 @@
 ( () => {
 	const data = window.lsPluginStyleData || {};
 	const storageKey = data.localStorageKey || 'ls_plugin_style_preference';
+	const variationStorageKey =
+		data.styleVariationStorageKey || 'ls_plugin_style_variation';
 	const defaultMode = data.defaultMode || 'light';
+	const defaultDarkStyleSlug = data.defaultDarkStyleSlug || 'dark';
 	const labelDark = data.labelDark || 'Dark Mode';
 	const labelLight = data.labelLight || 'Light Mode';
 	const switchToText = data.switchToText || 'Switch to %s';
@@ -22,6 +25,7 @@
 		data.switchAriaLight || 'Switch to light mode, currently dark';
 	const darkClass = 'dark-mode';
 	const cookieName = '_ls_plugin_style';
+	const variationCookieName = '_ls_plugin_style_variation';
 	const blockInputSelector = '.wp-block-ls-plugin-style-switcher__input';
 
 	/**
@@ -58,6 +62,41 @@
 			cookieName +
 			'=' +
 			mode +
+			'; path=/; SameSite=Lax; max-age=' +
+			365 * 24 * 60 * 60;
+	}
+
+	/**
+	 * @return {string} Stored dark style variation slug.
+	 */
+	function getStoredVariation() {
+		try {
+			return (
+				window.localStorage.getItem( variationStorageKey ) ||
+				defaultDarkStyleSlug
+			);
+		} catch ( error ) {
+			return defaultDarkStyleSlug;
+		}
+	}
+
+	/**
+	 * @param {string} styleSlug Style variation slug.
+	 * @return {void}
+	 */
+	function persistVariation( styleSlug ) {
+		const slug = styleSlug || defaultDarkStyleSlug;
+
+		try {
+			window.localStorage.setItem( variationStorageKey, slug );
+		} catch ( error ) {
+			// Continue with cookie fallback for server-side reading.
+		}
+
+		document.cookie =
+			variationCookieName +
+			'=' +
+			slug +
 			'; path=/; SameSite=Lax; max-age=' +
 			365 * 24 * 60 * 60;
 	}
@@ -140,9 +179,32 @@
 
 		document.dispatchEvent(
 			new CustomEvent( 'ls-plugin-style-change', {
-				detail: { mode },
+				detail: {
+					mode,
+					styleVariation: getStoredVariation(),
+				},
 			} )
 		);
+	}
+
+	/**
+	 * @param {HTMLInputElement} input Block switch input element.
+	 * @return {string} Style variation slug.
+	 */
+	function getVariationFromInput( input ) {
+		const fromInput = input.dataset.styleVariation;
+
+		if ( fromInput ) {
+			return fromInput;
+		}
+
+		const blockElement = input.closest( '.wp-block-ls-plugin-style-switcher' );
+
+		if ( blockElement && blockElement.dataset.styleVariation ) {
+			return blockElement.dataset.styleVariation;
+		}
+
+		return getStoredVariation();
 	}
 
 	/**
@@ -150,6 +212,11 @@
 	 */
 	function toggle() {
 		const next = getPreference() === 'dark' ? 'light' : 'dark';
+
+		if ( next === 'dark' ) {
+			persistVariation( getStoredVariation() );
+		}
+
 		persist( next );
 		applyMode( next );
 	}
@@ -158,8 +225,12 @@
 	 * @param {boolean} isDark Whether dark mode should be enabled.
 	 * @return {void}
 	 */
-	function setModeFromInput( isDark ) {
+	function setModeFromInput( isDark, styleSlug ) {
 		const next = isDark ? 'dark' : 'light';
+
+		if ( isDark ) {
+			persistVariation( styleSlug );
+		}
 
 		persist( next );
 		applyMode( next );
@@ -170,6 +241,11 @@
 
 	document.addEventListener( 'DOMContentLoaded', () => {
 		const preference = getPreference();
+
+		if ( ! getStoredVariation() ) {
+			persistVariation( defaultDarkStyleSlug );
+		}
+
 		applyMode( preference );
 
 		const button = document.getElementById( 'ls-plugin-style-switcher' );
@@ -179,7 +255,11 @@
 
 		document.querySelectorAll( blockInputSelector ).forEach( ( input ) => {
 			input.addEventListener( 'change', ( event ) => {
-				setModeFromInput( event.currentTarget.checked );
+				const inputElement = event.currentTarget;
+				setModeFromInput(
+					inputElement.checked,
+					getVariationFromInput( inputElement )
+				);
 			} );
 		} );
 	} );

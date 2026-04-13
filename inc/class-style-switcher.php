@@ -55,7 +55,34 @@ class LS_Plugin_Style_Switcher {
 		$block_path = LS_PLUGIN_PLUGIN_DIR . 'build/blocks/style-switcher';
 
 		if ( file_exists( $block_path . '/block.json' ) ) {
-			register_block_type( $block_path );
+			$block_type = register_block_type( $block_path );
+
+			if ( $block_type instanceof WP_Block_Type ) {
+				$this->localize_block_editor_data( $block_type );
+			}
+		}
+	}
+
+	/**
+	 * Localizes style variation options for the block editor UI.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param WP_Block_Type $block_type Registered block type object.
+	 * @return void
+	 */
+	private function localize_block_editor_data( $block_type ) {
+		if ( empty( $block_type->editor_script_handles ) || ! is_array( $block_type->editor_script_handles ) ) {
+			return;
+		}
+
+		$data = array(
+			'availableStyles'       => $this->get_available_style_variations(),
+			'defaultDarkStyleSlug'  => $this->get_default_dark_style_slug(),
+		);
+
+		foreach ( $block_type->editor_script_handles as $handle ) {
+			wp_localize_script( $handle, 'lsPluginStyleSwitcherBlockData', $data );
 		}
 	}
 
@@ -165,7 +192,9 @@ class LS_Plugin_Style_Switcher {
 			'lsPluginStyleData',
 			array(
 				'localStorageKey' => 'ls_plugin_style_preference',
+				'styleVariationStorageKey' => 'ls_plugin_style_variation',
 				'defaultMode'    => 'light',
+				'defaultDarkStyleSlug' => $this->get_default_dark_style_slug(),
 				'labelLight'     => esc_html__( 'Light Mode', 'ls-plugin' ),
 				'labelDark'      => esc_html__( 'Dark Mode', 'ls-plugin' ),
 				'switchToText'   => esc_html__( 'Switch to %s', 'ls-plugin' ),
@@ -301,7 +330,8 @@ class LS_Plugin_Style_Switcher {
 	 * @return array Decoded data, or empty array on failure.
 	 */
 	private function get_dark_json_data() {
-		$path = get_template_directory() . '/styles/dark.json';
+		$selected_slug = $this->get_selected_style_variation_slug();
+		$path          = $this->get_style_variation_file_path( $selected_slug );
 
 		if ( ! file_exists( $path ) ) {
 			return array();
@@ -310,6 +340,122 @@ class LS_Plugin_Style_Switcher {
 		$data = json_decode( file_get_contents( $path ), true ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 
 		return is_array( $data ) ? $data : array();
+	}
+
+	/**
+	 * Returns available theme style variations for the block dropdown.
+	 *
+	 * Excludes the default style variation (`default.json`) so only custom
+	 * alternatives are selectable as the dark-style target.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array<int, array<string, string>> SelectControl options.
+	 */
+	private function get_available_style_variations() {
+		$styles_dir = trailingslashit( get_template_directory() ) . 'styles/';
+		$files      = glob( $styles_dir . '*.json' ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+		$options    = array();
+
+		if ( empty( $files ) || ! is_array( $files ) ) {
+			return $options;
+		}
+
+		foreach ( $files as $file ) {
+			$slug = sanitize_key( basename( $file, '.json' ) );
+
+			if ( 'default' === $slug || empty( $slug ) ) {
+				continue;
+			}
+
+			$label = ucwords( str_replace( '-', ' ', $slug ) );
+			$data  = json_decode( file_get_contents( $file ), true ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+
+			if ( is_array( $data ) && ! empty( $data['title'] ) && is_string( $data['title'] ) ) {
+				$label = $data['title'];
+			}
+
+			$options[] = array(
+				'label' => $label,
+				'value' => $slug,
+			);
+		}
+
+		usort(
+			$options,
+			static function ( $left, $right ) {
+				return strcasecmp( $left['label'], $right['label'] );
+			}
+		);
+
+		return $options;
+	}
+
+	/**
+	 * Returns the configured default dark-style slug.
+	 *
+	 * Prefers `dark` when available, otherwise falls back to the first
+	 * available style variation.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return string Style variation slug.
+	 */
+	private function get_default_dark_style_slug() {
+		$options = $this->get_available_style_variations();
+
+		foreach ( $options as $option ) {
+			if ( isset( $option['value'] ) && 'dark' === $option['value'] ) {
+				return 'dark';
+			}
+		}
+
+		if ( ! empty( $options[0]['value'] ) ) {
+			return sanitize_key( $options[0]['value'] );
+		}
+
+		return 'dark';
+	}
+
+	/**
+	 * Gets the selected style variation from the request cookie.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return string Selected style variation slug.
+	 */
+	private function get_selected_style_variation_slug() {
+		if ( ! isset( $_COOKIE['_ls_plugin_style_variation'] ) ) {
+			return $this->get_default_dark_style_slug();
+		}
+
+		$slug = sanitize_key( sanitize_text_field( wp_unslash( $_COOKIE['_ls_plugin_style_variation'] ) ) );
+
+		return ! empty( $slug ) ? $slug : $this->get_default_dark_style_slug();
+	}
+
+	/**
+	 * Builds the file path for a style variation JSON file.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $slug Style variation slug.
+	 * @return string Absolute JSON file path.
+	 */
+	private function get_style_variation_file_path( $slug ) {
+		$sanitized_slug = sanitize_key( (string) $slug );
+
+		if ( empty( $sanitized_slug ) ) {
+			$sanitized_slug = $this->get_default_dark_style_slug();
+		}
+
+		$path = trailingslashit( get_template_directory() ) . 'styles/' . $sanitized_slug . '.json';
+
+		if ( file_exists( $path ) ) {
+			return $path;
+		}
+
+		return trailingslashit( get_template_directory() ) . 'styles/' . $this->get_default_dark_style_slug() . '.json';
 	}
 
 	/**
