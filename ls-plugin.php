@@ -44,6 +44,9 @@ add_action( 'init', 'ls_plugin_load_textdomain' );
  * Add include files to inc/ and require them here when ready.
  */
 function ls_plugin_init() {
-	// Example: require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-ls-plugin-example.php';
+	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-style-switcher.php';
+
+	$style_switcher = new LS_Plugin_Style_Switcher();
+	$style_switcher->register_hooks();
 }
 add_action( 'plugins_loaded', 'ls_plugin_init' );
