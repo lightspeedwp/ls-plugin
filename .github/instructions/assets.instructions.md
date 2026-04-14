@@ -6,16 +6,16 @@ applyTo: "assets/**,src/**"
 
 ## Asset organisation
 
-| Folder | Content |
-|---|---|
-| `assets/css/` | Static (pre-built) CSS files for frontend or admin |
-| `assets/js/` | Static (pre-built) JS files not managed by block build |
-| `assets/images/` | Plugin images (logos, backgrounds, etc.) |
-| `assets/icons/` | SVG or PNG icons |
-| `src/blocks/` | Block source files — compiled by `@wordpress/scripts` |
-| `src/css/` | Non-block CSS source files |
-| `src/js/` | Non-block JS source files |
-| `blocks/` | Built block assets — output of `npm run build` |
+| Folder           | Content                                                |
+| ---------------- | ------------------------------------------------------ |
+| `assets/css/`    | Static (pre-built) CSS files for frontend or admin     |
+| `assets/js/`     | Static (pre-built) JS files not managed by block build |
+| `assets/images/` | Plugin images (logos, backgrounds, etc.)               |
+| `assets/icons/`  | SVG or PNG icons                                       |
+| `src/blocks/`    | Block source files — compiled by `@wordpress/scripts`  |
+| `src/css/`       | Non-block CSS source files                             |
+| `src/js/`        | Non-block JS source files                              |
+| `blocks/`        | Built block assets — output of `npm run build`         |
 
 ## Rules
 
@@ -24,6 +24,11 @@ applyTo: "assets/**,src/**"
 - `assets/` contains files that are already production-ready.
 - `blocks/` contains built block output from `@wordpress/scripts`.
 - Do not commit compiled output from `src/` — use `npm run build` to generate it.
+
+## WordPress preset syntax
+
+- In JSON property values, use WordPress preset shorthand such as `var(preset|spacing|20)`.
+- In CSS, use the CSS custom property form such as `var(--wp--preset--spacing--20)`.
 
 ## Enqueuing assets in PHP
 
