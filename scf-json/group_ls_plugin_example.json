@@ -1,0 +1,27 @@
+{
+  "key": "group_ls_plugin_example",
+  "title": "LS Plugin Example Group",
+  "fields": [
+    {
+      "key": "field_ls_plugin_example_text",
+      "label": "Example Text",
+      "name": "ls_plugin_example_text",
+      "type": "text"
+    }
+  ],
+  "location": [
+    [
+      {
+        "param": "post_type",
+        "operator": "==",
+        "value": "post"
+      }
+    ]
+  ],
+  "position": "normal",
+  "style": "default",
+  "label_placement": "top",
+  "instruction_placement": "label",
+  "active": true,
+  "description": "Example SCF Local JSON group for ls-plugin."
+}

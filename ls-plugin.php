@@ -46,11 +46,31 @@ add_action( 'init', 'ls_plugin_load_textdomain' );
 function ls_plugin_init() {
 	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/linkable-blocks.php';
 	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-style-switcher.php';
+	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-scf-json.php';
+	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-scf-json-validator.php';
 
 	$style_switcher = new LS_Plugin_Style_Switcher();
 	$style_switcher->register_hooks();
+
+	// Configure SCF to use plugin-managed Local JSON paths.
+	new LS_Plugin_SCF_JSON();
 }
 add_action( 'plugins_loaded', 'ls_plugin_init' );
+
+/**
+ * Returns a shared SCF JSON validator instance.
+ *
+ * @return LS_Plugin_SCF_JSON_Validator
+ */
+function ls_plugin_get_scf_json_validator() {
+	static $validator = null;
+
+	if ( null === $validator ) {
+		$validator = new LS_Plugin_SCF_JSON_Validator();
+	}
+
+	return $validator;
+}
 
 /**
  * Enqueues Button Icon editor assets.
