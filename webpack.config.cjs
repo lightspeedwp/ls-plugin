@@ -12,6 +12,9 @@ module.exports = {
 		'js/back-to-top-view': path.resolve( process.cwd(), 'src/plugins/back-to-top', 'view.js' ),
 		'css/back-to-top': path.resolve( process.cwd(), 'src/plugins/back-to-top', 'style.scss' ),
 		'js/style-switcher': path.resolve( process.cwd(), 'src/js', 'style-switcher.js' ),
+		'js/linkable-blocks-editor': path.resolve( process.cwd(), 'assets/js', 'linkable-blocks-editor.js' ),
+		'js/linkable-blocks-frontend': path.resolve( process.cwd(), 'assets/js', 'linkable-blocks-frontend.js' ),
+		'css/linkable-blocks': path.resolve( process.cwd(), 'assets/css', 'linkable-blocks.css' ),
 	} ),
 	output: {
 		...defaultConfig.output,

@@ -33,21 +33,43 @@ function ls_plugin_get_asset_version( $relative_path ) {
 }
 
 /**
- * Registers linkable block assets.
+ * Registers linkable block style assets.
  */
-function ls_plugin_register_linkable_block_assets() {
+function ls_plugin_register_linkable_block_styles() {
+	$asset_path = LS_PLUGIN_PLUGIN_DIR . 'build/css/linkable-blocks.asset.php';
+
+	if ( ! file_exists( $asset_path ) ) {
+		return;
+	}
+
+	$asset = include $asset_path;
+
 	wp_register_style(
 		'ls-plugin-linkable-blocks',
-		LS_PLUGIN_PLUGIN_URL . 'assets/css/linkable-blocks.css',
-		array(),
-		ls_plugin_get_asset_version( 'assets/css/linkable-blocks.css' )
+		LS_PLUGIN_PLUGIN_URL . 'build/css/style-linkable-blocks.css',
+		$asset['dependencies'] ?? array(),
+		$asset['version'] ?? LS_PLUGIN_VERSION
 	);
+}
+add_action( 'init', 'ls_plugin_register_linkable_block_styles' );
+
+/**
+ * Registers linkable block editor script.
+ */
+function ls_plugin_register_linkable_block_editor_script() {
+	$asset_path = LS_PLUGIN_PLUGIN_DIR . 'build/js/linkable-blocks-editor.asset.php';
+
+	if ( ! file_exists( $asset_path ) ) {
+		return;
+	}
+
+	$asset = include $asset_path;
 
 	wp_register_script(
 		'ls-plugin-linkable-blocks-editor',
-		LS_PLUGIN_PLUGIN_URL . 'assets/js/linkable-blocks-editor.js',
-		array( 'wp-block-editor', 'wp-components', 'wp-data', 'wp-element', 'wp-hooks', 'wp-i18n' ),
-		ls_plugin_get_asset_version( 'assets/js/linkable-blocks-editor.js' ),
+		LS_PLUGIN_PLUGIN_URL . 'build/js/linkable-blocks-editor.js',
+		$asset['dependencies'] ?? array(),
+		$asset['version'] ?? LS_PLUGIN_VERSION,
 		true
 	);
 
@@ -66,16 +88,30 @@ function ls_plugin_register_linkable_block_assets() {
 		) . ';',
 		'before'
 	);
+}
+add_action( 'init', 'ls_plugin_register_linkable_block_editor_script' );
+
+/**
+ * Registers linkable block frontend script.
+ */
+function ls_plugin_register_linkable_block_frontend_script() {
+	$asset_path = LS_PLUGIN_PLUGIN_DIR . 'build/js/linkable-blocks-frontend.asset.php';
+
+	if ( ! file_exists( $asset_path ) ) {
+		return;
+	}
+
+	$asset = include $asset_path;
 
 	wp_register_script(
 		'ls-plugin-linkable-blocks-frontend',
-		LS_PLUGIN_PLUGIN_URL . 'assets/js/linkable-blocks-frontend.js',
-		array(),
-		ls_plugin_get_asset_version( 'assets/js/linkable-blocks-frontend.js' ),
+		LS_PLUGIN_PLUGIN_URL . 'build/js/linkable-blocks-frontend.js',
+		$asset['dependencies'] ?? array(),
+		$asset['version'] ?? LS_PLUGIN_VERSION,
 		true
 	);
 }
-add_action( 'init', 'ls_plugin_register_linkable_block_assets' );
+add_action( 'init', 'ls_plugin_register_linkable_block_frontend_script' );
 
 /**
  * Enqueues linkable block assets for the block editor.
