@@ -11,10 +11,7 @@
 	).matches;
 
 	// Get the topmost scroll target
-	const getScrollTarget = () => {
-		const wpSiteBlocks = document.querySelector( '.wp-site-blocks' );
-		return wpSiteBlocks || document.documentElement;
-	};
+	const getScrollTarget = () => document.body;
 
 	// Calculate offset for sticky headers
 	const getStickyHeaderOffset = () => {
@@ -51,7 +48,7 @@
 				: ( progress - 1 ) * ( 2 * progress - 2 ) * ( 2 * progress - 2 ) + 1;
 		};
 
-		requestAnimationFrame( ( currentTime ) => {
+		const step = ( currentTime ) => {
 			const elapsed = currentTime - startTime;
 			const progress = Math.min( elapsed / duration, 1 );
 			const currentY = startY + distance * easeInOutCubic( progress );
@@ -59,9 +56,11 @@
 			window.scrollTo( 0, currentY );
 
 			if ( progress < 1 ) {
-				requestAnimationFrame( arguments.callee );
+				requestAnimationFrame( step );
 			}
-		} );
+		};
+
+		requestAnimationFrame( step );
 	};
 
 	// Initialize smooth scrolling for anchor links
@@ -90,48 +89,18 @@
 
 	// Initialize back-to-top functionality
 	const initBackToTop = () => {
-		const buttons = document.querySelectorAll(
-			'a[data-is-back-to-top="true"], button[data-is-back-to-top="true"]'
+		const wrappers = document.querySelectorAll(
+			'.wp-block-button.is-back-to-top'
 		);
 
-		buttons.forEach( ( button ) => {
-			const positionMode = button.getAttribute( 'data-back-to-top-mode' ) || 'scroll';
-			const scrollThreshold = parseInt(
-				button.getAttribute( 'data-back-to-top-threshold' ),
-				10
-			) || 50;
+		wrappers.forEach( ( wrapper ) => {
+			// Find the inner link or button
+			const link = wrapper.querySelector( '.wp-block-button__link' );
+			if ( ! link ) return;
 
-			// Handle visibility for scroll mode
-			if ( positionMode === 'scroll' ) {
-				const updateVisibility = () => {
-					const viewportHeight = window.innerHeight;
-					const scrollThresholdPixels = ( viewportHeight * scrollThreshold ) / 100;
-					const isVisible = window.pageYOffset > scrollThresholdPixels;
-
-					button.setAttribute(
-						'aria-hidden',
-						( ! isVisible ).toString()
-					);
-					button.style.visibility = isVisible ? 'visible' : 'hidden';
-					button.style.opacity = isVisible ? '1' : '0';
-					button.style.pointerEvents = isVisible ? 'auto' : 'none';
-				};
-
-				// Set up passive scroll listener
-				window.addEventListener( 'scroll', updateVisibility, {
-					passive: true,
-				} );
-				updateVisibility(); // Initial check
-			}
-
-			// Handle click events
-			button.addEventListener( 'click', ( e ) => {
-				// Only prevent default for links
-				if ( button.tagName === 'A' ) {
-					e.preventDefault();
-				}
-				const target = getScrollTarget();
-				smoothScrollTo( target, prefersReducedMotion ? 0 : 600 );
+			link.addEventListener( 'click', ( e ) => {
+				e.preventDefault();
+				smoothScrollTo( 0, prefersReducedMotion ? 0 : 600 );
 			} );
 		} );
 	};

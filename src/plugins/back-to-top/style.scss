@@ -5,36 +5,7 @@
  */
 
 /* Back to Top button specific positioning */
-.wp-block-button[data-is-back-to-top="true"] {
-	/* Scroll mode (appears on scroll) */
-	&[data-back-to-top-mode="scroll"] {
-		display: block;
-		visibility: hidden;
-		opacity: 0;
-		pointer-events: none;
-		transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
-
-		/* Always visible in editor preview */
-		&.is-editor-preview {
-			visibility: visible;
-			opacity: 1;
-			pointer-events: auto;
-			transition: none;
-		}
-
-		/* Visible when button is marked shown */
-		&[aria-hidden="false"] {
-			visibility: visible;
-			opacity: 1;
-			pointer-events: auto;
-		}
-
-		/* Respect prefers-reduced-motion */
-		@media ( prefers-reduced-motion: reduce ) {
-			transition: none;
-		}
-	}
-
+.wp-block-button.is-back-to-top {
 	/* Fixed mode (sticky to footer) */
 	&[data-back-to-top-mode="fixed"] {
 		position: fixed;

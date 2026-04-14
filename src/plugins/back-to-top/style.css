@@ -4,64 +4,37 @@
  * Handles positioning modes and visibility transitions
  */
 /* Back to Top button specific positioning */
-.wp-block-button[data-is-back-to-top=true] {
-  /* Scroll mode (appears on scroll) */
+.wp-block-button.is-back-to-top {
   /* Fixed mode (sticky to footer) */
   /* Smooth transitions for hover state */
 }
-.wp-block-button[data-is-back-to-top=true][data-back-to-top-mode=scroll] {
-  display: block;
-  visibility: hidden;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
-  /* Always visible in editor preview */
-  /* Visible when button is marked shown */
-  /* Respect prefers-reduced-motion */
-}
-.wp-block-button[data-is-back-to-top=true][data-back-to-top-mode=scroll].is-editor-preview {
-  visibility: visible;
-  opacity: 1;
-  pointer-events: auto;
-  transition: none;
-}
-.wp-block-button[data-is-back-to-top=true][data-back-to-top-mode=scroll][aria-hidden=false] {
-  visibility: visible;
-  opacity: 1;
-  pointer-events: auto;
-}
-@media (prefers-reduced-motion: reduce) {
-  .wp-block-button[data-is-back-to-top=true][data-back-to-top-mode=scroll] {
-    transition: none;
-  }
-}
-.wp-block-button[data-is-back-to-top=true][data-back-to-top-mode=fixed] {
+.wp-block-button.is-back-to-top[data-back-to-top-mode=fixed] {
   position: fixed;
   bottom: 2rem;
   right: 2rem;
   z-index: 40;
 }
 @media (max-width: 640px) {
-  .wp-block-button[data-is-back-to-top=true][data-back-to-top-mode=fixed] {
+  .wp-block-button.is-back-to-top[data-back-to-top-mode=fixed] {
     bottom: 1rem;
     right: 1rem;
   }
 }
-.wp-block-button[data-is-back-to-top=true] .wp-block-button__link {
+.wp-block-button.is-back-to-top .wp-block-button__link {
   transition: all 0.2s ease-in-out;
 }
-.wp-block-button[data-is-back-to-top=true] .wp-block-button__link:hover {
+.wp-block-button.is-back-to-top .wp-block-button__link:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
 }
-.wp-block-button[data-is-back-to-top=true] .wp-block-button__link:active {
+.wp-block-button.is-back-to-top .wp-block-button__link:active {
   transform: translateY(0);
 }
 @media (prefers-reduced-motion: reduce) {
-  .wp-block-button[data-is-back-to-top=true] .wp-block-button__link {
+  .wp-block-button.is-back-to-top .wp-block-button__link {
     transition: none;
   }
-  .wp-block-button[data-is-back-to-top=true] .wp-block-button__link:hover {
+  .wp-block-button.is-back-to-top .wp-block-button__link:hover {
     transform: none;
   }
 }

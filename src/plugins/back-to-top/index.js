@@ -72,11 +72,14 @@ addFilter(
 			return extraProps;
 		}
 
+		const classes = [ extraProps.className, 'is-back-to-top' ]
+			.filter( Boolean )
+			.join( ' ' );
+
 		return {
 			...extraProps,
-			'data-is-back-to-top': 'true',
+			className: classes,
 			'data-back-to-top-mode': attributes.backToTopPositionMode || 'scroll',
-			'data-back-to-top-threshold': attributes.backToTopScrollThreshold || 50,
 		};
 	}
 );
