@@ -10,8 +10,6 @@
 		'(prefers-reduced-motion: reduce)'
 	).matches;
 
-	// Get the topmost scroll target
-	const getScrollTarget = () => document.body;
 
 	// Calculate offset for sticky headers
 	const getStickyHeaderOffset = () => {
@@ -34,7 +32,7 @@
 			return;
 		}
 
-		const startY = window.pageYOffset;
+		const startY = window.scrollY;
 		const endY =
 			typeof target === 'number'
 				? target
