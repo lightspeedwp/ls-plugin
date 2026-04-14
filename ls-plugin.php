@@ -52,16 +52,6 @@ function ls_plugin_init() {
 add_action( 'plugins_loaded', 'ls_plugin_init' );
 
 /**
- * Registers the Back to Top block type.
- *
- * @return void
- */
-function ls_plugin_register_blocks() {
-	register_block_type( LS_PLUGIN_PLUGIN_DIR . 'build/blocks/back-to-top' );
-}
-add_action( 'init', 'ls_plugin_register_blocks' );
-
-/**
  * Enqueues Button Icon editor assets.
  *
  * @return void
@@ -107,3 +97,74 @@ function ls_plugin_enqueue_button_icon_styles() {
 	);
 }
 add_action( 'enqueue_block_assets', 'ls_plugin_enqueue_button_icon_styles' );
+
+/**
+ * Enqueues Back to Top variation editor assets.
+ *
+ * @return void
+ */
+function ls_plugin_enqueue_back_to_top_editor_assets() {
+	$asset_path = LS_PLUGIN_PLUGIN_DIR . 'build/js/back-to-top.asset.php';
+
+	if ( ! file_exists( $asset_path ) ) {
+		return;
+	}
+
+	$asset = include $asset_path;
+
+	wp_enqueue_script(
+		'ls-plugin-back-to-top',
+		LS_PLUGIN_PLUGIN_URL . 'build/js/back-to-top.js',
+		$asset['dependencies'] ?? array(),
+		$asset['version'] ?? LS_PLUGIN_VERSION,
+		true
+	);
+}
+add_action( 'enqueue_block_editor_assets', 'ls_plugin_enqueue_back_to_top_editor_assets' );
+
+/**
+ * Enqueues Back to Top view script for smooth scrolling on front end.
+ *
+ * @return void
+ */
+function ls_plugin_enqueue_back_to_top_view_script() {
+	$asset_path = LS_PLUGIN_PLUGIN_DIR . 'build/js/back-to-top-view.asset.php';
+
+	if ( ! file_exists( $asset_path ) ) {
+		return;
+	}
+
+	$asset = include $asset_path;
+
+	wp_enqueue_script(
+		'ls-plugin-back-to-top-view',
+		LS_PLUGIN_PLUGIN_URL . 'build/js/back-to-top-view.js',
+		$asset['dependencies'] ?? array(),
+		$asset['version'] ?? LS_PLUGIN_VERSION,
+		true
+	);
+}
+add_action( 'wp_enqueue_scripts', 'ls_plugin_enqueue_back_to_top_view_script' );
+
+/**
+ * Enqueues Back to Top shared styles for front end and editor.
+ *
+ * @return void
+ */
+function ls_plugin_enqueue_back_to_top_styles() {
+	$asset_path = LS_PLUGIN_PLUGIN_DIR . 'build/css/back-to-top.asset.php';
+
+	if ( ! file_exists( $asset_path ) ) {
+		return;
+	}
+
+	$asset = include $asset_path;
+
+	wp_enqueue_style(
+		'ls-plugin-back-to-top',
+		LS_PLUGIN_PLUGIN_URL . 'build/css/style-back-to-top.css',
+		$asset['dependencies'] ?? array(),
+		$asset['version'] ?? LS_PLUGIN_VERSION
+	);
+}
+add_action( 'enqueue_block_assets', 'ls_plugin_enqueue_back_to_top_styles' );

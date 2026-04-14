@@ -1,5 +1,6 @@
 /**
  * Smooth scroll utility with back-to-top support and anchor link smooth scrolling.
+ * Works with core/button Back to Top variation.
  * Accessible, performant, and supports prefers-reduced-motion.
  */
 
@@ -90,18 +91,13 @@
 	// Initialize back-to-top functionality
 	const initBackToTop = () => {
 		const buttons = document.querySelectorAll(
-			'.wp-block-ls-plugin-back-to-top__link'
+			'a[data-is-back-to-top="true"], button[data-is-back-to-top="true"]'
 		);
 
 		buttons.forEach( ( button ) => {
-			const wrapper = button.closest(
-				'[data-position-mode], .wp-block-button'
-			);
-			if ( ! wrapper ) return;
-
-			const positionMode = wrapper.getAttribute( 'data-position-mode' ) || 'scroll';
+			const positionMode = button.getAttribute( 'data-back-to-top-mode' ) || 'scroll';
 			const scrollThreshold = parseInt(
-				wrapper.getAttribute( 'data-scroll-threshold' ),
+				button.getAttribute( 'data-back-to-top-threshold' ),
 				10
 			) || 50;
 
@@ -112,13 +108,13 @@
 					const scrollThresholdPixels = ( viewportHeight * scrollThreshold ) / 100;
 					const isVisible = window.pageYOffset > scrollThresholdPixels;
 
-					wrapper.setAttribute(
+					button.setAttribute(
 						'aria-hidden',
 						( ! isVisible ).toString()
 					);
-					wrapper.style.visibility = isVisible ? 'visible' : 'hidden';
-					wrapper.style.opacity = isVisible ? '1' : '0';
-					wrapper.style.pointerEvents = isVisible ? 'auto' : 'none';
+					button.style.visibility = isVisible ? 'visible' : 'hidden';
+					button.style.opacity = isVisible ? '1' : '0';
+					button.style.pointerEvents = isVisible ? 'auto' : 'none';
 				};
 
 				// Set up passive scroll listener
@@ -130,7 +126,10 @@
 
 			// Handle click events
 			button.addEventListener( 'click', ( e ) => {
-				e.preventDefault();
+				// Only prevent default for links
+				if ( button.tagName === 'A' ) {
+					e.preventDefault();
+				}
 				const target = getScrollTarget();
 				smoothScrollTo( target, prefersReducedMotion ? 0 : 600 );
 			} );
