@@ -12,6 +12,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Added a Style Switcher block with selectable theme style variations and configurable icon display behaviour.
 - Added a Button Icon selector panel for core Button blocks, including left/right positioning and up/down icon options.
+- Added a Back to Top block with smooth scrolling, sticky header detection, and configurable positioning (scroll-triggered or fixed footer).
+  - Supports smooth scrolling for all internal anchor links.
+  - Respects `prefers-reduced-motion` for accessibility.
+  - Two positioning modes: "scroll" (appears after % viewport scroll) and "fixed" (sticky footer).
+  - Vanilla JavaScript with zero external dependencies.
+  - Includes sticky header offset detection to prevent content overlap.
+  - Full keyboard and screen reader support.
 
 ### Changed
 

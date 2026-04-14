@@ -52,6 +52,16 @@ function ls_plugin_init() {
 add_action( 'plugins_loaded', 'ls_plugin_init' );
 
 /**
+ * Registers the Back to Top block type.
+ *
+ * @return void
+ */
+function ls_plugin_register_blocks() {
+	register_block_type( LS_PLUGIN_PLUGIN_DIR . 'build/blocks/back-to-top' );
+}
+add_action( 'init', 'ls_plugin_register_blocks' );
+
+/**
  * Enqueues Button Icon editor assets.
  *
  * @return void
