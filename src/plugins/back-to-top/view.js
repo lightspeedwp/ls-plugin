@@ -67,7 +67,7 @@
 	const initAnchorLinks = () => {
 		document.addEventListener( 'click', ( e ) => {
 			const link = e.target.closest( 'a[href*="#"]' );
-			if ( ! link ) return;
+			if ( ! link || link.hostname !== window.location.hostname || link.pathname !== window.location.pathname ) return;
 
 			const href = link.getAttribute( 'href' );
 			const hash = href.substring( href.indexOf( '#' ) );
