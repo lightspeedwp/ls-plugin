@@ -1,22 +1,31 @@
 .wp-block-button.has-ls-button-icon .wp-block-button__link {
 	display: inline-flex;
 	align-items: center;
+	position: relative;
 }
 
 .wp-block-button.has-ls-button-icon .wp-block-button__link::after,
 .wp-block-button.has-ls-button-icon.has-ls-button-icon-position-left .wp-block-button__link::before {
-	display: inline-block;
-	font-size: 1em;
+	color: var(--ls-button-fill-icon-colour, currentColor);
+	display: grid;
+	font-size: var(--ls-button-fill-icon-font-size);
+	font-weight: 700;
+	inset-block: var(--ls-button-fill-icon-block-inset);
 	line-height: 1;
-	font-weight: 600;
+	place-items: center;
+	position: absolute;
+	transition: color .5s cubic-bezier(.4, 0, .2, 1);
+	width: var(--ls-button-fill-icon-well-size);
 }
 
 .wp-block-button.has-ls-button-icon .wp-block-button__link::after {
-	margin-left: 0.35em;
+	content: "\2192";
+	inset-inline-end: var(--ls-button-fill-icon-inline-end);
 }
 
 .wp-block-button.has-ls-button-icon.has-ls-button-icon-position-left .wp-block-button__link::before {
-	margin-right: 0.35em;
+	content: "\2192";
+	inset-inline-start: var(--ls-button-fill-icon-inline-end);
 }
 
 .wp-block-button.has-ls-button-icon.has-ls-button-icon-position-left .wp-block-button__link::after {
