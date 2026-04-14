@@ -5,7 +5,7 @@ import { __ } from '@wordpress/i18n';
 export default function Edit( { attributes, setAttributes } ) {
 	const { label, positionMode, scrollThreshold } = attributes;
 	const blockProps = useBlockProps( {
-		className: 'wp-block-button',
+		className: 'wp-block-button is-editor-preview',
 		'data-position-mode': positionMode,
 	} );
 

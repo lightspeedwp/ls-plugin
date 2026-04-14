@@ -9,6 +9,12 @@
   pointer-events: none;
   transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
 }
+.wp-block-ls-plugin-back-to-top[data-position-mode=scroll].is-editor-preview {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+  transition: none;
+}
 .wp-block-ls-plugin-back-to-top[data-position-mode=scroll][aria-hidden=false] {
   visibility: visible;
   opacity: 1;
