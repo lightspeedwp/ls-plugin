@@ -1,0 +1,88 @@
+/**
+ * Back to Top Variation for core/button
+ * Registers a "Back to Top" variation of the core Button block with smooth scrolling.
+ */
+
+import { addFilter } from '@wordpress/hooks';
+import { registerBlockVariation } from '@wordpress/blocks';
+import { __ } from '@wordpress/i18n';
+
+/**
+ * Register Back to Top as a core/button variation
+ */
+registerBlockVariation( 'core/button', {
+	name: 'back-to-top',
+	title: __( 'Back to Top', 'ls-plugin' ),
+	icon: 'arrow-up',
+	description: __(
+		'A button that scrolls to the top of the page with smooth animation.',
+		'ls-plugin'
+	),
+	attributes: {
+		text: __( 'Back to Top', 'ls-plugin' ),
+		isBackToTop: true,
+		backToTopPositionMode: 'scroll',
+		backToTopScrollThreshold: 50,
+	},
+	isActive: ( blockAttributes ) => blockAttributes.isBackToTop === true,
+} );
+
+/**
+ * Add back-to-top attributes to core/button
+ */
+addFilter(
+	'blocks.registerBlockType',
+	'ls-plugin/add-back-to-top-attributes',
+	( settings ) => {
+		if ( settings.name !== 'core/button' ) {
+			return settings;
+		}
+
+		return {
+			...settings,
+			attributes: {
+				...settings.attributes,
+				isBackToTop: {
+					type: 'boolean',
+					default: false,
+				},
+				backToTopPositionMode: {
+					type: 'string',
+					default: 'scroll',
+				},
+				backToTopScrollThreshold: {
+					type: 'number',
+					default: 50,
+				},
+			},
+		};
+	}
+);
+
+/**
+ * Add back-to-top inspector controls and editor classes
+ * We don't need to override BlockEdit - the attributes filter handles everything
+ */
+
+/**
+ * Add back-to-top data attributes to saved button markup
+ */
+addFilter(
+	'blocks.getSaveContent.extraProps',
+	'ls-plugin/back-to-top-save-props',
+	( extraProps, blockType, attributes ) => {
+		if ( blockType.name !== 'core/button' || ! attributes.isBackToTop ) {
+			return extraProps;
+		}
+
+		const classes = [ extraProps.className, 'is-back-to-top' ]
+			.filter( Boolean )
+			.join( ' ' );
+
+		return {
+			...extraProps,
+			className: classes,
+			'data-back-to-top-mode': attributes.backToTopPositionMode || 'scroll',
+		};
+	}
+);
