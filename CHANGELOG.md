@@ -12,21 +12,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Added a Style Switcher block with selectable theme style variations and configurable icon display behaviour.
 - Added a Button Icon selector panel for core Button blocks, including left/right positioning and up/down icon options.
-- Added a Back to Top block with smooth scrolling, sticky header detection, and configurable positioning (scroll-triggered or fixed footer).
-  - Supports smooth scrolling for all internal anchor links.
-  - Respects `prefers-reduced-motion` for accessibility.
-  - Two positioning modes: "scroll" (appears after % viewport scroll) and "fixed" (sticky footer).
-  - Vanilla JavaScript with zero external dependencies.
-  - Includes sticky header offset detection to prevent content overlap.
-  - Full keyboard and screen reader support.
+- Added a Back to Top option as a `core/button` variation so users inherit native Button styling controls and icon compatibility.
+- Added smooth scrolling support for Back to Top button clicks and internal anchor links using vanilla JavaScript.
 
 ### Changed
+- Changed Back to Top implementation from a standalone custom block to a `core/button` variation.
+- Changed Back to Top frontend targeting to use a dedicated wrapper class (`is-back-to-top`) for reliable JS and CSS behaviour.
+- Changed Back to Top visibility to always display (removed scroll-threshold hide/show behaviour).
 
 ### Deprecated
 
 ### Removed
+- Removed the standalone Back to Top block source in favour of variation-based implementation.
 
 ### Fixed
+- Fixed editor runtime errors from invalid React component handling in Back to Top editor integration.
+- Fixed strict mode error in Back to Top animation loop by replacing `arguments.callee` with a named animation step.
 
 ### Security
 
