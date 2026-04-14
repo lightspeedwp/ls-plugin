@@ -12,11 +12,14 @@ import { __ } from '@wordpress/i18n';
  */
 registerBlockVariation( 'core/button', {
 	name: 'back-to-top',
-	title: 'Back to Top',
+	title: __( 'Back to Top', 'ls-plugin' ),
 	icon: 'arrow-up',
-	description: 'A button that scrolls to the top of the page with smooth animation.',
+	description: __(
+		'A button that scrolls to the top of the page with smooth animation.',
+		'ls-plugin'
+	),
 	attributes: {
-		text: 'Back to Top',
+		text: __( 'Back to Top', 'ls-plugin' ),
 		isBackToTop: true,
 		backToTopPositionMode: 'scroll',
 		backToTopScrollThreshold: 50,
