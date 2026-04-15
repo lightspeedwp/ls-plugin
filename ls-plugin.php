@@ -48,12 +48,16 @@ function ls_plugin_init() {
 	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-style-switcher.php';
 	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-scf-json.php';
 	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-scf-json-validator.php';
+	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-permalinks.php';
 
 	$style_switcher = new LS_Plugin_Style_Switcher();
 	$style_switcher->register_hooks();
 
 	// Configure SCF to use plugin-managed Local JSON paths.
 	new LS_Plugin_SCF_JSON();
+
+	// Manage custom permalinks for SCF post types and taxonomies.
+	new LS_Plugin\Permalinks();
 }
 add_action( 'plugins_loaded', 'ls_plugin_init' );
 
