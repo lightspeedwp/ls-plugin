@@ -31,8 +31,8 @@ applyTo: "**"
 |---|---|
 | `inc/` | Optional PHP include files — loaded from main plugin file |
 | `src/` | Source files for compilation (blocks, CSS, JS) |
-| `blocks/` | Built block assets — output of `npm run build` |
-| `assets/` | Static (pre-built) CSS, JS, images, icons |
+| `build/` | Built CSS/JS assets — output of `npm run build` |
+| `assets/` | Static non-compiled assets such as images and icons |
 | `patterns/` | WordPress block patterns (PHP with header comments) |
 | `templates/` | Optional block templates and template parts |
 | `languages/` | Translation files (.pot, .po, .mo) |
@@ -51,6 +51,8 @@ Plugin-specific values are already set for this repo:
 
 - Do not put developer reports in `docs/`.
 - Do not put built assets in `src/`.
+- Do not add authored JS or CSS source files to `assets/`.
+- Do not enqueue raw files from `src/`; build them first and include the generated files from `build/`.
 - Do not add Playwright, Storybook, Docker, webpack config, or Vite.
 - Do not add a PHP autoloader unless there is a genuine reason.
 - Do not add issue templates or pull request templates.

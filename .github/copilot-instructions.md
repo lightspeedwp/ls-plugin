@@ -31,8 +31,9 @@ This is the LightSpeed Site Plugin — custom blocks and site-specific functiona
 | Main plugin bootstrap | `ls-plugin.php` |
 | PHP includes | `inc/` |
 | Block source files | `src/blocks/` |
-| Built block assets | `blocks/` |
-| Static assets | `assets/` |
+| JS/CSS source files | `src/js/`, `src/css/` |
+| Built CSS/JS assets | `build/` |
+| Static non-compiled assets | `assets/` |
 | Block patterns | `patterns/` |
 | Translation files | `languages/` |
 | End-user docs | `docs/` |
@@ -69,11 +70,19 @@ See `.github/instructions/` for detailed guidance:
 ## Validation and linting
 
 ```bash
+npm run build              # Build all source JS/CSS assets from src/ into build/
 npm run plugin:validate    # Validate plugin structure
 npm run security:scan      # PHP security scan
 composer run phpcs         # PHP coding standards
 npm run lint               # JS + CSS + JSON linting
 ```
+
+## Asset build rule
+
+- Add authored JS and CSS files under `src/`.
+- Run `npm run build` after changing JS or CSS.
+- Enqueue or include only files from `build/` in PHP.
+- Do not treat `assets/js/` or `assets/css/` as source directories.
 
 ---
 

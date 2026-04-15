@@ -14,13 +14,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added a Button Icon selector panel for core Button blocks, including left/right positioning and up/down icon options.
 - Added a Back to Top option as a `core/button` variation so users inherit native Button styling controls and icon compatibility.
 - Added smooth scrolling support for Back to Top button clicks and internal anchor links using vanilla JavaScript.
-
 - Linkable Group Blocks support for `core/group`, `core/column`, and `core/cover`, including custom URLs and current-post linking from the block toolbar.
+- Added plugin-managed SCF Local JSON handling and validation utilities for field groups, post types, and taxonomies.
+- Added an SCF field-group schema for repository validation workflows.
+- Added SCF JSON definitions for a Portfolio post type, Industry and Service taxonomies, and Portfolio custom fields.
+- Added SCF permalink controls on the WordPress Permalinks screen for portfolio archives and related taxonomies.
 
 ### Changed
 - Changed Back to Top implementation from a standalone custom block to a `core/button` variation.
 - Changed Back to Top frontend targeting to use a dedicated wrapper class (`is-back-to-top`) for reliable JS and CSS behaviour.
 - Changed Back to Top visibility to always display (removed scroll-threshold hide/show behaviour).
+- Changed linkable block source assets to load from `src/` and updated build configuration to match the new asset layout.
+- Changed the plugin bootstrap to load SCF JSON configuration, validation, and permalink management classes.
 
 ### Deprecated
 
