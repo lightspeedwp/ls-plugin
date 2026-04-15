@@ -77,7 +77,7 @@ class Permalinks {
 
 		foreach ( $this->defaults as $key => $default ) {
 			$field_key                       = 'ls_plugin_scf_' . $key;
-			$sanitized[ $field_key ] = isset( $input[ $field_key ] ) ? sanitize_text_field( $input[ $field_key ] ) : '';
+			$sanitized[ $field_key ] = isset( $input[ $field_key ] ) ? sanitize_title( $input[ $field_key ] ) : '';
 		}
 
 		return $sanitized;

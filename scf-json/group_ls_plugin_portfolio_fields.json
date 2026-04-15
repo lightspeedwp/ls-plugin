@@ -5,7 +5,7 @@
     {
       "key": "field_ls_plugin_portfolio_logo",
       "label": "Portfolio Logo",
-      "name": "ls_plugin_porfolio_logo",
+      "name": "ls_plugin_portfolio_logo",
       "aria-label": "",
       "type": "image",
       "instructions": "",
