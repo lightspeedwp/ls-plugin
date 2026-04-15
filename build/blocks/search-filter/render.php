@@ -49,7 +49,7 @@ if ( function_exists( 'wp_enqueue_script_module' ) ) {
 ?>
 
 <div
-	<?php echo wp_kses_data( $wrapper_attributes ); ?>
+	<?php echo $wrapper_attributes; ?>
 	data-wp-interactive="lsPluginSearchFilter"
 	<?php echo wp_interactivity_data_wp_context( array( 'searchKey' => $search_key ) ); ?>
 >
