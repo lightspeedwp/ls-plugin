@@ -35,7 +35,26 @@ class LS_Plugin_Search_Filter {
 		$block_path = LS_PLUGIN_PLUGIN_DIR . 'build/blocks/search-filter';
 
 		if ( file_exists( $block_path . '/block.json' ) ) {
-			register_block_type( $block_path );
+			$args = array();
+
+			if ( function_exists( 'wp_register_script_module' ) ) {
+				wp_register_script_module(
+					'ls-plugin-search-filter-view',
+					LS_PLUGIN_PLUGIN_URL . 'src/js/search-filter-view-module.js',
+					array(
+						'@wordpress/interactivity',
+						array(
+							'id'     => '@wordpress/interactivity-router',
+							'import' => 'dynamic',
+						),
+					),
+					LS_PLUGIN_VERSION
+				);
+
+				$args['view_script_module_ids'] = array( 'ls-plugin-search-filter-view' );
+			}
+
+			register_block_type( $block_path, $args );
 		}
 	}
 

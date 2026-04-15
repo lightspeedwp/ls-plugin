@@ -6,7 +6,6 @@ module.exports = {
 	...defaultConfig,
 	entry: () => ( {
 		...( typeof defaultConfig.entry === 'function' ? defaultConfig.entry() : defaultConfig.entry ),
-		'blocks/search-filter/view': path.resolve( process.cwd(), 'src/blocks/search-filter', 'view.js' ),
 		'js/button-icon': path.resolve( process.cwd(), 'src/plugins/button-icon', 'index.js' ),
 		'css/button-icon': path.resolve( process.cwd(), 'src/plugins/button-icon', 'style.scss' ),
 		'js/back-to-top': path.resolve( process.cwd(), 'src/plugins/back-to-top', 'index.js' ),

@@ -51,10 +51,11 @@ $label = ! empty( $attributes['placeholder'] )
 >
 	<input
 		class="wp-block-ls-plugin-search-filter__input"
-		type="search"
+		type="text"
 		value="<?php echo esc_attr( $search_value ); ?>"
 		placeholder="<?php echo esc_attr( ! empty( $attributes['placeholder'] ) ? $attributes['placeholder'] : __( 'Search…', 'ls-plugin' ) ); ?>"
 		aria-label="<?php echo esc_attr( $label ); ?>"
 		data-wp-on--input="actions.search"
+		data-wp-on--keyup="actions.search"
 	/>
 </div>

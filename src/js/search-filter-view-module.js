@@ -4,11 +4,11 @@ let debounceTimer = null;
 
 store( 'lsPluginSearchFilter', {
 	actions: {
-		async search() {
+		search() {
 			const { ref } = getElement();
 			const context = getContext();
 			const searchValue = ref?.value ?? '';
-			const searchUrl = new URL( window.location.href );
+			const searchUrl = new URL( window.location );
 
 			clearTimeout( debounceTimer );
 
@@ -21,8 +21,13 @@ store( 'lsPluginSearchFilter', {
 					searchUrl.searchParams.delete( context.searchKey );
 				}
 
-				actions.navigate( searchUrl.toString() );
-			}, 300 );
+				if ( actions?.navigate ) {
+					actions.navigate( searchUrl.toString() );
+					return;
+				}
+
+				window.location.assign( searchUrl.toString() );
+			}, 500 );
 		},
 	},
 } );
