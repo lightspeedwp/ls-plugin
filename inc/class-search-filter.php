@@ -24,6 +24,8 @@ class LS_Plugin_Search_Filter {
 		add_action( 'init', array( $this, 'register_block' ) );
 		add_filter( 'pre_get_posts', array( $this, 'filter_main_query' ), 999 );
 		add_filter( 'query_loop_block_query_vars', array( $this, 'filter_secondary_queries' ), 999, 3 );
+		add_filter( 'render_block_data', array( $this, 'ensure_enhanced_pagination' ), 10, 2 );
+		add_filter( 'render_block_core/query', array( $this, 'force_client_navigation_for_search_filter' ), 20, 2 );
 	}
 
 	/**
@@ -123,6 +125,76 @@ class LS_Plugin_Search_Filter {
 		$query['s'] = $search;
 
 		return $query;
+	}
+
+	/**
+	 * Ensures Query Loop uses enhanced pagination when it contains this block.
+	 *
+	 * @param array $parsed_block Parsed block data.
+	 * @param array $source_block Original block data.
+	 * @return array
+	 */
+	public function ensure_enhanced_pagination( $parsed_block, $source_block ) {
+		unset( $source_block );
+
+		if ( empty( $parsed_block['blockName'] ) || 'core/query' !== $parsed_block['blockName'] ) {
+			return $parsed_block;
+		}
+
+		if ( ! $this->contains_search_filter_block( $parsed_block['innerBlocks'] ?? array() ) ) {
+			return $parsed_block;
+		}
+
+		if ( ! isset( $parsed_block['attrs'] ) || ! is_array( $parsed_block['attrs'] ) ) {
+			$parsed_block['attrs'] = array();
+		}
+
+		$parsed_block['attrs']['enhancedPagination'] = true;
+
+		return $parsed_block;
+	}
+
+	/**
+	 * Recursively checks whether inner blocks include ls-plugin/search-filter.
+	 *
+	 * @param array $inner_blocks Inner blocks.
+	 * @return bool
+	 */
+	private function contains_search_filter_block( $inner_blocks ) {
+		if ( empty( $inner_blocks ) || ! is_array( $inner_blocks ) ) {
+			return false;
+		}
+
+		foreach ( $inner_blocks as $inner_block ) {
+			if ( isset( $inner_block['blockName'] ) && 'ls-plugin/search-filter' === $inner_block['blockName'] ) {
+				return true;
+			}
+
+			if ( ! empty( $inner_block['innerBlocks'] ) && $this->contains_search_filter_block( $inner_block['innerBlocks'] ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Re-enables client-side navigation for Query blocks containing search filter.
+	 *
+	 * @param string $content Query block rendered content.
+	 * @param array  $block   Parsed query block.
+	 * @return string
+	 */
+	public function force_client_navigation_for_search_filter( $content, $block ) {
+		if ( empty( $block['innerBlocks'] ) || ! $this->contains_search_filter_block( $block['innerBlocks'] ) ) {
+			return $content;
+		}
+
+		if ( function_exists( 'wp_interactivity_config' ) ) {
+			wp_interactivity_config( 'core/router', array( 'clientNavigationDisabled' => false ) );
+		}
+
+		return $content;
 	}
 
 	/**

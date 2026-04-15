@@ -4,8 +4,7 @@ let debounceTimer = null;
 
 store( 'lsPluginSearchFilter', {
 	actions: {
-		search( event ) {
-			event?.preventDefault?.();
+		search() {
 			const { ref } = getElement();
 			const context = getContext();
 			const searchValue = ref?.value ?? '';
@@ -14,18 +13,7 @@ store( 'lsPluginSearchFilter', {
 			clearTimeout( debounceTimer );
 
 			debounceTimer = setTimeout( async () => {
-				let routerActions = null;
-
-				try {
-					const routerModule = await import( '@wordpress/interactivity-router' );
-					routerActions = routerModule?.actions ?? null;
-				} catch ( error ) {
-					routerActions = null;
-				}
-
-				if ( ! routerActions && window?.wp?.interactivityRouter?.actions ) {
-					routerActions = window.wp.interactivityRouter.actions;
-				}
+				const { actions } = await import( '@wordpress/interactivity-router' );
 
 				if ( searchValue !== '' ) {
 					searchUrl.searchParams.set( context.searchKey, searchValue );
@@ -33,12 +21,7 @@ store( 'lsPluginSearchFilter', {
 					searchUrl.searchParams.delete( context.searchKey );
 				}
 
-				if ( routerActions?.navigate ) {
-					routerActions.navigate( searchUrl.toString() );
-					return;
-				}
-
-				window.location.assign( searchUrl.toString() );
+				actions.navigate( searchUrl.toString() );
 			}, 1000 );
 		},
 	},
