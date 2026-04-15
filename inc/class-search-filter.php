@@ -38,9 +38,13 @@ class LS_Plugin_Search_Filter {
 			$args = array();
 
 			if ( function_exists( 'wp_register_script_module' ) ) {
+				$module_path = LS_PLUGIN_PLUGIN_DIR . 'src/blocks/search-filter/view.js';
+				$module_url  = LS_PLUGIN_PLUGIN_URL . 'src/blocks/search-filter/view.js';
+				$module_ver  = file_exists( $module_path ) ? (string) filemtime( $module_path ) : LS_PLUGIN_VERSION;
+
 				wp_register_script_module(
 					'ls-plugin-search-filter-view',
-					LS_PLUGIN_PLUGIN_URL . 'src/js/search-filter-view-module.js',
+					$module_url,
 					array(
 						'@wordpress/interactivity',
 						array(
@@ -48,7 +52,7 @@ class LS_Plugin_Search_Filter {
 							'import' => 'dynamic',
 						),
 					),
-					LS_PLUGIN_VERSION
+					$module_ver
 				);
 
 				$args['view_script_module_ids'] = array( 'ls-plugin-search-filter-view' );

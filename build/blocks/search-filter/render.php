@@ -42,6 +42,10 @@ $wrapper_attributes = get_block_wrapper_attributes(
 $label = ! empty( $attributes['placeholder'] )
 	? $attributes['placeholder']
 	: __( 'Search', 'ls-plugin' );
+
+if ( function_exists( 'wp_enqueue_script_module' ) ) {
+	wp_enqueue_script_module( 'ls-plugin-search-filter-view' );
+}
 ?>
 
 <div
@@ -55,7 +59,6 @@ $label = ! empty( $attributes['placeholder'] )
 		value="<?php echo esc_attr( $search_value ); ?>"
 		placeholder="<?php echo esc_attr( ! empty( $attributes['placeholder'] ) ? $attributes['placeholder'] : __( 'Search…', 'ls-plugin' ) ); ?>"
 		aria-label="<?php echo esc_attr( $label ); ?>"
-		data-wp-on--input="actions.search"
 		data-wp-on--keyup="actions.search"
 	/>
 </div>
