@@ -1,0 +1,62 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "ls-plugin/search-filter",
+  "title": "Search Filter",
+  "category": "widgets",
+  "icon": "search",
+  "description": "Filter Query Loop results with a live search field.",
+  "textdomain": "ls-plugin",
+  "ancestor": [
+    "core/query"
+  ],
+  "usesContext": [
+    "queryId",
+    "query",
+    "enhancedPagination"
+  ],
+  "supports": {
+    "html": false,
+    "align": [
+      "left",
+      "center",
+      "right"
+    ],
+    "interactivity": true,
+    "typography": {
+      "fontSize": true,
+      "lineHeight": true
+    },
+    "spacing": {
+      "margin": true,
+      "padding": false
+    }
+  },
+  "attributes": {
+    "placeholder": {
+      "type": "string",
+      "default": "",
+      "role": "content"
+    },
+    "width": {
+      "type": "number",
+      "default": 100
+    },
+    "widthUnit": {
+      "type": "string",
+      "default": "%"
+    },
+    "searchByCustomField": {
+      "type": "boolean",
+      "default": false
+    },
+    "metaKey": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "editorScript": "file:./index.js",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php",
+  "viewScriptModule": "file:./view.js"
+}

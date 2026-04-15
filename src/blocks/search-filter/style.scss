@@ -1,0 +1,16 @@
+.wp-block-ls-plugin-search-filter {
+	box-sizing: border-box;
+
+	&__input {
+		appearance: none;
+		background: inherit;
+		border: 1px solid #949494;
+		border-radius: 0.33rem;
+		box-sizing: border-box;
+		color: inherit;
+		font: inherit;
+		line-height: inherit;
+		padding: 8px;
+		width: 100%;
+	}
+}
