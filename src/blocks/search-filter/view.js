@@ -1,6 +1,6 @@
 import { getContext, getElement, store } from '@wordpress/interactivity';
 
-let debounceTimer = null;
+const debounceTimers = new WeakMap();
 
 store( 'lsPluginSearchFilter', {
 	actions: {
@@ -10,9 +10,13 @@ store( 'lsPluginSearchFilter', {
 			const searchValue = ref?.value ?? '';
 			const searchUrl = new URL( window.location );
 
-			clearTimeout( debounceTimer );
+			if ( ! ref ) {
+				return;
+			}
 
-			debounceTimer = setTimeout( async () => {
+			clearTimeout( debounceTimers.get( ref ) );
+
+			const timerId = setTimeout( async () => {
 				const { actions } = await import( '@wordpress/interactivity-router' );
 
 				if ( searchValue !== '' ) {
@@ -22,7 +26,9 @@ store( 'lsPluginSearchFilter', {
 				}
 
 				actions.navigate( searchUrl.toString() );
-			}, 1000 );
+			}, 400 );
+
+			debounceTimers.set( ref, timerId );
 		},
 	},
 } );

@@ -81,8 +81,8 @@ function Edit( { attributes, setAttributes } ) {
 				<input
 					className="wp-block-ls-plugin-search-filter__input"
 					type="search"
-					value={ placeholder }
-					placeholder={ __( 'Search…', 'ls-plugin' ) }
+					value=""
+					placeholder={ placeholder || __( 'Search…', 'ls-plugin' ) }
 					onChange={ ( event ) =>
 						setAttributes( { placeholder: event.target.value } )
 					}

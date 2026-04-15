@@ -246,7 +246,7 @@ class LS_Plugin_Search_Filter {
 	private function prepare_meta_query( $query_meta_query, $meta_key, $meta_value ) {
 		$search_meta_query = array(
 			'key'     => $meta_key,
-			'value'   => $meta_value,
+			'value'   => '%' . $meta_value . '%',
 			'compare' => 'LIKE',
 		);
 
