@@ -1,0 +1,143 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "ls-plugin/taxonomy-filter",
+  "version": "1.0.0",
+  "title": "Taxonomy Filter",
+  "category": "theme",
+  "description": "Displays a category, tag or custom taxonomy filter for Query Loop blocks.",
+  "keywords": [
+    "taxonomy",
+    "category",
+    "tags",
+    "filter",
+    "query"
+  ],
+  "supports": {
+    "align": [
+      "wide",
+      "full"
+    ],
+    "html": false,
+    "anchor": false,
+    "interactivity": true,
+    "typography": {
+      "fontSize": true,
+      "textAlign": false
+    },
+    "spacing": {
+      "padding": true,
+      "margin": true,
+      "__experimentalDefaultControls": {
+        "padding": true,
+        "margin": true
+      }
+    },
+    "position": {
+      "sticky": true
+    }
+  },
+  "ancestor": [
+    "core/query"
+  ],
+  "usesContext": [
+    "queryId",
+    "query",
+    "enhancedPagination"
+  ],
+  "attributes": {
+    "justification": {
+      "type": "string"
+    },
+    "textAlign": {
+      "type": "string"
+    },
+    "taxonomy": {
+      "type": "object",
+      "default": {
+        "name": "Categories",
+        "all_items": "All Categories",
+        "slug": "category",
+        "rest_base": "categories"
+      }
+    },
+    "filterType": {
+      "type": "string",
+      "default": "dropdown"
+    },
+    "showCount": {
+      "type": "boolean",
+      "default": false
+    },
+    "allItemsText": {
+      "type": "string"
+    },
+    "orderBy": {
+      "type": "string",
+      "default": "name"
+    },
+    "limitVisibleItems": {
+      "type": "boolean",
+      "default": false
+    },
+    "visibleItemsNumber": {
+      "type": "number",
+      "default": 5
+    },
+    "expandText": {
+      "type": "string",
+      "default": "+ Show [number] more"
+    },
+    "collapseText": {
+      "type": "string",
+      "default": "- Show less"
+    },
+    "buttonTextColor": {
+      "type": "string"
+    },
+    "customButtonTextColor": {
+      "type": "string"
+    },
+    "buttonBackgroundColor": {
+      "type": "string"
+    },
+    "customButtonBackgroundColor": {
+      "type": "string"
+    },
+    "hoverButtonTextColor": {
+      "type": "string"
+    },
+    "customHoverButtonTextColor": {
+      "type": "string"
+    },
+    "hoverButtonBackgroundColor": {
+      "type": "string"
+    },
+    "customHoverButtonBackgroundColor": {
+      "type": "string"
+    },
+    "activeButtonTextColor": {
+      "type": "string"
+    },
+    "customActiveButtonTextColor": {
+      "type": "string"
+    },
+    "activeButtonBackgroundColor": {
+      "type": "string"
+    },
+    "customActiveButtonBackgroundColor": {
+      "type": "string"
+    },
+    "buttonBorder": {
+      "type": "object"
+    },
+    "buttonBorderRadius": {
+      "type": "string"
+    }
+  },
+  "textdomain": "ls-plugin",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php"
+}

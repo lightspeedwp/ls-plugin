@@ -23,6 +23,7 @@
     "node": ">=20.0.0"
   },
   "devDependencies": {
+    "@wordpress/icons": "^12.2.0",
     "@wordpress/scripts": "^30.0.0",
     "webpack-remove-empty-scripts": "^1.0.0"
   }
