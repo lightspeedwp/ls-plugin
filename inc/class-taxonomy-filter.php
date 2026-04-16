@@ -107,7 +107,7 @@ class LS_Plugin_Taxonomy_Filter {
 					// Check if this filter applies to the current Query Loop.
 					$block_query_id = $block->context['queryId'] ?? null;
 
-					if ( $query_id === $block_query_id && taxonomy_exists( $taxonomy ) ) {
+					if ( $query_id == $block_query_id && taxonomy_exists( $taxonomy ) ) {
 						$tax_query = $this->prepare_tax_query( $taxonomy, $value );
 
 						if ( ! empty( $tax_query ) ) {
@@ -262,5 +262,3 @@ class LS_Plugin_Taxonomy_Filter {
 		return $block_content . $fix_script;
 	}
 }
-
-return new LS_Plugin_Taxonomy_Filter();

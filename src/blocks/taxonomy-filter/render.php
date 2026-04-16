@@ -27,7 +27,7 @@ $key = isset( $block->context['queryId'] ) && ! $is_main_query
 	: "filter-{$taxonomy->name}";
 
 // Enqueue the view script module.
-if ( ! wp_script_module_exists( '@ls-plugin/taxonomy-filter-view' ) ) {
+if ( function_exists( 'wp_enqueue_script_module' ) ) {
 	wp_enqueue_script_module( '@ls-plugin/taxonomy-filter-view' );
 }
 
@@ -189,7 +189,7 @@ $wrapper_attributes = get_block_wrapper_attributes(
 		<a
 			href="<?php echo esc_url( remove_query_arg( $key ) ); ?>"
 			class="wp-element-button <?php echo ! isset( $_REQUEST[ $key ] ) ? 'taxonomy-filter-current' : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended ?>"
-			data-wp-on--click="actions.navigate"
+			data-wp-on--click="core/query::actions.navigate"
 		>
 			<?php echo esc_html( $all_items ); ?>
 		</a>
@@ -209,7 +209,7 @@ $wrapper_attributes = get_block_wrapper_attributes(
 			<a<?php echo $hidden; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 				href="<?php echo esc_url( $term_url ); ?>"
 				class="wp-element-button<?php echo $is_current ? ' taxonomy-filter-current' : ''; ?>"
-				data-wp-on--click="actions.navigate"
+				data-wp-on--click="core/query::actions.navigate"
 			>
 				<?php
 				echo esc_html( $term->name );
