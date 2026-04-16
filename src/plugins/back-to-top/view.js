@@ -100,6 +100,43 @@
 				e.preventDefault();
 				smoothScrollTo( 0, prefersReducedMotion ? 0 : 600 );
 			} );
+
+			// Handle sticky/fixed mode visibility based on scroll
+			const mode = wrapper.getAttribute( 'data-back-to-top-mode' );
+			if ( mode === 'sticky' || mode === 'fixed' ) {
+				const thresholdPercent = parseInt( wrapper.getAttribute( 'data-scroll-threshold' ) || '75', 10 );
+				
+				const handleScroll = () => {
+					const scrolled = window.scrollY;
+					const viewportHeight = window.innerHeight;
+					const documentHeight = document.documentElement.scrollHeight;
+					
+					// Calculate threshold percentage of scrollable distance
+					const scrollableDistance = documentHeight - viewportHeight;
+					const threshold = scrollableDistance * ( thresholdPercent / 100 );
+
+					if ( scrolled >= threshold ) {
+						wrapper.classList.add( 'is-visible' );
+					} else {
+						wrapper.classList.remove( 'is-visible' );
+					}
+				};
+
+				// Use throttle for performance
+				let ticking = false;
+				window.addEventListener( 'scroll', () => {
+					if ( ! ticking ) {
+						window.requestAnimationFrame( () => {
+							handleScroll();
+							ticking = false;
+						} );
+						ticking = true;
+					}
+				} );
+
+				// Check initial scroll position
+				handleScroll();
+			}
 		} );
 	};
 

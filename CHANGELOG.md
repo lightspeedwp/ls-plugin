@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added a Button Icon selector panel for core Button blocks, including left/right positioning and up/down icon options.
 - Added a Back to Top option as a `core/button` variation so users inherit native Button styling controls and icon compatibility.
 - Added smooth scrolling support for Back to Top button clicks and internal anchor links using vanilla JavaScript.
+- Added sticky positioning mode for Back to Top button with scroll-based visibility control.
+- Added inspector controls for Back to Top button with position mode selection (Inline/Scroll, Sticky, Fixed) and configurable visibility threshold (0-100%).
 - Linkable Group Blocks support for `core/group`, `core/column`, and `core/cover`, including custom URLs and current-post linking from the block toolbar.
 - Added plugin-managed SCF Local JSON handling and validation utilities for field groups, post types, and taxonomies.
 - Added an SCF field-group schema for repository validation workflows.
