@@ -6,6 +6,20 @@
 
 /* Back to Top button specific positioning */
 .wp-block-button.is-back-to-top {
+	/* Ensure button displays without text (icon-only support) */
+	.wp-block-button__link {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		
+		/* Set minimum dimensions for text-less/icon-only buttons */
+		&:empty,
+		&:blank {
+			min-width: 2.5rem;
+			min-height: 2.5rem;
+		}
+	}
+
 	/* Fixed mode (bottom right, appears on scroll) */
 	&[data-back-to-top-mode="fixed"] {
 		position: fixed;

@@ -44,6 +44,7 @@ add_action( 'init', 'ls_plugin_load_textdomain' );
  * Add include files to inc/ and require them here when ready.
  */
 function ls_plugin_init() {
+	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/general-functions.php';
 	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/linkable-blocks.php';
 	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-search-filter.php';
 	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-taxonomy-filter.php';
@@ -200,3 +201,4 @@ function ls_plugin_enqueue_back_to_top_styles() {
 	);
 }
 add_action( 'enqueue_block_assets', 'ls_plugin_enqueue_back_to_top_styles' );
+
