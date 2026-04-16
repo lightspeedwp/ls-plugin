@@ -46,6 +46,7 @@ add_action( 'init', 'ls_plugin_load_textdomain' );
 function ls_plugin_init() {
 	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/linkable-blocks.php';
 	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-search-filter.php';
+	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-taxonomy-filter.php';
 	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-style-switcher.php';
 	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-scf-json.php';
 	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-scf-json-validator.php';
@@ -53,6 +54,8 @@ function ls_plugin_init() {
 
 	$search_filter = new LS_Plugin_Search_Filter();
 	$search_filter->register_hooks();
+
+	new LS_Plugin_Taxonomy_Filter();
 
 	$style_switcher = new LS_Plugin_Style_Switcher();
 	$style_switcher->register_hooks();
