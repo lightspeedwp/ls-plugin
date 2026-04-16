@@ -91,6 +91,9 @@
 			'.wp-block-button.is-back-to-top'
 		);
 
+		// Collect buttons that need scroll visibility handling
+		const scrollVisibilityButtons = [];
+
 		wrappers.forEach( ( wrapper ) => {
 			// Find the inner link or button
 			const link = wrapper.querySelector( '.wp-block-button__link' );
@@ -105,14 +108,19 @@
 			const mode = wrapper.getAttribute( 'data-back-to-top-mode' );
 			if ( mode === 'sticky' || mode === 'fixed' ) {
 				const thresholdPercent = parseInt( wrapper.getAttribute( 'data-scroll-threshold' ) || '75', 10 );
-				
-				const handleScroll = () => {
-					const scrolled = window.scrollY;
-					const viewportHeight = window.innerHeight;
-					const documentHeight = document.documentElement.scrollHeight;
-					
-					// Calculate threshold percentage of scrollable distance
-					const scrollableDistance = documentHeight - viewportHeight;
+				scrollVisibilityButtons.push( { wrapper, thresholdPercent } );
+			}
+		} );
+
+		// Set up a single shared scroll listener for all buttons
+		if ( scrollVisibilityButtons.length > 0 ) {
+			const handleScroll = () => {
+				const scrolled = window.scrollY;
+				const viewportHeight = window.innerHeight;
+				const documentHeight = document.documentElement.scrollHeight;
+				const scrollableDistance = documentHeight - viewportHeight;
+
+				scrollVisibilityButtons.forEach( ( { wrapper, thresholdPercent } ) => {
 					const threshold = scrollableDistance * ( thresholdPercent / 100 );
 
 					if ( scrolled >= threshold ) {
@@ -120,24 +128,24 @@
 					} else {
 						wrapper.classList.remove( 'is-visible' );
 					}
-				};
-
-				// Use throttle for performance
-				let ticking = false;
-				window.addEventListener( 'scroll', () => {
-					if ( ! ticking ) {
-						window.requestAnimationFrame( () => {
-							handleScroll();
-							ticking = false;
-						} );
-						ticking = true;
-					}
 				} );
+			};
 
-				// Check initial scroll position
-				handleScroll();
-			}
-		} );
+			// Use throttle for performance
+			let ticking = false;
+			window.addEventListener( 'scroll', () => {
+				if ( ! ticking ) {
+					window.requestAnimationFrame( () => {
+						handleScroll();
+						ticking = false;
+					} );
+					ticking = true;
+				}
+			} );
+
+			// Check initial scroll position
+			handleScroll();
+		}
 	};
 
 	// DOM ready check
