@@ -103,14 +103,14 @@ const withBackToTopControls = createHigherOrderComponent( ( BlockEdit ) => {
 								setAttributes( { backToTopPositionMode: value } )
 							}
 							help={ __(
-								'Choose how the button is positioned. Sticky mode appears centered after scrolling 75% of the page.',
+								'Choose how the button is positioned. Sticky and Fixed modes support scroll-based visibility.',
 								'ls-plugin'
 							) }
 						/>
-						{ attributes.backToTopPositionMode === 'sticky' && (
+						{ ( attributes.backToTopPositionMode === 'sticky' || attributes.backToTopPositionMode === 'fixed' ) && (
 							<RangeControl
 								label={ __( 'Visibility Threshold (%)', 'ls-plugin' ) }
-								value={ attributes.backToTopScrollThreshold || 75 }
+								value={ attributes.backToTopScrollThreshold ?? 75 }
 								onChange={ ( value ) =>
 									setAttributes( { backToTopScrollThreshold: value } )
 								}
@@ -123,7 +123,7 @@ const withBackToTopControls = createHigherOrderComponent( ( BlockEdit ) => {
 										'Button appears after scrolling %d%% of the page.',
 										'ls-plugin'
 									),
-									attributes.backToTopScrollThreshold || 75
+									attributes.backToTopScrollThreshold ?? 75
 								) }
 							/>
 						) }
@@ -163,7 +163,7 @@ addFilter(
 
 		// Add scroll threshold for sticky and fixed modes
 		if ( attributes.backToTopPositionMode === 'sticky' || attributes.backToTopPositionMode === 'fixed' ) {
-			props[ 'data-scroll-threshold' ] = attributes.backToTopScrollThreshold || 75;
+			props[ 'data-scroll-threshold' ] = attributes.backToTopScrollThreshold ?? 75;
 		}
 
 		return props;
