@@ -16,7 +16,6 @@ import {
 	TextControl,
 } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
-import { useState } from '@wordpress/element';
 
 /**
  * Edit component for the carousel block.
@@ -36,10 +35,6 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 			};
 		},
 		[ clientId ]
-	);
-
-	const [ breakpoints, setBreakpoints ] = useState(
-		attributes.breakpoints || []
 	);
 
 	const className = [
@@ -150,7 +145,7 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 					title={ __( 'Responsive', 'ls-plugin' ) }
 					initialOpen={ false }
 				>
-					{ breakpoints.map( ( breakpoint, index ) => (
+					{ ( attributes.breakpoints || [] ).map( ( breakpoint, index ) => (
 						<div key={ index } style={ { marginBottom: '30px' } }>
 							<strong>
 								{ __( 'Breakpoint', 'ls-plugin' ) }{ ' ' }
@@ -161,13 +156,13 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 									'Min screen width (px)',
 									'ls-plugin'
 								) }
-								value={ breakpoints[ index ].breakpoint || '' }
+								value={ breakpoint.breakpoint || '' }
 								type="number"
 								min={ 100 }
 								max={ 2000 }
 								onChange={ ( value ) => {
-									setBreakpoints( ( prev ) => {
-										const updated = prev.map( ( bp, i ) =>
+									const updated = attributes.breakpoints.map(
+										( bp, i ) =>
 											i === index
 												? {
 														...bp,
@@ -177,33 +172,25 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 														),
 												  }
 												: bp
-										);
-										setAttributes( {
-											breakpoints: updated,
-										} );
-										return updated;
-									} );
+									);
+									setAttributes( { breakpoints: updated } );
 								} }
 							/>
 							<RangeControl
 								label={ __( 'Slides to show', 'ls-plugin' ) }
-								value={ breakpoints[ index ].slidesToShow }
+								value={ breakpoint.slidesToShow }
 								help={ __(
 									'Number of slides to show at the minimum given screen width.',
 									'ls-plugin'
 								) }
 								onChange={ ( value ) => {
-									setBreakpoints( ( prev ) => {
-										const updated = prev.map( ( bp, i ) =>
+									const updated = attributes.breakpoints.map(
+										( bp, i ) =>
 											i === index
 												? { ...bp, slidesToShow: value }
 												: bp
-										);
-										setAttributes( {
-											breakpoints: updated,
-										} );
-										return updated;
-									} );
+									);
+									setAttributes( { breakpoints: updated } );
 								} }
 								min={ 1 }
 								max={ 5 }
@@ -214,15 +201,10 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 								isLink
 								isDestructive
 								onClick={ () => {
-									setBreakpoints( ( prev ) => {
-										const updated = prev.filter(
-											( bp, i ) => i !== index
-										);
-										setAttributes( {
-											breakpoints: updated,
-										} );
-										return updated;
-									} );
+									const updated = attributes.breakpoints.filter(
+										( bp, i ) => i !== index
+									);
+									setAttributes( { breakpoints: updated } );
 								} }
 							>
 								{ __( 'Remove breakpoint', 'ls-plugin' ) }{ ' ' }
@@ -230,15 +212,15 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 							</Button>
 						</div>
 					) ) }
-					{ breakpoints.length < 3 && (
+					{ ( attributes.breakpoints || [] ).length < 3 && (
 						<Button
 							variant="secondary"
 							onClick={ () => {
-								setBreakpoints( ( prev ) => {
-									const updated = [ ...prev, {} ];
-									setAttributes( { breakpoints: updated } );
-									return updated;
-								} );
+								const updated = [
+									...( attributes.breakpoints || [] ),
+									{},
+								];
+								setAttributes( { breakpoints: updated } );
 							} }
 						>
 							{ __( 'Add breakpoint', 'ls-plugin' ) }
