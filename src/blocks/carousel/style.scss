@@ -2,33 +2,58 @@
  * Carousel block styles
  */
 
-/* Editor specific styles */
+/* Editor styles - match rudr carousel pattern */
 .wp-block-ls-plugin-carousel {
 	position: relative;
 
-	/* Grid layout for editor preview */
-	.block-editor-inner-blocks > .block-editor-block-list__layout {
-		display: grid;
-		gap: 30px;
+	> .block-editor-inner-blocks > .block-editor-block-list__layout {
+		display: flex;
+		flex-wrap: nowrap;
+		overflow: hidden;
+		padding: 2px;
 
-		&.ls-carousel-shows-1-slides {
-			grid-template-columns: 1fr;
+		/* Block appender */
+		> .block-list-appender {
+			margin: 0 0 0 32px;
+			position: static;
 		}
 
-		&.ls-carousel-shows-2-slides {
-			grid-template-columns: repeat(2, 1fr);
-		}
+		/* Carousel slides */
+		> [data-type="ls-plugin/carousel-slide"] {
+			box-sizing: border-box;
+			flex: 1;
+			flex-basis: 100%;
+			max-width: 100%;
+			min-width: 100%;
 
-		&.ls-carousel-shows-3-slides {
-			grid-template-columns: repeat(3, 1fr);
+			&:first-child {
+				margin-left: 0 !important;
+			}
 		}
+	}
 
-		&.ls-carousel-shows-4-slides {
-			grid-template-columns: repeat(4, 1fr);
+	/* Show scrollbar on hover/focus for easier navigation */
+	&.ls-show-scrollbar > .block-editor-inner-blocks > .block-editor-block-list__layout {
+		&:hover,
+		&:focus {
+			overflow-x: auto;
+			padding-bottom: 15px;
 		}
+	}
 
-		&.ls-carousel-shows-5-slides {
-			grid-template-columns: repeat(5, 1fr);
+	/* Scrollbar styling */
+	> .block-editor-inner-blocks > .block-editor-block-list__layout::-webkit-scrollbar {
+		-webkit-appearance: none;
+		background-color: rgba(0, 0, 0, 0.15);
+		height: 12px;
+	}
+
+	> .block-editor-inner-blocks > .block-editor-block-list__layout::-webkit-scrollbar-thumb {
+		background-color: rgba(0, 0, 0, 0.38);
+		border-radius: 0;
+
+		&:hover {
+			background-color: rgba(0, 0, 0, 0.48);
 		}
 	}
 

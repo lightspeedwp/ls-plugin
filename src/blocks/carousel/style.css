@@ -1,29 +1,49 @@
 /**
  * Carousel block styles
  */
-/* Editor specific styles */
+/* Editor styles - match rudr carousel pattern */
 .wp-block-ls-plugin-carousel {
   position: relative;
-  /* Grid layout for editor preview */
+  /* Show scrollbar on hover/focus for easier navigation */
+  /* Scrollbar styling */
 }
-.wp-block-ls-plugin-carousel .block-editor-inner-blocks > .block-editor-block-list__layout {
-  display: grid;
-  gap: 30px;
+.wp-block-ls-plugin-carousel > .block-editor-inner-blocks > .block-editor-block-list__layout {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow: hidden;
+  padding: 2px;
+  /* Block appender */
+  /* Carousel slides */
 }
-.wp-block-ls-plugin-carousel .block-editor-inner-blocks > .block-editor-block-list__layout.ls-carousel-shows-1-slides {
-  grid-template-columns: 1fr;
+.wp-block-ls-plugin-carousel > .block-editor-inner-blocks > .block-editor-block-list__layout > .block-list-appender {
+  margin: 0 0 0 32px;
+  position: static;
 }
-.wp-block-ls-plugin-carousel .block-editor-inner-blocks > .block-editor-block-list__layout.ls-carousel-shows-2-slides {
-  grid-template-columns: repeat(2, 1fr);
+.wp-block-ls-plugin-carousel > .block-editor-inner-blocks > .block-editor-block-list__layout > [data-type="ls-plugin/carousel-slide"] {
+  box-sizing: border-box;
+  flex: 1;
+  flex-basis: 100%;
+  max-width: 100%;
+  min-width: 100%;
 }
-.wp-block-ls-plugin-carousel .block-editor-inner-blocks > .block-editor-block-list__layout.ls-carousel-shows-3-slides {
-  grid-template-columns: repeat(3, 1fr);
+.wp-block-ls-plugin-carousel > .block-editor-inner-blocks > .block-editor-block-list__layout > [data-type="ls-plugin/carousel-slide"]:first-child {
+  margin-left: 0 !important;
 }
-.wp-block-ls-plugin-carousel .block-editor-inner-blocks > .block-editor-block-list__layout.ls-carousel-shows-4-slides {
-  grid-template-columns: repeat(4, 1fr);
+.wp-block-ls-plugin-carousel.ls-show-scrollbar > .block-editor-inner-blocks > .block-editor-block-list__layout:hover, .wp-block-ls-plugin-carousel.ls-show-scrollbar > .block-editor-inner-blocks > .block-editor-block-list__layout:focus {
+  overflow-x: auto;
+  padding-bottom: 15px;
 }
-.wp-block-ls-plugin-carousel .block-editor-inner-blocks > .block-editor-block-list__layout.ls-carousel-shows-5-slides {
-  grid-template-columns: repeat(5, 1fr);
+.wp-block-ls-plugin-carousel > .block-editor-inner-blocks > .block-editor-block-list__layout::-webkit-scrollbar {
+  -webkit-appearance: none;
+  background-color: rgba(0, 0, 0, 0.15);
+  height: 12px;
+}
+.wp-block-ls-plugin-carousel > .block-editor-inner-blocks > .block-editor-block-list__layout::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.38);
+  border-radius: 0;
+}
+.wp-block-ls-plugin-carousel > .block-editor-inner-blocks > .block-editor-block-list__layout::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.48);
 }
 .wp-block-ls-plugin-carousel .ls-carousel-placeholder {
   padding: 2em;

@@ -3,6 +3,9 @@
  */
 
 .wp-block-ls-plugin-carousel-slide {
+	/* Editor styles */
+	min-height: 100px;
+
 	/* Vertical alignment support */
 	&.are-vertically-aligned-top {
 		display: flex;

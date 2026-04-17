@@ -61,13 +61,7 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 		attributes.breakpoints || []
 	);
 
-	const className = [
-		`ls-carousel-shows-${ getMaxSlidesToShow( attributes ) }-slides`,
-		hasChildBlocks && 'ls-carousel-show-scrollbar',
-		! hasChildBlocks && 'ls-carousel-hide-scrollbar',
-	]
-		.filter( Boolean )
-		.join( ' ' );
+	const className = [ 'ls-show-scrollbar' ].filter( Boolean ).join( ' ' );
 
 	const blockProps = useBlockProps( {
 		className,

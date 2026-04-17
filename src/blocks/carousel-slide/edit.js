@@ -11,34 +11,6 @@ import {
 import { useSelect } from '@wordpress/data';
 
 /**
- * Calculate slide width based on parent carousel settings.
- *
- * @param {Object} parentAttributes Parent carousel attributes.
- * @return {Object} Style object for the slide.
- */
-function getSlideStyle( parentAttributes ) {
-	if ( ! parentAttributes ) {
-		return {};
-	}
-
-	const slidesToShow = parentAttributes.slidesToShow || 1;
-	const columnGap = parentAttributes.columnGap || 0;
-
-	// Calculate the percentage width for each slide.
-	const widthPercent = ( 100 / slidesToShow ).toFixed( 4 );
-
-	// Calculate the gap adjustment for each slide.
-	const gapAdjustment = ( columnGap * ( slidesToShow - 1 ) ) / slidesToShow;
-
-	return {
-		flexBasis: `calc( ${ widthPercent }% - ${ gapAdjustment }px )`,
-		maxWidth: `calc( ${ widthPercent }% - ${ gapAdjustment }px )`,
-		minWidth: `calc( ${ widthPercent }% - ${ gapAdjustment }px )`,
-		marginLeft: `${ columnGap }px`,
-	};
-}
-
-/**
  * Edit component for the carousel slide block.
  *
  * @param {Object}   props               Block props.
@@ -48,22 +20,11 @@ function getSlideStyle( parentAttributes ) {
  * @return {Element} Element to render.
  */
 export default function Edit( { attributes, setAttributes, clientId } ) {
-	const { hasChildBlocks, parentAttributes } = useSelect(
+	const { hasChildBlocks } = useSelect(
 		( select ) => {
-			const {
-				getBlockCount,
-				getBlockParentsByBlockName,
-				getBlockAttributes,
-			} = select( blockEditorStore );
-			const parentIds = getBlockParentsByBlockName(
-				clientId,
-				'ls-plugin/carousel'
-			);
+			const { getBlockCount } = select( blockEditorStore );
 			return {
 				hasChildBlocks: getBlockCount( clientId ) > 0,
-				parentAttributes: parentIds.length
-					? getBlockAttributes( parentIds[ 0 ] )
-					: null,
 			};
 		},
 		[ clientId ]
@@ -76,11 +37,9 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 		.filter( Boolean )
 		.join( ' ' );
 
-	const slideStyle = getSlideStyle( parentAttributes );
-
+	// Don't apply slide width styles in editor - the grid handles layout
 	const blockProps = useBlockProps( {
 		className,
-		style: slideStyle,
 	} );
 
 	return (
@@ -114,3 +73,4 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 		</div>
 	);
 }
+
