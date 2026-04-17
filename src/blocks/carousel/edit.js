@@ -61,10 +61,15 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 		attributes.breakpoints || []
 	);
 
-	const className = [ 'ls-show-scrollbar' ].filter( Boolean ).join( ' ' );
+	const className = [
+		`ls-carousel-shows-${ attributes.slidesToShow }-slides`,
+	].filter( Boolean ).join( ' ' );
 
 	const blockProps = useBlockProps( {
 		className,
+		style: {
+			'--ls-carousel-gap': `${ attributes.columnGap }px`,
+		},
 	} );
 
 	const { templateLock } = attributes;
