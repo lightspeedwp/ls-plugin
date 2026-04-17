@@ -20,11 +20,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 class LS_Plugin_Carousel {
 
 	/**
+	 * Track if carousel block has been rendered.
+	 *
+	 * @var bool
+	 */
+	private $carousel_rendered = false;
+
+	/**
 	 * Constructor.
 	 */
 	public function __construct() {
 		add_action( 'init', array( $this, 'register_blocks' ) );
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_swiper_assets' ) );
+		add_filter( 'render_block', array( $this, 'enqueue_on_block_render' ), 10, 2 );
 		add_action( 'wp_footer', array( $this, 'initialise_swiper' ) );
 	}
 
@@ -40,25 +47,35 @@ class LS_Plugin_Carousel {
 	}
 
 	/**
-	 * Enqueue Swiper library assets on the front end.
+	 * Enqueue Swiper assets when carousel block is rendered.
+	 *
+	 * @param string $block_content Block content.
+	 * @param array  $block         Block data.
+	 * @return string Unmodified block content.
 	 */
-	public function enqueue_swiper_assets() {
-		// Only enqueue if carousel block is present on the page.
-		if ( ! has_block( 'ls-plugin/carousel' ) ) {
-			return;
+	public function enqueue_on_block_render( $block_content, $block ) {
+		if ( 'ls-plugin/carousel' === $block['blockName'] && ! $this->carousel_rendered ) {
+			$this->enqueue_swiper_assets();
+			$this->carousel_rendered = true;
 		}
+		return $block_content;
+	}
 
-		// Use CDN for Swiper library.
+	/**
+	 * Enqueue Swiper library assets.
+	 */
+	private function enqueue_swiper_assets() {
+		// Enqueue local Swiper library.
 		wp_enqueue_style(
-			'swiper',
-			'https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css',
+			'ls-plugin-swiper',
+			LS_PLUGIN_PLUGIN_URL . 'assets/swiper/swiper-bundle.min.css',
 			array(),
 			'12.0.3'
 		);
 
 		wp_enqueue_script(
-			'swiper',
-			'https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js',
+			'ls-plugin-swiper',
+			LS_PLUGIN_PLUGIN_URL . 'assets/swiper/swiper-bundle.min.js',
 			array(),
 			'12.0.3',
 			true
@@ -69,8 +86,8 @@ class LS_Plugin_Carousel {
 	 * Initialise Swiper instances in the footer.
 	 */
 	public function initialise_swiper() {
-		// Only output if carousel block is present on the page.
-		if ( ! has_block( 'ls-plugin/carousel' ) ) {
+		// Only output if carousel block was rendered on the page.
+		if ( ! $this->carousel_rendered ) {
 			return;
 		}
 		?>

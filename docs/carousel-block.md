@@ -62,9 +62,11 @@ Individual slides within the carousel. Can only be added inside a Carousel block
 **Built Files:** 
 - [build/blocks/carousel/](build/blocks/carousel/)
 - [build/blocks/carousel-slide/](build/blocks/carousel-slide/)
+**Assets:**
+- [assets/swiper/](assets/swiper/) - Swiper library v12.0.3 (CSS and JS)
 
 **External Dependencies:**
-- Swiper library v12.0.3 (loaded from CDN when carousel block is present on page)
+- Swiper library v12.0.3 (bundled locally, loaded only when carousel block is present on page)
 
 **Registration:**
 Blocks are registered in `inc/class-carousel.php` and loaded via `ls_plugin_init()` in the main plugin file.
