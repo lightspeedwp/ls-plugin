@@ -1,0 +1,52 @@
+/**
+ * Carousel Slide block styles
+ */
+
+.wp-block-ls-plugin-carousel-slide {
+	/* Editor styles */
+	min-height: 100px;
+
+	/* Vertical alignment support */
+	&.are-vertically-aligned-top {
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+	}
+
+	&.are-vertically-aligned-center {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+	}
+
+	&.are-vertically-aligned-bottom {
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-end;
+	}
+}
+
+/* Frontend styles */
+.swiper-slide.wp-block-ls-plugin-carousel-slide {
+	height: auto;
+	min-height: 100%;
+
+	/* Vertical alignment support */
+	&.are-vertically-aligned-top {
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+	}
+
+	&.are-vertically-aligned-center {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+	}
+
+	&.are-vertically-aligned-bottom {
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-end;
+	}
+}

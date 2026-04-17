@@ -23,6 +23,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added SCF permalink controls on the WordPress Permalinks screen for portfolio archives and related taxonomies.
 - Added a new Search Filter block (`ls-plugin/search-filter`) for Query Loop blocks with dynamic rendering and support for custom-field (`meta_key`) searching.
 - Added a new Taxonomy Filter block (`ls-plugin/taxonomy-filter`) for Query Loop blocks with dropdown and button display modes, post count display, color customization, and expand/collapse functionality for large term lists.
+- Added Carousel block (`ls-plugin/carousel`) with Swiper.js integration, supporting configurable slides to show (1-5), column gap, pagination, navigation arrows, autoplay, loop, speed controls, and responsive breakpoints.
+- Added Carousel Slide block (`ls-plugin/carousel-slide`) as a child block with InnerBlocks support for core content blocks, vertical alignment controls, and full block supports (border, color, spacing).
+- Added Swiper library (v12.0.3) bundled locally in the plugin assets folder for offline carousel functionality.
+- Added server-side carousel asset management using render_block filter for reliable conditional loading of Swiper CSS, JS, and initialization scripts.
 
 ### Changed
 - Changed Back to Top implementation from a standalone custom block to a `core/button` variation.

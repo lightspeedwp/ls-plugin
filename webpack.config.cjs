@@ -6,6 +6,8 @@ module.exports = {
 	...defaultConfig,
 	entry: () => ( {
 		...( typeof defaultConfig.entry === 'function' ? defaultConfig.entry() : defaultConfig.entry ),
+		'blocks/carousel/index': path.resolve( process.cwd(), 'src/blocks/carousel', 'index.js' ),
+		'blocks/carousel-slide/index': path.resolve( process.cwd(), 'src/blocks/carousel-slide', 'index.js' ),
 		'js/button-icon': path.resolve( process.cwd(), 'src/plugins/button-icon', 'index.js' ),
 		'css/button-icon': path.resolve( process.cwd(), 'src/plugins/button-icon', 'style.scss' ),
 		'js/back-to-top': path.resolve( process.cwd(), 'src/plugins/back-to-top', 'index.js' ),

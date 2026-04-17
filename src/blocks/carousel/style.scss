@@ -1,0 +1,109 @@
+/**
+ * Carousel block styles
+ */
+
+/* Editor styles */
+.wp-block-ls-plugin-carousel {
+	position: relative;
+
+	> .block-editor-inner-blocks > .block-editor-block-list__layout {
+		display: grid;
+		gap: var(--ls-carousel-gap, 30px);
+		grid-auto-flow: column;
+		overflow-x: auto;
+		overflow-y: hidden;
+		padding: 2px 2px 15px 2px;
+		
+		/* Block appender */
+		> .block-list-appender {
+			margin: 0 0 0 var(--ls-carousel-gap, 30px);
+		}
+	}
+
+	/* Dynamic grid columns based on slidesToShow setting */
+	&.ls-carousel-shows-1-slides > .block-editor-inner-blocks > .block-editor-block-list__layout {
+		grid-auto-columns: 100%;
+	}
+
+	&.ls-carousel-shows-2-slides > .block-editor-inner-blocks > .block-editor-block-list__layout {
+		grid-auto-columns: calc(50% - (var(--ls-carousel-gap, 30px) / 2));
+	}
+
+	&.ls-carousel-shows-3-slides > .block-editor-inner-blocks > .block-editor-block-list__layout {
+		grid-auto-columns: calc(33.333% - (var(--ls-carousel-gap, 30px) * 2 / 3));
+	}
+
+	&.ls-carousel-shows-4-slides > .block-editor-inner-blocks > .block-editor-block-list__layout {
+		grid-auto-columns: calc(25% - (var(--ls-carousel-gap, 30px) * 3 / 4));
+	}
+
+	&.ls-carousel-shows-5-slides > .block-editor-inner-blocks > .block-editor-block-list__layout {
+		grid-auto-columns: calc(20% - (var(--ls-carousel-gap, 30px) * 4 / 5));
+	}
+
+	/* Scrollbar styling */
+	> .block-editor-inner-blocks > .block-editor-block-list__layout::-webkit-scrollbar {
+		-webkit-appearance: none;
+		background-color: rgba(0, 0, 0, 0.15);
+		height: 12px;
+	}
+
+	> .block-editor-inner-blocks > .block-editor-block-list__layout::-webkit-scrollbar-thumb {
+		background-color: rgba(0, 0, 0, 0.38);
+		border-radius: 0;
+
+		&:hover {
+			background-color: rgba(0, 0, 0, 0.48);
+		}
+	}
+
+	.ls-carousel-placeholder {
+		padding: 2em;
+		text-align: center;
+		color: #757575;
+		border: 2px dashed #ddd;
+		border-radius: 4px;
+	}
+}
+
+/* Frontend Swiper styles */
+.wp-block-ls-plugin-carousel.swiper {
+	width: 100%;
+	overflow: hidden;
+
+	.swiper-wrapper {
+		display: flex;
+	}
+
+	/* Pagination */
+	.swiper-pagination {
+		position: relative;
+		margin-top: 20px;
+	}
+
+	.swiper-pagination-bullet {
+		width: 12px;
+		height: 12px;
+		background: #000;
+		opacity: 0.3;
+		transition: opacity 0.3s;
+
+		&:hover {
+			opacity: 0.5;
+		}
+
+		&.swiper-pagination-bullet-active {
+			opacity: 1;
+		}
+	}
+
+	/* Navigation */
+	.swiper-button-next,
+	.swiper-button-prev {
+		color: #000;
+
+		&::after {
+			font-size: 24px;
+		}
+	}
+}
