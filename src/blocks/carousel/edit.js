@@ -19,25 +19,6 @@ import { useSelect } from '@wordpress/data';
 import { useState } from '@wordpress/element';
 
 /**
- * Calculate the maximum slides to show considering breakpoints.
- *
- * @param {Object} attributes Block attributes.
- * @return {number} Maximum slides to show.
- */
-function getMaxSlidesToShow( attributes ) {
-	let maxSlides = attributes.slidesToShow;
-	const breakpoints = attributes.breakpoints || [];
-
-	breakpoints.forEach( ( breakpoint ) => {
-		if ( breakpoint.breakpoint && breakpoint.slidesToShow > maxSlides ) {
-			maxSlides = breakpoint.slidesToShow;
-		}
-	} );
-
-	return maxSlides;
-}
-
-/**
  * Edit component for the carousel block.
  *
  * @param {Object}   props               Block props.
