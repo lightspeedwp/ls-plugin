@@ -32,7 +32,6 @@ class LS_Plugin_Carousel {
 	public function __construct() {
 		add_action( 'init', array( $this, 'register_blocks' ) );
 		add_filter( 'render_block', array( $this, 'enqueue_on_block_render' ), 10, 2 );
-		add_action( 'wp_footer', array( $this, 'initialise_swiper' ) );
 	}
 
 	/**
@@ -62,7 +61,7 @@ class LS_Plugin_Carousel {
 	}
 
 	/**
-	 * Enqueue Swiper library assets.
+	 * Enqueue Swiper library assets and initialization script.
 	 */
 	private function enqueue_swiper_assets() {
 		// Enqueue local Swiper library.
@@ -80,29 +79,30 @@ class LS_Plugin_Carousel {
 			'12.0.3',
 			true
 		);
+
+		// Add inline initialization script.
+		$init_script = "
+			(function() {
+				function initCarousels() {
+					const carousels = document.querySelectorAll('.wp-block-ls-plugin-carousel');
+					if (carousels.length > 0) {
+						carousels.forEach(function(carousel) {
+							if (carousel.dataset.swiper) {
+								new Swiper(carousel, JSON.parse(carousel.dataset.swiper));
+							}
+						});
+					}
+				}
+
+				if (document.readyState !== 'loading') {
+					initCarousels();
+				} else {
+					document.addEventListener('DOMContentLoaded', initCarousels);
+				}
+			})();
+		";
+
+		wp_add_inline_script( 'ls-plugin-swiper', $init_script, 'after' );
 	}
 
-	/**
-	 * Initialise Swiper instances in the footer.
-	 */
-	public function initialise_swiper() {
-		// Only output if carousel block was rendered on the page.
-		if ( ! $this->carousel_rendered ) {
-			return;
-		}
-		?>
-		<script>
-		document.addEventListener( 'DOMContentLoaded', function() {
-			const carousels = document.querySelectorAll( '.wp-block-ls-plugin-carousel' );
-			if ( carousels.length > 0 ) {
-				carousels.forEach( function( carousel ) {
-					if ( carousel.dataset.swiper ) {
-						new Swiper( carousel, JSON.parse( carousel.dataset.swiper ) );
-					}
-				} );
-			}
-		} );
-		</script>
-		<?php
-	}
 }
