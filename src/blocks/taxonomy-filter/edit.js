@@ -144,6 +144,18 @@ function Edit( {
 		);
 	}, [ taxonomy, orderBy ] );
 
+	const sourceStyles = style || {};
+	const innerSpacingStyles = Object.entries( sourceStyles ).reduce(
+		( acc, [ key, value ] ) => {
+			if ( /^(margin|padding)/.test( key ) ) {
+				acc[ key ] = value;
+			}
+
+			return acc;
+		},
+		{}
+	);
+
 	const blockClasses = [
 		`taxonomy-filter--${ filterType }`,
 		filterType === 'buttons' && 'is-layout-flex',
@@ -151,6 +163,30 @@ function Edit( {
 		filterType === 'buttons' &&
 			justification &&
 			`is-content-justification-${ justification }`,
+		filterType === 'buttons' &&
+			( buttonTextColor.color || customButtonTextColor ) &&
+			'has-button-text-color',
+		filterType === 'buttons' &&
+			( buttonBackgroundColor.color || customButtonBackgroundColor ) &&
+			'has-button-background-color',
+		filterType === 'buttons' &&
+			( hoverButtonTextColor.color || customHoverButtonTextColor ) &&
+			'has-hover-button-text-color',
+		filterType === 'buttons' &&
+			( hoverButtonBackgroundColor.color ||
+				customHoverButtonBackgroundColor ) &&
+			'has-hover-button-background-color',
+		filterType === 'buttons' &&
+			( activeButtonTextColor.color || customActiveButtonTextColor ) &&
+			'has-active-button-text-color',
+		filterType === 'buttons' &&
+			( activeButtonBackgroundColor.color ||
+				customActiveButtonBackgroundColor ) &&
+			'has-active-button-background-color',
+		filterType === 'buttons' && buttonBorder?.width && 'has-button-border',
+		filterType === 'buttons' &&
+			buttonBorderRadius &&
+			'has-button-border-radius',
 		filterType !== 'buttons' &&
 			textAlign &&
 			`has-text-align-${ textAlign }`,
@@ -158,7 +194,16 @@ function Edit( {
 		.filter( Boolean )
 		.join( ' ' );
 
-	const blockStyles = { ...style };
+	const blockStyles = Object.entries( sourceStyles ).reduce(
+		( acc, [ key, value ] ) => {
+			if ( ! /^(margin|padding)/.test( key ) ) {
+				acc[ key ] = value;
+			}
+
+			return acc;
+		},
+		{}
+	);
 
 	// Apply button styles
 	if ( filterType === 'buttons' ) {
@@ -536,7 +581,7 @@ function Edit( {
 				{ ! isLoaded && <span>{ __( 'Loading...' ) }</span> }
 
 				{ isLoaded && terms && filterType === 'dropdown' && (
-					<select>
+					<select style={ innerSpacingStyles }>
 						<option>
 							{ allItemsText || taxonomy.all_items }
 						</option>
@@ -552,7 +597,10 @@ function Edit( {
 
 				{ isLoaded && terms && filterType === 'buttons' && (
 					<>
-						<a className="wp-element-button taxonomy-filter-current">
+						<a
+							className="wp-element-button taxonomy-filter-current"
+							style={ innerSpacingStyles }
+						>
 							{ allItemsText || taxonomy.all_items }
 						</a>
 						{ terms
@@ -566,6 +614,7 @@ function Edit( {
 								<a
 									key={ term.id }
 									className="wp-element-button"
+									style={ innerSpacingStyles }
 								>
 									{ term.name }
 									{ showCount && ` (${ term.count })` }
