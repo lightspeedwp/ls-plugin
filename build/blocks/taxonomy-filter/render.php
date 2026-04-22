@@ -119,11 +119,7 @@ if ( 'buttons' === $attributes['filterType'] ) {
 	// Border.
 	if ( ! empty( $attributes['buttonBorder']['width'] ) ) {
 		$classes[] = 'has-button-border';
-		if ( ! empty( $attributes['buttonBorder']['color'] ) ) {
-			$styles[] = "--button-border:{$attributes['buttonBorder']['width']} solid {$attributes['buttonBorder']['color']};";
-		} else {
-			$styles[] = "--button-border:{$attributes['buttonBorder']['width']} solid;";
-		}
+		$styles[]  = "--button-border:{$attributes['buttonBorder']['width']} solid;";
 	}
 
 	// Border radius.
@@ -131,6 +127,7 @@ if ( 'buttons' === $attributes['filterType'] ) {
 		$classes[] = 'has-button-border-radius';
 		$styles[]  = "--button-border-radius:{$attributes['buttonBorderRadius']};";
 	}
+
 } else {
 	if ( ! empty( $attributes['textAlign'] ) ) {
 		$classes[] = "has-text-align-{$attributes['textAlign']}";

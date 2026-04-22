@@ -195,9 +195,7 @@ function Edit( {
 				customActiveButtonBackgroundColor;
 		}
 		if ( buttonBorder?.width ) {
-			blockStyles[ '--button-border' ] = buttonBorder.color
-				? `${ buttonBorder.width } solid ${ buttonBorder.color }`
-				: `${ buttonBorder.width } solid`;
+			blockStyles[ '--button-border' ] = `${ buttonBorder.width } solid`;
 		}
 		if ( buttonBorderRadius ) {
 			blockStyles[ '--button-border-radius' ] = buttonBorderRadius;
