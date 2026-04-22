@@ -3,6 +3,13 @@
  */
 
 .wp-block-ls-plugin-taxonomy-filter {
+	// In the editor canvas, spacing support is applied to the wrapper block element.
+	// Keep wrapper spacing neutral so spacing appears only on inner controls.
+	&.block-editor-block-list__block {
+		margin: 0 !important;
+		padding: 0 !important;
+	}
+
 	&.taxonomy-filter--dropdown {
 		select {
 			width: 100%;

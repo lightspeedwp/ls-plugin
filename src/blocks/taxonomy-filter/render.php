@@ -149,6 +149,21 @@ $wrapper_attributes = get_block_wrapper_attributes(
 
 $inner_spacing_style_attr = '';
 
+$normalise_spacing_value = static function ( $value ) {
+	if ( ! is_string( $value ) ) {
+		return $value;
+	}
+
+	if ( 0 === strpos( $value, 'var:preset|spacing|' ) ) {
+		$parts = explode( '|', $value );
+		if ( isset( $parts[2] ) ) {
+			return "var(--wp--preset--spacing--{$parts[2]})";
+		}
+	}
+
+	return $value;
+};
+
 // Extract spacing from block attributes and move to inner elements.
 // Check both WordPress spacing attributes and inline styles.
 $spacing_styles = array();
@@ -162,11 +177,11 @@ if ( ! empty( $attributes['style']['spacing'] ) ) {
 		if ( is_array( $margin ) ) {
 			foreach ( $margin as $key => $value ) {
 				if ( ! empty( $value ) ) {
-					$spacing_styles[] = "margin-{$key}:{$value}";
+					$spacing_styles[] = "margin-{$key}:" . $normalise_spacing_value( $value );
 				}
 			}
 		} elseif ( ! empty( $margin ) ) {
-			$spacing_styles[] = "margin:{$margin}";
+			$spacing_styles[] = 'margin:' . $normalise_spacing_value( $margin );
 		}
 	}
 	
@@ -175,11 +190,11 @@ if ( ! empty( $attributes['style']['spacing'] ) ) {
 		if ( is_array( $padding ) ) {
 			foreach ( $padding as $key => $value ) {
 				if ( ! empty( $value ) ) {
-					$spacing_styles[] = "padding-{$key}:{$value}";
+					$spacing_styles[] = "padding-{$key}:" . $normalise_spacing_value( $value );
 				}
 			}
 		} elseif ( ! empty( $padding ) ) {
-			$spacing_styles[] = "padding:{$padding}";
+			$spacing_styles[] = 'padding:' . $normalise_spacing_value( $padding );
 		}
 	}
 }

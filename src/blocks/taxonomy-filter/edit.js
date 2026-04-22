@@ -145,16 +145,52 @@ function Edit( {
 	}, [ taxonomy, orderBy ] );
 
 	const sourceStyles = style || {};
-	const innerSpacingStyles = Object.entries( sourceStyles ).reduce(
-		( acc, [ key, value ] ) => {
-			if ( /^(margin|padding)/.test( key ) ) {
-				acc[ key ] = value;
-			}
 
-			return acc;
-		},
-		{}
-	);
+	const normaliseSpacingValue = ( value ) => {
+		if ( typeof value !== 'string' ) {
+			return value;
+		}
+
+		if ( value.startsWith( 'var:preset|spacing|' ) ) {
+			const presetSlug = value.split( '|' )[ 2 ];
+			return `var(--wp--preset--spacing--${ presetSlug })`;
+		}
+
+		return value;
+	};
+
+	const innerSpacingStyles = {};
+	const spacingAttributes = attributes?.style?.spacing || {};
+
+	const applyBoxSpacing = ( type, value ) => {
+		if ( ! value ) {
+			return;
+		}
+
+		if ( typeof value === 'string' ) {
+			innerSpacingStyles[ type ] = normaliseSpacingValue( value );
+			return;
+		}
+
+		if ( typeof value === 'object' ) {
+			const directionsMap = {
+				top: 'Top',
+				right: 'Right',
+				bottom: 'Bottom',
+				left: 'Left',
+			};
+
+			Object.entries( directionsMap ).forEach( ( [ side, suffix ] ) => {
+				if ( value[ side ] ) {
+					innerSpacingStyles[ `${ type }${ suffix }` ] =
+						normaliseSpacingValue( value[ side ] );
+				}
+			} );
+		}
+	};
+
+	applyBoxSpacing( 'margin', spacingAttributes.margin );
+	applyBoxSpacing( 'padding', spacingAttributes.padding );
 
 	const blockClasses = [
 		`taxonomy-filter--${ filterType }`,
@@ -205,17 +241,9 @@ function Edit( {
 		{}
 	);
 
-	// Explicitly remove spacing from wrapper by resetting all margin/padding properties.
-	blockStyles.margin = 0;
-	blockStyles.padding = 0;
-	blockStyles.marginTop = 'initial';
-	blockStyles.marginRight = 'initial';
-	blockStyles.marginBottom = 'initial';
-	blockStyles.marginLeft = 'initial';
-	blockStyles.paddingTop = 'initial';
-	blockStyles.paddingRight = 'initial';
-	blockStyles.paddingBottom = 'initial';
-	blockStyles.paddingLeft = 'initial';
+	// Keep spacing off the wrapper; it is applied to inner controls instead.
+	blockStyles.margin = 'initial';
+	blockStyles.padding = 'initial';
 
 	// Apply button styles
 	if ( filterType === 'buttons' ) {
