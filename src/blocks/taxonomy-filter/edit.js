@@ -195,7 +195,7 @@ function Edit( {
 				customActiveButtonBackgroundColor;
 		}
 		if ( buttonBorder?.width ) {
-			blockStyles[ '--button-border' ] = `${ buttonBorder.width } solid`;
+			blockStyles[ '--button-border' ] = `${ buttonBorder.width } solid var(--wp--custom--color--button--fill--border, currentColor)`;
 		}
 		if ( buttonBorderRadius ) {
 			blockStyles[ '--button-border-radius' ] = buttonBorderRadius;

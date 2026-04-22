@@ -119,7 +119,7 @@ if ( 'buttons' === $attributes['filterType'] ) {
 	// Border.
 	if ( ! empty( $attributes['buttonBorder']['width'] ) ) {
 		$classes[] = 'has-button-border';
-		$styles[]  = "--button-border:{$attributes['buttonBorder']['width']} solid;";
+		$styles[]  = "--button-border:{$attributes['buttonBorder']['width']} solid var(--wp--custom--color--button--fill--border, currentColor);";
 	}
 
 	// Border radius.
