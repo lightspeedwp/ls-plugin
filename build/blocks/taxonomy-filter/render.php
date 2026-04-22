@@ -149,34 +149,81 @@ $wrapper_attributes = get_block_wrapper_attributes(
 
 $inner_spacing_style_attr = '';
 
-// Move spacing styles from wrapper to inner controls for dropdown/button outputs.
-if ( preg_match( '/style="([^"]*)"/', $wrapper_attributes, $style_match ) ) {
-	$wrapper_style         = $style_match[1];
-	$style_declarations    = array_filter( array_map( 'trim', explode( ';', $wrapper_style ) ) );
-	$spacing_declarations  = array();
-	$remaining_declarations = array();
+// Extract spacing from block attributes and move to inner elements.
+// Check both WordPress spacing attributes and inline styles.
+$spacing_styles = array();
 
-	foreach ( $style_declarations as $declaration ) {
-		if ( preg_match( '/^(margin|padding)(-|$)/', strtolower( $declaration ) ) ) {
-			$spacing_declarations[] = $declaration;
-		} else {
-			$remaining_declarations[] = $declaration;
+// Extract from WordPress spacing attributes (style.spacing.margin, style.spacing.padding).
+if ( ! empty( $attributes['style']['spacing'] ) ) {
+	$spacing_attr = $attributes['style']['spacing'];
+	
+	if ( ! empty( $spacing_attr['margin'] ) ) {
+		$margin = $spacing_attr['margin'];
+		if ( is_array( $margin ) ) {
+			foreach ( $margin as $key => $value ) {
+				if ( ! empty( $value ) ) {
+					$spacing_styles[] = "margin-{$key}:{$value}";
+				}
+			}
+		} elseif ( ! empty( $margin ) ) {
+			$spacing_styles[] = "margin:{$margin}";
 		}
 	}
-
-	if ( ! empty( $spacing_declarations ) ) {
-		$inner_spacing_style_attr = ' style="' . esc_attr( implode( ';', $spacing_declarations ) . ';' ) . '"';
+	
+	if ( ! empty( $spacing_attr['padding'] ) ) {
+		$padding = $spacing_attr['padding'];
+		if ( is_array( $padding ) ) {
+			foreach ( $padding as $key => $value ) {
+				if ( ! empty( $value ) ) {
+					$spacing_styles[] = "padding-{$key}:{$value}";
+				}
+			}
+		} elseif ( ! empty( $padding ) ) {
+			$spacing_styles[] = "padding:{$padding}";
+		}
 	}
+}
 
-	if ( ! empty( $remaining_declarations ) ) {
-		$wrapper_attributes = preg_replace(
-			'/style="[^"]*"/',
-			'style="' . esc_attr( implode( ';', $remaining_declarations ) . ';' ) . '"',
-			$wrapper_attributes
-		);
-	} else {
-		$wrapper_attributes = preg_replace( '/\sstyle="[^"]*"/', '', $wrapper_attributes );
+// Also check inline styles in wrapper_attributes in case WordPress added them.
+if ( preg_match( '/style="([^"]*)"/', $wrapper_attributes, $style_match ) ) {
+	$wrapper_style      = $style_match[1];
+	$style_declarations = array_filter( array_map( 'trim', explode( ';', $wrapper_style ) ) );
+
+	foreach ( $style_declarations as $declaration ) {
+		if ( preg_match( '/^(margin|padding)(-|$)/i', $declaration ) ) {
+			$spacing_styles[] = $declaration;
+		}
 	}
+}
+
+// Remove duplicate spacing styles.
+$spacing_styles = array_unique( $spacing_styles );
+
+if ( ! empty( $spacing_styles ) ) {
+	$inner_spacing_style_attr = ' style="' . esc_attr( implode( ';', $spacing_styles ) . ';' ) . '"';
+	
+	// Remove spacing from wrapper by regenerating wrapper attributes without margin/padding.
+	$wrapper_attributes = preg_replace_callback(
+		'/style="([^"]*)"/',
+		function( $matches ) {
+			$style           = $matches[1];
+			$declarations    = array_filter( array_map( 'trim', explode( ';', $style ) ) );
+			$remaining_decls = array();
+			
+			foreach ( $declarations as $decl ) {
+				if ( ! preg_match( '/^(margin|padding)(-|$)/i', $decl ) ) {
+					$remaining_decls[] = $decl;
+				}
+			}
+			
+			if ( empty( $remaining_decls ) ) {
+				return '';
+			}
+			
+			return 'style="' . esc_attr( implode( ';', $remaining_decls ) . ';' ) . '"';
+		},
+		$wrapper_attributes
+	);
 }
 ?>
 

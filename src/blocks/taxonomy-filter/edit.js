@@ -205,6 +205,18 @@ function Edit( {
 		{}
 	);
 
+	// Explicitly remove spacing from wrapper by resetting all margin/padding properties.
+	blockStyles.margin = 0;
+	blockStyles.padding = 0;
+	blockStyles.marginTop = 'initial';
+	blockStyles.marginRight = 'initial';
+	blockStyles.marginBottom = 'initial';
+	blockStyles.marginLeft = 'initial';
+	blockStyles.paddingTop = 'initial';
+	blockStyles.paddingRight = 'initial';
+	blockStyles.paddingBottom = 'initial';
+	blockStyles.paddingLeft = 'initial';
+
 	// Apply button styles
 	if ( filterType === 'buttons' ) {
 		if ( buttonTextColor.color || customButtonTextColor ) {
