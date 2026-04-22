@@ -34,6 +34,7 @@
   text-decoration: none;
   cursor: pointer;
   transition: all 0.2s ease;
+  box-sizing: border-box;
 }
 .wp-block-ls-plugin-taxonomy-filter.taxonomy-filter--buttons .wp-element-button:hover {
   background-color: var(--taxonomy-filter-button-background-hover);

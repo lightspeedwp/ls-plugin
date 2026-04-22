@@ -41,6 +41,7 @@
 			text-decoration: none;
 			cursor: pointer;
 			transition: all 0.2s ease;
+			box-sizing: border-box;
 
 			&:hover {
 				background-color: var(--taxonomy-filter-button-background-hover);
