@@ -18,13 +18,8 @@
 			border: 1px solid currentColor;
 			border-radius: 0.25rem;
 			background-color: transparent;
-			color: inherit;
+			color: var(--wp--custom--color--text--default);
 			cursor: pointer;
-
-			&:focus {
-				outline: 2px solid currentColor;
-				outline-offset: 2px;
-			}
 		}
 	}
 
