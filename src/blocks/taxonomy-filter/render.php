@@ -146,6 +146,38 @@ $wrapper_attributes = get_block_wrapper_attributes(
 		'style' => implode( '', $styles ),
 	)
 );
+
+$inner_spacing_style_attr = '';
+
+// Move spacing styles from wrapper to inner controls for dropdown/button outputs.
+if ( preg_match( '/style="([^"]*)"/', $wrapper_attributes, $style_match ) ) {
+	$wrapper_style         = $style_match[1];
+	$style_declarations    = array_filter( array_map( 'trim', explode( ';', $wrapper_style ) ) );
+	$spacing_declarations  = array();
+	$remaining_declarations = array();
+
+	foreach ( $style_declarations as $declaration ) {
+		if ( preg_match( '/^(margin|padding)(-|$)/', strtolower( $declaration ) ) ) {
+			$spacing_declarations[] = $declaration;
+		} else {
+			$remaining_declarations[] = $declaration;
+		}
+	}
+
+	if ( ! empty( $spacing_declarations ) ) {
+		$inner_spacing_style_attr = ' style="' . esc_attr( implode( ';', $spacing_declarations ) . ';' ) . '"';
+	}
+
+	if ( ! empty( $remaining_declarations ) ) {
+		$wrapper_attributes = preg_replace(
+			'/style="[^"]*"/',
+			'style="' . esc_attr( implode( ';', $remaining_declarations ) . ';' ) . '"',
+			$wrapper_attributes
+		);
+	} else {
+		$wrapper_attributes = preg_replace( '/\sstyle="[^"]*"/', '', $wrapper_attributes );
+	}
+}
 ?>
 
 <div
@@ -158,6 +190,7 @@ $wrapper_attributes = get_block_wrapper_attributes(
 			data-wp-on--change="actions.navigate"
 			data-wp-bind--value="context.filterValue"
 			aria-label="<?php echo esc_attr( $taxonomy->label ); ?>"
+			<?php echo $inner_spacing_style_attr; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 		>
 			<option value="<?php echo esc_url( remove_query_arg( $key ) ); ?>">
 				<?php echo esc_html( $all_items ); ?>
@@ -187,6 +220,7 @@ $wrapper_attributes = get_block_wrapper_attributes(
 			href="<?php echo esc_url( remove_query_arg( $key ) ); ?>"
 			class="wp-element-button <?php echo ! isset( $_REQUEST[ $key ] ) ? 'taxonomy-filter-current' : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended ?>"
 			data-wp-on--click="core/query::actions.navigate"
+			<?php echo $inner_spacing_style_attr; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 		>
 			<?php echo esc_html( $all_items ); ?>
 		</a>
@@ -207,6 +241,7 @@ $wrapper_attributes = get_block_wrapper_attributes(
 				href="<?php echo esc_url( $term_url ); ?>"
 				class="wp-element-button<?php echo $is_current ? ' taxonomy-filter-current' : ''; ?>"
 				data-wp-on--click="core/query::actions.navigate"
+				<?php echo $inner_spacing_style_attr; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			>
 				<?php
 				echo esc_html( $term->name );
