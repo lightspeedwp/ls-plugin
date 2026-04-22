@@ -175,9 +175,9 @@ if ( ! empty( $attributes['style']['spacing'] ) ) {
 	if ( ! empty( $spacing_attr['margin'] ) ) {
 		$margin = $spacing_attr['margin'];
 		if ( is_array( $margin ) ) {
-			foreach ( $margin as $key => $value ) {
+			foreach ( $margin as $spacing_side => $value ) {
 				if ( ! empty( $value ) ) {
-					$spacing_styles[] = "margin-{$key}:" . $normalise_spacing_value( $value );
+					$spacing_styles[] = "margin-{$spacing_side}:" . $normalise_spacing_value( $value );
 				}
 			}
 		} elseif ( ! empty( $margin ) ) {
@@ -188,9 +188,9 @@ if ( ! empty( $attributes['style']['spacing'] ) ) {
 	if ( ! empty( $spacing_attr['padding'] ) ) {
 		$padding = $spacing_attr['padding'];
 		if ( is_array( $padding ) ) {
-			foreach ( $padding as $key => $value ) {
+			foreach ( $padding as $spacing_side => $value ) {
 				if ( ! empty( $value ) ) {
-					$spacing_styles[] = "padding-{$key}:" . $normalise_spacing_value( $value );
+					$spacing_styles[] = "padding-{$spacing_side}:" . $normalise_spacing_value( $value );
 				}
 			}
 		} elseif ( ! empty( $padding ) ) {
