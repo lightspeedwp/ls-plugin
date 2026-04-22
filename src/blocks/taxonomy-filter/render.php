@@ -140,6 +140,13 @@ $expand_text            = ! empty( $attributes['expandText'] ) ? $attributes['ex
 $expand_text            = str_replace( '[number]', ( count( $terms ) - $visible_items_number ), $expand_text );
 $collapse_text          = ! empty( $attributes['collapseText'] ) ? $attributes['collapseText'] : __( '- Show less', 'ls-plugin' );
 
+// Determine the current filter URL so the dropdown reflects the active selection on load.
+$base_url_for_context = $is_main_query ? get_pagenum_link( 1, false ) : add_query_arg( array( $page_key => 1 ) );
+$active_slug          = isset( $_REQUEST[ $key ] ) ? sanitize_key( wp_unslash( $_REQUEST[ $key ] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+$current_filter_value = $active_slug
+	? esc_url( add_query_arg( array( $key => $active_slug ), $base_url_for_context ) )
+	: esc_url( remove_query_arg( $key ) );
+
 $wrapper_attributes = get_block_wrapper_attributes(
 	array(
 		'class' => implode( ' ', $classes ),
@@ -245,7 +252,7 @@ if ( ! empty( $spacing_styles ) ) {
 <div
 	<?php echo $wrapper_attributes; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 	data-wp-interactive="lsPluginTaxonomyFilter"
-	<?php echo wp_interactivity_data_wp_context( array( 'isExpanded' => false ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+	<?php echo wp_interactivity_data_wp_context( array( 'isExpanded' => false, 'filterValue' => $current_filter_value ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 >
 	<?php if ( 'dropdown' === $attributes['filterType'] ) : ?>
 		<select
