@@ -54,6 +54,9 @@ function ls_plugin_init() {
 	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-scf-json-validator.php';
 	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-permalinks.php';
 
+	// 3rd Party
+	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-ai-engine.php';
+
 	$search_filter = new LS_Plugin_Search_Filter();
 	$search_filter->register_hooks();
 
