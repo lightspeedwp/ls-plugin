@@ -24,7 +24,7 @@ class AI_Engine {
 		add_filter( 'mwai_functions_list', [ $this, 'register_functions' ], 10, 1 );
 		add_filter( 'mwai_ai_query', [ $this, 'inject_functions_into_query' ], 10, 1 );
 		add_filter( 'mwai_ai_feedback', [ $this, 'handle_ai_feedback' ], 10, 2 );
-		add_filter( 'mwai_ai_reply', [ $this, 'override_ai_reply' ], 10, 2 );
+		//add_filter( 'mwai_ai_reply', [ $this, 'override_ai_reply' ], 10, 2 );
 	}
 
 	/**
