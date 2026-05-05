@@ -88,6 +88,58 @@ class AI_Engine {
 	}
 
 	/**
+	 * Defines the searchPosts function for AI Engine.
+	 *
+	 * @return \Meow_MWAI_Query_Function
+	 */
+	private function define_search_posts() {
+		return \Meow_MWAI_Query_Function::fromJson( [
+			'id'   => 'searchPosts',
+			'type' => 'manual',
+			'name' => 'searchPosts',
+			'desc' => 'Search the site posts and return the 10 latest matching results.',
+			'args' => [
+				[
+					'name'     => 'search',
+					'desc'     => 'The search term to filter posts by.',
+					'type'     => 'string',
+					'required' => true,
+				],
+			],
+		] );
+	}
+
+	/**
+	 * Searches posts matching the given term and returns the 10 latest as JSON.
+	 *
+	 * @param string $search Search term.
+	 * @return string JSON-encoded array of matching posts.
+	 */
+	private function call_search_posts( $search ) {
+		$query = new \WP_Query( [
+			'post_type'      => 'post',
+			'post_status'    => 'publish',
+			's'              => sanitize_text_field( $search ),
+			'posts_per_page' => 10,
+			'orderby'        => 'date',
+			'order'          => 'DESC',
+		] );
+
+		$posts = [];
+		foreach ( $query->posts as $post ) {
+			$posts[] = [
+				'id'    => $post->ID,
+				'title' => $post->post_title,
+				'date'  => $post->post_date,
+				'url'   => get_permalink( $post->ID ),
+				'excerpt' => get_the_excerpt( $post ),
+			];
+		}
+
+		return wp_json_encode( $posts );
+	}
+
+	/**
 	 * Sends an email to the site admin.
 	 *
 	 * @param string $subject Email subject.
@@ -113,6 +165,7 @@ class AI_Engine {
 	public function register_functions( $functions ) {
 		$functions[] = $this->define_user_info();
 		$functions[] = $this->define_send_email();
+		$functions[] = $this->define_search_posts();
 		return $functions;
 	}
 
@@ -127,6 +180,7 @@ class AI_Engine {
 	public function inject_functions_into_query( $query ) {
 		$query->add_function( $this->define_user_info() );
 		$query->add_function( $this->define_send_email() );
+		$query->add_function( $this->define_search_posts() );
 		return $query;
 	}
 
@@ -146,6 +200,10 @@ class AI_Engine {
 			$subject = $need_feedback['arguments']['subject'];
 			$message = $need_feedback['arguments']['message'];
 			return $this->call_send_email( $subject, $message );
+		}
+		if ( $function->id === 'searchPosts' ) {
+			$search = $need_feedback['arguments']['search'];
+			return $this->call_search_posts( $search );
 		}
 		return $value;
 	}
