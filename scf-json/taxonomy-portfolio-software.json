@@ -1,6 +1,6 @@
 {
     "key": "taxonomy_ls_plugin_portfolio_software",
-    "title": "Softwares",
+    "title": "Software",
     "menu_order": 0,
     "active": true,
     "taxonomy": "ls_plugin_portfolio_software",
