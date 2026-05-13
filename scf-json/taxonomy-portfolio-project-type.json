@@ -1,0 +1,70 @@
+{
+    "key": "taxonomy_ls_plugin_portfolio_project_type",
+    "title": "Project types",
+    "menu_order": 0,
+    "active": true,
+    "taxonomy": "ls_plugin_portfolio_project_type",
+    "object_type": [
+        "ls_plugin_portfolio"
+    ],
+    "advanced_configuration": true,
+    "labels": {
+        "name": "Project types",
+        "singular_name": "Project type",
+        "menu_name": "Project types",
+        "all_items": "All Project types",
+        "edit_item": "Edit Project type",
+        "view_item": "View Project type",
+        "update_item": "Update Project type",
+        "add_new_item": "Add New Project type",
+        "new_item_name": "New Project type Name",
+        "parent_item": "Parent Project type",
+        "parent_item_colon": "Parent Project type:",
+        "search_items": "Search Project types",
+        "popular_items": "Popular Project types",
+        "separate_items_with_commas": "Separate project types with commas",
+        "add_or_remove_items": "Add or remove project types",
+        "choose_from_most_used": "Choose from the most used project types",
+        "not_found": "No project types found",
+        "items_list_navigation": "Project types list navigation",
+        "items_list": "Project types list",
+        "back_to_items": "Back to Project types",
+        "item_link": "Project type Link",
+        "item_link_description": "A link to a project type."
+    },
+    "description": "",
+    "capabilities": {
+        "manage_terms": "manage_categories",
+        "edit_terms": "manage_categories",
+        "delete_terms": "manage_categories",
+        "assign_terms": "edit_posts"
+    },
+    "public": true,
+    "publicly_queryable": true,
+    "hierarchical": true,
+    "show_ui": true,
+    "show_in_menu": true,
+    "show_in_nav_menus": true,
+    "show_in_rest": true,
+    "rest_base": "portfolio-project-type",
+    "rest_namespace": "wp/v2",
+    "rest_controller_class": "",
+    "show_tagcloud": true,
+    "show_in_quick_edit": true,
+    "show_admin_column": true,
+    "rewrite": {
+        "slug": "portfolio-project-type",
+        "permalink_rewrite": "custom_permalink",
+        "with_front": "1",
+        "rewrite_hierarchical": "1"
+    },
+    "query_var": true,
+    "query_var_name": "",
+    "default_term": {
+        "default_term_enabled": "0"
+    },
+    "sort": false,
+    "meta_box": "default",
+    "meta_box_cb": "",
+    "meta_box_sanitize_cb": ""
+}
