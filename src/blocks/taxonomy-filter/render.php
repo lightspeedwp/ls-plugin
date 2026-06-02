@@ -119,11 +119,7 @@ if ( 'buttons' === $attributes['filterType'] ) {
 	// Border.
 	if ( ! empty( $attributes['buttonBorder']['width'] ) ) {
 		$classes[] = 'has-button-border';
-		if ( ! empty( $attributes['buttonBorder']['color'] ) ) {
-			$styles[] = "--button-border:{$attributes['buttonBorder']['width']} solid {$attributes['buttonBorder']['color']};";
-		} else {
-			$styles[] = "--button-border:{$attributes['buttonBorder']['width']} solid;";
-		}
+		$styles[]  = "--button-border:{$attributes['buttonBorder']['width']} solid var(--wp--custom--color--button--fill--border, currentColor);";
 	}
 
 	// Border radius.
@@ -131,6 +127,7 @@ if ( 'buttons' === $attributes['filterType'] ) {
 		$classes[] = 'has-button-border-radius';
 		$styles[]  = "--button-border-radius:{$attributes['buttonBorderRadius']};";
 	}
+
 } else {
 	if ( ! empty( $attributes['textAlign'] ) ) {
 		$classes[] = "has-text-align-{$attributes['textAlign']}";
@@ -143,24 +140,126 @@ $expand_text            = ! empty( $attributes['expandText'] ) ? $attributes['ex
 $expand_text            = str_replace( '[number]', ( count( $terms ) - $visible_items_number ), $expand_text );
 $collapse_text          = ! empty( $attributes['collapseText'] ) ? $attributes['collapseText'] : __( '- Show less', 'ls-plugin' );
 
+// Determine the current filter URL so the dropdown reflects the active selection on load.
+$base_url_for_context = $is_main_query ? get_pagenum_link( 1, false ) : add_query_arg( array( $page_key => 1 ) );
+$active_slug          = isset( $_REQUEST[ $key ] ) ? sanitize_key( wp_unslash( $_REQUEST[ $key ] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+$current_filter_value = $active_slug
+	? esc_url( add_query_arg( array( $key => $active_slug ), $base_url_for_context ) )
+	: esc_url( remove_query_arg( $key ) );
+
 $wrapper_attributes = get_block_wrapper_attributes(
 	array(
 		'class' => implode( ' ', $classes ),
 		'style' => implode( '', $styles ),
 	)
 );
+
+$inner_spacing_style_attr = '';
+
+$normalise_spacing_value = static function ( $value ) {
+	if ( ! is_string( $value ) ) {
+		return $value;
+	}
+
+	if ( 0 === strpos( $value, 'var:preset|spacing|' ) ) {
+		$parts = explode( '|', $value );
+		if ( isset( $parts[2] ) ) {
+			return "var(--wp--preset--spacing--{$parts[2]})";
+		}
+	}
+
+	return $value;
+};
+
+// Extract spacing from block attributes and move to inner elements.
+// Check both WordPress spacing attributes and inline styles.
+$spacing_styles = array();
+
+// Extract from WordPress spacing attributes (style.spacing.margin, style.spacing.padding).
+if ( ! empty( $attributes['style']['spacing'] ) ) {
+	$spacing_attr = $attributes['style']['spacing'];
+	
+	if ( ! empty( $spacing_attr['margin'] ) ) {
+		$margin = $spacing_attr['margin'];
+		if ( is_array( $margin ) ) {
+			foreach ( $margin as $spacing_side => $value ) {
+				if ( ! empty( $value ) ) {
+					$spacing_styles[] = "margin-{$spacing_side}:" . $normalise_spacing_value( $value );
+				}
+			}
+		} elseif ( ! empty( $margin ) ) {
+			$spacing_styles[] = 'margin:' . $normalise_spacing_value( $margin );
+		}
+	}
+	
+	if ( ! empty( $spacing_attr['padding'] ) ) {
+		$padding = $spacing_attr['padding'];
+		if ( is_array( $padding ) ) {
+			foreach ( $padding as $spacing_side => $value ) {
+				if ( ! empty( $value ) ) {
+					$spacing_styles[] = "padding-{$spacing_side}:" . $normalise_spacing_value( $value );
+				}
+			}
+		} elseif ( ! empty( $padding ) ) {
+			$spacing_styles[] = 'padding:' . $normalise_spacing_value( $padding );
+		}
+	}
+}
+
+// Also check inline styles in wrapper_attributes in case WordPress added them.
+if ( preg_match( '/style="([^"]*)"/', $wrapper_attributes, $style_match ) ) {
+	$wrapper_style      = $style_match[1];
+	$style_declarations = array_filter( array_map( 'trim', explode( ';', $wrapper_style ) ) );
+
+	foreach ( $style_declarations as $declaration ) {
+		if ( preg_match( '/^(margin|padding)(-|$)/i', $declaration ) ) {
+			$spacing_styles[] = $declaration;
+		}
+	}
+}
+
+// Remove duplicate spacing styles.
+$spacing_styles = array_unique( $spacing_styles );
+
+if ( ! empty( $spacing_styles ) ) {
+	$inner_spacing_style_attr = ' style="' . esc_attr( implode( ';', $spacing_styles ) . ';' ) . '"';
+	
+	// Remove spacing from wrapper by regenerating wrapper attributes without margin/padding.
+	$wrapper_attributes = preg_replace_callback(
+		'/style="([^"]*)"/',
+		function( $matches ) {
+			$style           = $matches[1];
+			$declarations    = array_filter( array_map( 'trim', explode( ';', $style ) ) );
+			$remaining_decls = array();
+			
+			foreach ( $declarations as $decl ) {
+				if ( ! preg_match( '/^(margin|padding)(-|$)/i', $decl ) ) {
+					$remaining_decls[] = $decl;
+				}
+			}
+			
+			if ( empty( $remaining_decls ) ) {
+				return '';
+			}
+			
+			return 'style="' . esc_attr( implode( ';', $remaining_decls ) . ';' ) . '"';
+		},
+		$wrapper_attributes
+	);
+}
 ?>
 
 <div
 	<?php echo $wrapper_attributes; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 	data-wp-interactive="lsPluginTaxonomyFilter"
-	<?php echo wp_interactivity_data_wp_context( array( 'isExpanded' => false ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+	<?php echo wp_interactivity_data_wp_context( array( 'isExpanded' => false, 'filterValue' => $current_filter_value ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 >
 	<?php if ( 'dropdown' === $attributes['filterType'] ) : ?>
 		<select
 			data-wp-on--change="actions.navigate"
 			data-wp-bind--value="context.filterValue"
 			aria-label="<?php echo esc_attr( $taxonomy->label ); ?>"
+			<?php echo $inner_spacing_style_attr; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 		>
 			<option value="<?php echo esc_url( remove_query_arg( $key ) ); ?>">
 				<?php echo esc_html( $all_items ); ?>
@@ -190,6 +289,7 @@ $wrapper_attributes = get_block_wrapper_attributes(
 			href="<?php echo esc_url( remove_query_arg( $key ) ); ?>"
 			class="wp-element-button <?php echo ! isset( $_REQUEST[ $key ] ) ? 'taxonomy-filter-current' : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended ?>"
 			data-wp-on--click="core/query::actions.navigate"
+			<?php echo $inner_spacing_style_attr; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 		>
 			<?php echo esc_html( $all_items ); ?>
 		</a>
@@ -210,6 +310,7 @@ $wrapper_attributes = get_block_wrapper_attributes(
 				href="<?php echo esc_url( $term_url ); ?>"
 				class="wp-element-button<?php echo $is_current ? ' taxonomy-filter-current' : ''; ?>"
 				data-wp-on--click="core/query::actions.navigate"
+				<?php echo $inner_spacing_style_attr; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			>
 				<?php
 				echo esc_html( $term->name );

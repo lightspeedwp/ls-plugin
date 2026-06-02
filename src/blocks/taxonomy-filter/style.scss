@@ -3,6 +3,13 @@
  */
 
 .wp-block-ls-plugin-taxonomy-filter {
+	// In the editor canvas, spacing support is applied to the wrapper block element.
+	// Keep wrapper spacing neutral so spacing appears only on inner controls.
+	&.block-editor-block-list__block {
+		margin: 0 !important;
+		padding: 0 !important;
+	}
+
 	&.taxonomy-filter--dropdown {
 		select {
 			width: 100%;
@@ -11,17 +18,17 @@
 			border: 1px solid currentColor;
 			border-radius: 0.25rem;
 			background-color: transparent;
-			color: inherit;
+			color: var(--wp--custom--color--text--default);
 			cursor: pointer;
-
-			&:focus {
-				outline: 2px solid currentColor;
-				outline-offset: 2px;
-			}
 		}
 	}
 
 	&.taxonomy-filter--buttons {
+		--taxonomy-filter-button-background: var(--wp--custom--color--button--fill--background, transparent);
+		--taxonomy-filter-button-text: var(--wp--custom--color--button--fill--text, inherit);
+		--taxonomy-filter-button-background-hover: var(--wp--custom--color--button--fill--background-hover, currentColor);
+		--taxonomy-filter-button-text-hover: var(--wp--custom--color--button--fill--text-hover, var(--wp--preset--color--base, #fff));
+
 		&.is-layout-flex {
 			flex-wrap: wrap;
 			gap: 0.5rem;
@@ -30,22 +37,22 @@
 		.wp-element-button {
 			margin: 0;
 			padding: 0.5rem 1rem;
-			border: 1px solid currentColor;
 			border-radius: 0.25rem;
-			background-color: transparent;
-			color: inherit;
+			background-color: var(--taxonomy-filter-button-background);
+			color: var(--taxonomy-filter-button-text);
 			text-decoration: none;
 			cursor: pointer;
 			transition: all 0.2s ease;
+			box-sizing: border-box;
 
 			&:hover {
-				background-color: currentColor;
-				color: var(--wp--preset--color--base, #fff);
+				background-color: var(--taxonomy-filter-button-background-hover);
+				color: var(--taxonomy-filter-button-text-hover);
 			}
 
 			&.taxonomy-filter-current {
-				background-color: currentColor;
-				color: var(--wp--preset--color--base, #fff);
+				background-color: var(--taxonomy-filter-button-background-hover);
+				color: var(--taxonomy-filter-button-text-hover);
 				font-weight: 600;
 			}
 		}
