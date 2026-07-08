@@ -104,7 +104,10 @@ class LS_Plugin_Portfolio_Terms {
 					continue;
 				}
 
-				wp_insert_term( $term, $taxonomy );
+				$inserted = wp_insert_term( $term, $taxonomy );
+				if ( is_wp_error( $inserted ) ) {
+					$all_taxonomies_ready = false;
+				}
 			}
 		}
 
