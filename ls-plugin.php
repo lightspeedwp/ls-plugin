@@ -54,6 +54,7 @@ function ls_plugin_init() {
 	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-scf-json-validator.php';
 	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-permalinks.php';
 	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-portfolio-terms.php';
+	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-ls-plugin-nav-ref-resolver.php';
 
 	// 3rd Party
 	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-ai-engine.php';
@@ -76,6 +77,9 @@ function ls_plugin_init() {
 
 	// Seed default Portfolio taxonomy terms.
 	new LS_Plugin_Portfolio_Terms();
+
+	// Auto-resolve the header navigation block's ref at render time.
+	new LS_Plugin_Nav_Ref_Resolver();
 }
 add_action( 'plugins_loaded', 'ls_plugin_init' );
 
@@ -211,4 +215,3 @@ function ls_plugin_enqueue_back_to_top_styles() {
 	);
 }
 add_action( 'enqueue_block_assets', 'ls_plugin_enqueue_back_to_top_styles' );
-
