@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- Added a navigation ref auto-resolver: when a `core/navigation` block has no `ref` attribute, it is resolved at render time to the `wp_navigation` post matching a documented slug convention (`header-navigation` by default, filterable via `ls_plugin_nav_ref_slug`), so themes never need a hardcoded, environment-specific post ID.
+- Added a navigation ref auto-resolver: when a `core/navigation` block has no `ref` attribute, it is resolved at render time to the `wp_navigation` post matching a documented slug convention (`header-navigation` by default, filterable via `ls_plugin_nav_ref_slug`), so themes never need a hardcoded, environment-specific post ID. The lookup allows multilingual plugins (WPML, Polylang) to filter it and resolve the translated nav post for the current language.
 - Added default term seeding for Portfolio taxonomies (Industries, Software, Project types, and Services) so a fresh plugin install reproduces the approved term set instead of requiring manual term creation.
 - Added a Style Switcher block with selectable theme style variations and configurable icon display behaviour.
 - Added a Button Icon selector panel for core Button blocks, including left/right positioning and up/down icon options.
