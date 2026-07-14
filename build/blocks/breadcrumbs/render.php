@@ -48,22 +48,7 @@ if ( is_front_page() ) {
 		$ls_breadcrumbs_term = get_queried_object();
 
 		if ( $ls_breadcrumbs_term instanceof WP_Term ) {
-			if ( is_taxonomy_hierarchical( $ls_breadcrumbs_term->taxonomy ) ) {
-				$ls_breadcrumbs_ancestor_ids = array_reverse(
-					get_ancestors( $ls_breadcrumbs_term->term_id, $ls_breadcrumbs_term->taxonomy, 'taxonomy' )
-				);
-
-				foreach ( $ls_breadcrumbs_ancestor_ids as $ls_breadcrumbs_ancestor_id ) {
-					$ls_breadcrumbs_ancestor_term = get_term( $ls_breadcrumbs_ancestor_id, $ls_breadcrumbs_term->taxonomy );
-
-					if ( $ls_breadcrumbs_ancestor_term instanceof WP_Term ) {
-						$ls_breadcrumbs_trail[] = array(
-							'label' => $ls_breadcrumbs_ancestor_term->name,
-							'url'   => get_term_link( $ls_breadcrumbs_ancestor_term ),
-						);
-					}
-				}
-			}
+			LS_Plugin_Breadcrumbs::add_taxonomy_ancestors( $ls_breadcrumbs_trail, $ls_breadcrumbs_term );
 
 			$ls_breadcrumbs_trail[] = array(
 				'label' => $ls_breadcrumbs_term->name,
@@ -77,40 +62,18 @@ if ( is_front_page() ) {
 			$ls_breadcrumbs_post_type = get_post_type( $ls_breadcrumbs_post );
 
 			if ( is_post_type_hierarchical( $ls_breadcrumbs_post_type ) ) {
-				$ls_breadcrumbs_ancestor_ids = array_reverse( get_post_ancestors( $ls_breadcrumbs_post ) );
-
-				foreach ( $ls_breadcrumbs_ancestor_ids as $ls_breadcrumbs_ancestor_id ) {
-					$ls_breadcrumbs_trail[] = array(
-						'label' => get_the_title( $ls_breadcrumbs_ancestor_id ),
-						'url'   => get_permalink( $ls_breadcrumbs_ancestor_id ),
-					);
-				}
+				LS_Plugin_Breadcrumbs::add_post_ancestors( $ls_breadcrumbs_trail, $ls_breadcrumbs_post );
 			} elseif ( 'post' === $ls_breadcrumbs_post_type ) {
 				$ls_breadcrumbs_categories = get_the_category( $ls_breadcrumbs_post->ID );
 
 				if ( ! empty( $ls_breadcrumbs_categories ) ) {
 					$ls_breadcrumbs_primary_term = $ls_breadcrumbs_categories[0];
 
-					if ( is_taxonomy_hierarchical( 'category' ) ) {
-						$ls_breadcrumbs_ancestor_ids = array_reverse(
-							get_ancestors( $ls_breadcrumbs_primary_term->term_id, 'category', 'taxonomy' )
-						);
-
-						foreach ( $ls_breadcrumbs_ancestor_ids as $ls_breadcrumbs_ancestor_id ) {
-							$ls_breadcrumbs_ancestor_term = get_term( $ls_breadcrumbs_ancestor_id, 'category' );
-
-							if ( $ls_breadcrumbs_ancestor_term instanceof WP_Term ) {
-								$ls_breadcrumbs_trail[] = array(
-									'label' => $ls_breadcrumbs_ancestor_term->name,
-									'url'   => get_term_link( $ls_breadcrumbs_ancestor_term ),
-								);
-							}
-						}
-					}
+					LS_Plugin_Breadcrumbs::add_taxonomy_ancestors( $ls_breadcrumbs_trail, $ls_breadcrumbs_primary_term );
 
 					$ls_breadcrumbs_trail[] = array(
 						'label' => $ls_breadcrumbs_primary_term->name,
-						'url'   => get_term_link( $ls_breadcrumbs_primary_term ),
+						'url'   => LS_Plugin_Breadcrumbs::get_term_url( $ls_breadcrumbs_primary_term ),
 					);
 				}
 			}
@@ -124,14 +87,7 @@ if ( is_front_page() ) {
 		$ls_breadcrumbs_post = get_queried_object();
 
 		if ( $ls_breadcrumbs_post instanceof WP_Post ) {
-			$ls_breadcrumbs_ancestor_ids = array_reverse( get_post_ancestors( $ls_breadcrumbs_post ) );
-
-			foreach ( $ls_breadcrumbs_ancestor_ids as $ls_breadcrumbs_ancestor_id ) {
-				$ls_breadcrumbs_trail[] = array(
-					'label' => get_the_title( $ls_breadcrumbs_ancestor_id ),
-					'url'   => get_permalink( $ls_breadcrumbs_ancestor_id ),
-				);
-			}
+			LS_Plugin_Breadcrumbs::add_post_ancestors( $ls_breadcrumbs_trail, $ls_breadcrumbs_post );
 
 			$ls_breadcrumbs_trail[] = array(
 				'label' => get_the_title( $ls_breadcrumbs_post ),
