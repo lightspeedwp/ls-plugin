@@ -98,12 +98,12 @@ class LS_Plugin_Nav_Ref_Resolver {
 
 		$posts = get_posts(
 			array(
-				'name'           => $slug,
-				'post_type'      => 'wp_navigation',
-				'post_status'    => 'publish',
-				'numberposts'    => 1,
-				'no_found_rows'  => true,
-				'fields'         => 'ids',
+				'name'          => $slug,
+				'post_type'     => 'wp_navigation',
+				'post_status'   => 'publish',
+				'numberposts'   => 1,
+				'no_found_rows' => true,
+				'fields'        => 'ids',
 			)
 		);
 
