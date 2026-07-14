@@ -1,0 +1,33 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "ls-plugin/breadcrumbs",
+  "version": "1.0.0",
+  "title": "Breadcrumbs",
+  "category": "theme",
+  "description": "Displays a breadcrumb navigation trail for the current page, built entirely from core WordPress data.",
+  "keywords": [
+    "breadcrumb",
+    "breadcrumbs",
+    "navigation"
+  ],
+  "textdomain": "ls-plugin",
+  "editorScript": "file:./index.js",
+  "style": "file:./style-index.css",
+  "supports": {
+    "html": false,
+    "align": [
+      "wide",
+      "full"
+    ],
+    "spacing": {
+      "margin": true,
+      "padding": true,
+      "__experimentalDefaultControls": {
+        "margin": false,
+        "padding": false
+      }
+    }
+  },
+  "render": "file:./render.php"
+}

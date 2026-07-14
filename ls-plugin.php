@@ -50,6 +50,7 @@ function ls_plugin_init() {
 	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-taxonomy-filter.php';
 	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-style-switcher.php';
 	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-carousel.php';
+	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-breadcrumbs.php';
 	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-scf-json.php';
 	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-scf-json-validator.php';
 	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-permalinks.php';
@@ -67,6 +68,8 @@ function ls_plugin_init() {
 	$style_switcher->register_hooks();
 
 	new LS_Plugin_Carousel();
+
+	new LS_Plugin_Breadcrumbs();
 
 	// Configure SCF to use plugin-managed Local JSON paths.
 	new LS_Plugin_SCF_JSON();

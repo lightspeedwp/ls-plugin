@@ -1,0 +1,42 @@
+/**
+ * Breadcrumbs Block Styles
+ */
+
+.ls-crumbs {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.35em;
+	font-size: 0.875rem;
+	line-height: 1.4;
+	color: var(--wp--custom--color--text--muted, currentColor);
+
+	a {
+		color: inherit;
+		text-decoration: underline;
+		text-decoration-color: transparent;
+		transition: text-decoration-color 0.15s ease;
+
+		&:hover,
+		&:focus {
+			text-decoration-color: currentColor;
+		}
+	}
+
+	i {
+		font-style: normal;
+		opacity: 0.5;
+	}
+
+	span[aria-current="page"] {
+		color: var(--wp--custom--color--text--default, currentColor);
+		font-weight: 500;
+	}
+}
+
+.ls-crumbs-placeholder {
+	padding: 0.5em 0.75em;
+	border: 1px dashed currentColor;
+	opacity: 0.6;
+	font-style: italic;
+}

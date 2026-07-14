@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Added a new Breadcrumbs dynamic block (`ls-plugin/breadcrumbs`) that builds its trail entirely from core WordPress data (front page, blog, category/tag/taxonomy archives with nested term ancestors, single posts, pages, search, and 404), with no dependency on any third-party plugin. Includes an editor placeholder preview and front-end styling for the `nav.ls-crumbs` trail.
 - Added default term seeding for Portfolio taxonomies (Industries, Software, Project types, and Services) so a fresh plugin install reproduces the approved term set instead of requiring manual term creation.
 - Added a Style Switcher block with selectable theme style variations and configurable icon display behaviour.
 - Added a Button Icon selector panel for core Button blocks, including left/right positioning and up/down icon options.
