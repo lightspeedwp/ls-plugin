@@ -29,7 +29,7 @@ class LS_Plugin_Portfolio_Terms {
 	 *
 	 * @var string
 	 */
-	const SEED_VERSION = '2';
+	const SEED_VERSION = '3';
 
 	/**
 	 * Option name used to track which seed version has already run.
@@ -50,6 +50,7 @@ class LS_Plugin_Portfolio_Terms {
 			'WordPress',
 			'WooCommerce',
 			'Health & Fitness',
+			'Media',
 		),
 		'ls_plugin_portfolio_software'     => array(
 			'Google Analytics',
@@ -58,6 +59,7 @@ class LS_Plugin_Portfolio_Terms {
 		),
 		'ls_plugin_portfolio_project_type' => array(
 			'New Store',
+			'New Tour Operator Website',
 			'New Website',
 			'Store Redesign',
 			'Tour Operator Website Redesign',
@@ -67,6 +69,7 @@ class LS_Plugin_Portfolio_Terms {
 			'Branding',
 			'Content Management',
 			'Design',
+			'Design System',
 			'Development',
 			'Discovery',
 			'Featured',
