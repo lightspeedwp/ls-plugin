@@ -225,7 +225,7 @@ class Permalinks {
 			return $args;
 		}
 
-		if ( 'ls_plugin_portfolio' === $post_type_slug ) {
+		if ( 'project' === $post_type_slug ) {
 			$field_key   = 'ls_plugin_scf_portfolio';
 			$custom_slug = isset( $slug_options[ $field_key ] ) ? $slug_options[ $field_key ] : '';
 
@@ -256,8 +256,8 @@ class Permalinks {
 
 		// Map taxonomy slugs to custom configuration keys.
 		$taxonomy_mapping = array(
-			'ls_plugin_portfolio_industry' => 'portfolio-industry',
-			'ls_plugin_portfolio_service'  => 'portfolio-service',
+			'project-group' => 'portfolio-industry',
+			'project-tag'   => 'portfolio-service',
 		);
 
 		if ( ! isset( $taxonomy_mapping[ $taxonomy_slug ] ) ) {

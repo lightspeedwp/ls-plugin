@@ -1,0 +1,70 @@
+{
+  "key": "taxonomy_ls_plugin_portfolio_project_group",
+  "title": "Industry & Software",
+  "menu_order": 0,
+  "active": true,
+  "taxonomy": "project-group",
+  "object_type": [
+    "project"
+  ],
+  "advanced_configuration": true,
+  "labels": {
+    "name": "Industry & Software",
+    "singular_name": "Industry / Software",
+    "menu_name": "Industry & Software",
+    "all_items": "All Industry & Software",
+    "edit_item": "Edit Industry & Software",
+    "view_item": "View Industry & Software",
+    "update_item": "Update Industry & Software",
+    "add_new_item": "Add New Industry & Software",
+    "new_item_name": "New Industry & Software Name",
+    "parent_item": "Parent Industry & Software",
+    "parent_item_colon": "Parent Industry & Software:",
+    "search_items": "Search Industry & Software",
+    "popular_items": "Popular Industry & Software",
+    "separate_items_with_commas": "Separate items with commas",
+    "add_or_remove_items": "Add or remove items",
+    "choose_from_most_used": "Choose from the most used items",
+    "not_found": "No items found",
+    "items_list_navigation": "Industry & Software list navigation",
+    "items_list": "Industry & Software list",
+    "back_to_items": "Back to Industry & Software",
+    "item_link": "Industry & Software Link",
+    "item_link_description": "A link to an industry or software item."
+  },
+  "description": "",
+  "capabilities": {
+    "manage_terms": "manage_categories",
+    "edit_terms": "manage_categories",
+    "delete_terms": "manage_categories",
+    "assign_terms": "edit_posts"
+  },
+  "public": true,
+  "publicly_queryable": true,
+  "hierarchical": true,
+  "show_ui": true,
+  "show_in_menu": true,
+  "show_in_nav_menus": true,
+  "show_in_rest": true,
+  "rest_base": "portfolio-industry",
+  "rest_namespace": "wp/v2",
+  "rest_controller_class": "",
+  "show_tagcloud": true,
+  "show_in_quick_edit": true,
+  "show_admin_column": true,
+  "rewrite": {
+    "slug": "portfolio-industry",
+	"permalink_rewrite": "custom_permalink",
+    "with_front": "1",
+    "rewrite_hierarchical": "1"
+  },
+  "query_var": "post_type_key",
+  "query_var_name": "",
+  "default_term": {
+    "default_term_enabled": "0"
+  },
+  "sort": false,
+  "meta_box": "default",
+  "meta_box_cb": "",
+  "meta_box_sanitize_cb": ""
+}
