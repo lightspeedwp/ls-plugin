@@ -85,27 +85,45 @@ class LS_Plugin_Portfolio_Taxonomy_Migration {
 
 		global $wpdb;
 
+		$all_writes_succeeded = true;
+
 		// Move existing Portfolio posts onto the live-matching post type.
-		$wpdb->update(
+		if ( false === $wpdb->update(
 			$wpdb->posts,
 			array( 'post_type' => $this->new_post_type ),
 			array( 'post_type' => $this->old_post_type )
-		);
+		) ) {
+			$all_writes_succeeded = false;
+		}
 
 		// Move existing term assignments onto the live-matching taxonomy
 		// names (this preserves wp_term_relationships untouched, since those
 		// reference term_taxonomy_id, not the taxonomy name string).
 		foreach ( $this->taxonomy_map as $old_taxonomy => $new_taxonomy ) {
-			$wpdb->update(
+			if ( false === $wpdb->update(
 				$wpdb->term_taxonomy,
 				array( 'taxonomy' => $new_taxonomy ),
 				array( 'taxonomy' => $old_taxonomy )
-			);
+			) ) {
+				$all_writes_succeeded = false;
+			}
+		}
+
+		// Only mark this version as migrated if every write above actually
+		// succeeded — otherwise retry on the next request instead of
+		// silently leaving posts/terms half-migrated.
+		if ( ! $all_writes_succeeded ) {
+			return;
 		}
 
 		foreach ( array_unique( array_values( $this->taxonomy_map ) ) as $new_taxonomy ) {
 			clean_taxonomy_cache( $new_taxonomy );
 		}
+
+		// The CPT/taxonomy machine names changed, so cached permalink
+		// structures for Portfolio content are stale until rewrite rules
+		// are regenerated. Flush once, only on this migration's success path.
+		flush_rewrite_rules();
 
 		update_option( self::MIGRATED_OPTION, self::MIGRATION_VERSION );
 	}
