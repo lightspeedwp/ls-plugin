@@ -3,9 +3,9 @@
     "title": "Project types",
     "menu_order": 0,
     "active": true,
-    "taxonomy": "ls_plugin_portfolio_project_type",
+    "taxonomy": "project-type",
     "object_type": [
-        "ls_plugin_portfolio"
+        "project"
     ],
     "advanced_configuration": true,
     "labels": {

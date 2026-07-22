@@ -53,6 +53,7 @@ function ls_plugin_init() {
 	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-scf-json.php';
 	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-scf-json-validator.php';
 	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-permalinks.php';
+	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-portfolio-taxonomy-migration.php';
 	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-portfolio-terms.php';
 	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-ls-plugin-nav-ref-resolver.php';
 
@@ -74,6 +75,9 @@ function ls_plugin_init() {
 
 	// Manage custom permalinks for SCF post types and taxonomies.
 	new LS_Plugin\Permalinks();
+
+	// Realign existing Portfolio posts/terms with the live-matching slugs.
+	new LS_Plugin_Portfolio_Taxonomy_Migration();
 
 	// Seed default Portfolio taxonomy terms.
 	new LS_Plugin_Portfolio_Terms();

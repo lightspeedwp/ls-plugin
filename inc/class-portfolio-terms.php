@@ -29,7 +29,7 @@ class LS_Plugin_Portfolio_Terms {
 	 *
 	 * @var string
 	 */
-	const SEED_VERSION = '3';
+	const SEED_VERSION = '4';
 
 	/**
 	 * Option name used to track which seed version has already run.
@@ -44,20 +44,18 @@ class LS_Plugin_Portfolio_Terms {
 	 * @var array<string, string[]>
 	 */
 	private $default_terms = array(
-		'ls_plugin_portfolio_industry'     => array(
+		'project-group'    => array(
 			'eLearning',
 			'Tour Operators',
 			'WordPress',
 			'WooCommerce',
 			'Health & Fitness',
 			'Media',
-		),
-		'ls_plugin_portfolio_software'     => array(
 			'Google Analytics',
 			'Gravity Forms',
 			'Yoast SEO',
 		),
-		'ls_plugin_portfolio_project_type' => array(
+		'project-type'     => array(
 			'New Store',
 			'New Tour Operator Website',
 			'New Website',
@@ -65,7 +63,7 @@ class LS_Plugin_Portfolio_Terms {
 			'Tour Operator Website Redesign',
 			'Website Redesign',
 		),
-		'ls_plugin_portfolio_service'      => array(
+		'project-tag'      => array(
 			'Branding',
 			'Content Management',
 			'Design',

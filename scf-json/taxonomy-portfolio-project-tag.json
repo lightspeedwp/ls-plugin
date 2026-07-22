@@ -3,9 +3,9 @@
   "title": "Service",
   "menu_order": 0,
   "active": true,
-  "taxonomy": "ls_plugin_portfolio_service",
+  "taxonomy": "project-tag",
   "object_type": [
-    "ls_plugin_portfolio"
+    "project"
   ],
   "advanced_configuration": true,
   "labels": {

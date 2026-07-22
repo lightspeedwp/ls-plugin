@@ -71,7 +71,7 @@
       {
         "param": "post_type",
         "operator": "==",
-        "value": "ls_plugin_portfolio"
+        "value": "project"
       }
     ]
   ],
