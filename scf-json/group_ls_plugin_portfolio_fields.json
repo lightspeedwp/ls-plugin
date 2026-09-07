@@ -43,27 +43,6 @@
       },
       "placeholder": "https://",
       "default_value": ""
-    },
-    {
-      "key": "field_ls_plugin_client_name",
-      "label": "Client Name",
-      "name": "ls_plugin_client_name",
-      "aria-label": "",
-      "type": "text",
-      "instructions": "",
-      "required": 0,
-      "conditional_logic": 0,
-      "wrapper": {
-        "width": "",
-        "class": "",
-        "id": ""
-      },
-      "default_value": "",
-      "maxlength": "",
-      "allow_in_bindings": 0,
-      "placeholder": "",
-      "prepend": "",
-      "append": ""
     }
   ],
   "location": [
@@ -71,7 +50,7 @@
       {
         "param": "post_type",
         "operator": "==",
-        "value": "project"
+        "value": "ls_plugin_portfolio"
       }
     ]
   ],
