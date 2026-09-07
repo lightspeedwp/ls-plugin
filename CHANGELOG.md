@@ -45,6 +45,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Removed the standalone Back to Top block source in favour of variation-based implementation.
 
 ### Fixed
+- Fixed the Linkable Blocks stylesheet 404ing on every page load sitewide: `inc/linkable-blocks.php` enqueued `build/css/style-linkable-blocks.css`, a filename that doesn't exist (likely copy-pasted from another block's enqueue code, which does use a `style-` prefix). The actual compiled file is `build/css/linkable-blocks.css`. Corrected the enqueued path to match.
 - Fixed editor runtime errors from invalid React component handling in Back to Top editor integration.
 - Fixed strict mode error in Back to Top animation loop by replacing `arguments.callee` with a named animation step.
 - Fixed Taxonomy Filter full-page refresh behaviour by enabling client-side Query Loop navigation when the block is present.
