@@ -14,12 +14,14 @@
  * @since   0.2.0
  */
 
+namespace LS_Plugin;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
 /**
- * Class LS_Plugin_Nav_Ref_Resolver
+ * Class Nav_Ref_Resolver
  *
  * Scoped to the header navigation location only for Phase 1 — there is
  * currently only one active `core/navigation` block in the theme. Additional
@@ -28,7 +30,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 0.2.0
  */
-class LS_Plugin_Nav_Ref_Resolver {
+class Nav_Ref_Resolver {
 
 	/**
 	 * Default conventional slug for the header `wp_navigation` post.

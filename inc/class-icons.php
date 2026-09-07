@@ -13,18 +13,20 @@
  * @since   0.3.0
  */
 
+namespace LS_Plugin;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
 /**
- * Class LS_Plugin_Icons
+ * Class Icons
  *
  * Registers the LightSpeed icon collection and its icons on `init`.
  *
  * @since 0.3.0
  */
-class LS_Plugin_Icons {
+class Icons {
 
 	/**
 	 * Icon collection slug.

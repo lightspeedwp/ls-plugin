@@ -80,7 +80,7 @@ Responsibilities:
 - Load includes from `ls_plugin_init()` via `plugins_loaded`.
 - Use WordPress coding standards (tabs for indentation in PHP).
 - Do not add a PHP autoloader unless genuinely needed.
-- Class files go in `inc/` — name them `class-ls-plugin-name.php`.
+- Class files go in `inc/` — name them `class-name.php`, declare `namespace LS_Plugin;`, and name the class without an `LS_Plugin_` prefix (e.g. `inc/class-permalinks.php` declares `LS_Plugin\Permalinks`).
 
 ### Escaping output (required)
 

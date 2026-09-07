@@ -6,6 +6,8 @@
  * @since   1.0.0
  */
 
+namespace LS_Plugin;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -15,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 1.0.0
  */
-class LS_Plugin_SCF_JSON {
+class SCF_JSON {
 
 	/**
 	 * Local JSON directory path.
