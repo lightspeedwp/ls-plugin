@@ -55,6 +55,7 @@ function ls_plugin_init() {
 	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-permalinks.php';
 	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-portfolio-terms.php';
 	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-ls-plugin-nav-ref-resolver.php';
+	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-ls-plugin-icons.php';
 
 	// 3rd Party
 	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-ai-engine.php';
@@ -80,6 +81,9 @@ function ls_plugin_init() {
 
 	// Auto-resolve the header navigation block's ref at render time.
 	new LS_Plugin_Nav_Ref_Resolver();
+
+	// Register the LightSpeed SVG icon collection (WordPress 7.1+).
+	new LS_Plugin_Icons();
 }
 add_action( 'plugins_loaded', 'ls_plugin_init' );
 
