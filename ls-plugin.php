@@ -54,45 +54,49 @@ function ls_plugin_init() {
 	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-scf-json-validator.php';
 	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-permalinks.php';
 	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-portfolio-terms.php';
-	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-ls-plugin-nav-ref-resolver.php';
+	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-nav-ref-resolver.php';
+	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-icons.php';
 
 	// 3rd Party
 	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-ai-engine.php';
 
-	$search_filter = new LS_Plugin_Search_Filter();
+	$search_filter = new LS_Plugin\Search_Filter();
 	$search_filter->register_hooks();
 
-	new LS_Plugin_Taxonomy_Filter();
+	new LS_Plugin\Taxonomy_Filter();
 
-	$style_switcher = new LS_Plugin_Style_Switcher();
+	$style_switcher = new LS_Plugin\Style_Switcher();
 	$style_switcher->register_hooks();
 
-	new LS_Plugin_Carousel();
+	new LS_Plugin\Carousel();
 
 	// Configure SCF to use plugin-managed Local JSON paths.
-	new LS_Plugin_SCF_JSON();
+	new LS_Plugin\SCF_JSON();
 
 	// Manage custom permalinks for SCF post types and taxonomies.
 	new LS_Plugin\Permalinks();
 
 	// Seed default Portfolio taxonomy terms.
-	new LS_Plugin_Portfolio_Terms();
+	new LS_Plugin\Portfolio_Terms();
 
 	// Auto-resolve the header navigation block's ref at render time.
-	new LS_Plugin_Nav_Ref_Resolver();
+	new LS_Plugin\Nav_Ref_Resolver();
+
+	// Register the LightSpeed SVG icon collection (WordPress 7.1+).
+	new LS_Plugin\Icons();
 }
 add_action( 'plugins_loaded', 'ls_plugin_init' );
 
 /**
  * Returns a shared SCF JSON validator instance.
  *
- * @return LS_Plugin_SCF_JSON_Validator
+ * @return LS_Plugin\SCF_JSON_Validator
  */
 function ls_plugin_get_scf_json_validator() {
 	static $validator = null;
 
 	if ( null === $validator ) {
-		$validator = new LS_Plugin_SCF_JSON_Validator();
+		$validator = new LS_Plugin\SCF_JSON_Validator();
 	}
 
 	return $validator;

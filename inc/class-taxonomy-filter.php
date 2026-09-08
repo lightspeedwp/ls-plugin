@@ -7,12 +7,18 @@
  * @package LS_Plugin
  */
 
+namespace LS_Plugin;
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
- * Class LS_Plugin_Taxonomy_Filter
+ * Class Taxonomy_Filter
  *
  * Handles registration and query filtering for the Taxonomy Filter block.
  */
-class LS_Plugin_Taxonomy_Filter {
+class Taxonomy_Filter {
 
 	/**
 	 * Constructor.
@@ -51,7 +57,7 @@ class LS_Plugin_Taxonomy_Filter {
 	/**
 	 * Filter the main query based on taxonomy filter parameters.
 	 *
-	 * @param WP_Query $query The WP_Query instance.
+	 * @param \WP_Query $query The WP_Query instance.
 	 */
 	public function filter_main_query( $query ) {
 		if ( is_admin() || ! $query->is_main_query() ) {
@@ -87,8 +93,8 @@ class LS_Plugin_Taxonomy_Filter {
 	/**
 	 * Filter secondary queries (Query Loop blocks) based on taxonomy filter parameters.
 	 *
-	 * @param array    $query  Query vars.
-	 * @param WP_Block $block  Block instance.
+	 * @param array     $query  Query vars.
+	 * @param \WP_Block $block  Block instance.
 	 * @param int      $page   Current page number.
 	 * @return array Modified query vars.
 	 */

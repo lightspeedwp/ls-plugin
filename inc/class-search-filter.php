@@ -5,6 +5,8 @@
  * @package LS_Plugin
  */
 
+namespace LS_Plugin;
+
 // Prevent direct access.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -13,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Handles the Search Filter block registration and Query Loop filtering.
  */
-class LS_Plugin_Search_Filter {
+class Search_Filter {
 
 	/**
 	 * Registers all WordPress hooks.
@@ -67,11 +69,11 @@ class LS_Plugin_Search_Filter {
 	/**
 	 * Filters the inherited main query using the block request parameter.
 	 *
-	 * @param WP_Query $query Query object.
+	 * @param \WP_Query $query Query object.
 	 * @return void
 	 */
 	public function filter_main_query( $query ) {
-		if ( ! $query instanceof WP_Query || ! $query->is_main_query() ) {
+		if ( ! $query instanceof \WP_Query || ! $query->is_main_query() ) {
 			return;
 		}
 
@@ -94,8 +96,8 @@ class LS_Plugin_Search_Filter {
 	/**
 	 * Filters non-inherited Query Loop block queries using the block request parameter.
 	 *
-	 * @param array    $query Query vars.
-	 * @param WP_Block $block Block instance.
+	 * @param array     $query Query vars.
+	 * @param \WP_Block $block Block instance.
 	 * @param int      $page  Current page.
 	 * @return array
 	 */

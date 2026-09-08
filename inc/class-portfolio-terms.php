@@ -10,18 +10,20 @@
  * @since   0.2.0
  */
 
+namespace LS_Plugin;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
 /**
- * Class LS_Plugin_Portfolio_Terms
+ * Class Portfolio_Terms
  *
  * Idempotently creates default terms for the Portfolio taxonomies.
  *
  * @since 0.2.0
  */
-class LS_Plugin_Portfolio_Terms {
+class Portfolio_Terms {
 
 	/**
 	 * Bump this whenever the default term list below changes, so the

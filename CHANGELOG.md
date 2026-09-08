@@ -29,6 +29,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added Carousel Slide block (`ls-plugin/carousel-slide`) as a child block with InnerBlocks support for core content blocks, vertical alignment controls, and full block supports (border, color, spacing).
 - Added Swiper library (v12.0.3) bundled locally in the plugin assets folder for offline carousel functionality.
 - Added server-side carousel asset management using render_block filter for reliable conditional loading of Swiper CSS, JS, and initialization scripts.
+- Added a `lightspeed` SVG icon collection (`LS_Plugin\Icons`) using the WordPress 7.1 icon registration API (`wp_register_icon_collection()` / `wp_register_icon()`), auto-registering every SVG dropped into `assets/icons/lightspeed/` for use in the block editor and via `wp_get_icon()`.
+- Added 93 icons to the `lightspeed` collection, sourced from [Phosphor Icons](https://phosphoricons.com/) (MIT licensed), covering navigation, search, contact, social, content/meta, media, tour/commerce, and site-chrome use cases.
 
 ### Changed
 - Changed Back to Top implementation from a standalone custom block to a `core/button` variation.
@@ -38,6 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Changed the plugin bootstrap to load SCF JSON configuration, validation, and permalink management classes.
 - Changed Search Filter block interactivity handling to use a dedicated view script module with debounced query updates and Query Loop integration hooks.
 - Changed Taxonomy Filter block interactivity handling to use dedicated view script module with client-side navigation and per-instance state management for expand/collapse controls.
+- Changed all `inc/` classes to be namespaced under `LS_Plugin\`, dropping the `LS_Plugin_` prefix from class names (e.g. `LS_Plugin_Carousel` → `LS_Plugin\Carousel`), and renamed the corresponding files to match (e.g. `class-ls-plugin-icons.php` → `class-icons.php`).
 
 ### Deprecated
 
