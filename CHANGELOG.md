@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Added a `Template_Parts` class (adapted from Tour Operator) that registers a new **FAQ** template part area, an `ls-plugin/faq` pattern built on the Yoast FAQ block, and a `faq` template part that calls it. The FAQ area, pattern, and template part are only registered while Yoast SEO is active. Further template parts can be added via the `ls_plugin_template_parts` filter.
 - Added 8 more icons to the `lightspeed` icon collection — `circle`, `coins`, `hard-drives`, `chart-bar`, `users-three`, `paper-plane-tilt`, `git-fork`, `chat-circle-dots` — found missing while cross-checking design mockups against the existing set. See [#26](https://github.com/lightspeedwp/ls-plugin/pull/26).
 - Added 5 remaining icons to the `lightspeed` icon collection — `notepad`, `clipboard-text`, `github`, `rocket-launch`, `buildings` — closing out LS-3229's "Missing icons" tracking list.
 - Added a navigation ref auto-resolver: when a `core/navigation` block has no `ref` attribute, it is resolved at render time to the `wp_navigation` post matching a documented slug convention (`header-navigation` by default, filterable via `ls_plugin_nav_ref_slug`), so themes never need a hardcoded, environment-specific post ID. The lookup allows multilingual plugins (WPML, Polylang) to filter it and resolve the translated nav post for the current language.

@@ -56,6 +56,7 @@ function ls_plugin_init() {
 	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-portfolio-terms.php';
 	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-nav-ref-resolver.php';
 	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-icons.php';
+	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-template-parts.php';
 
 	// 3rd Party
 	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-ai-engine.php';
@@ -84,6 +85,9 @@ function ls_plugin_init() {
 
 	// Register the LightSpeed SVG icon collection (WordPress 7.1+).
 	new LS_Plugin\Icons();
+
+	// Register template part areas, patterns, and template parts (FAQ requires Yoast SEO).
+	new LS_Plugin\Template_Parts();
 }
 add_action( 'plugins_loaded', 'ls_plugin_init' );
 
