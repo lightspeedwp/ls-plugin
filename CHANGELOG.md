@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Added a **Settings → LightSpeed** page (via Secure Custom Fields) with a "Post Types" tab that lists every post type found in `scf-json/` as a checkbox. Plugin post types, including Portfolio, are now disabled by default and must be enabled there after activation; rewrite rules are flushed on save. See LS-4288.
 - Added 8 more icons to the `lightspeed` icon collection — `circle`, `coins`, `hard-drives`, `chart-bar`, `users-three`, `paper-plane-tilt`, `git-fork`, `chat-circle-dots` — found missing while cross-checking design mockups against the existing set. See [#26](https://github.com/lightspeedwp/ls-plugin/pull/26).
 - Added 5 remaining icons to the `lightspeed` icon collection — `notepad`, `clipboard-text`, `github`, `rocket-launch`, `buildings` — closing out LS-3229's "Missing icons" tracking list.
 - Added a navigation ref auto-resolver: when a `core/navigation` block has no `ref` attribute, it is resolved at render time to the `wp_navigation` post matching a documented slug convention (`header-navigation` by default, filterable via `ls_plugin_nav_ref_slug`), so themes never need a hardcoded, environment-specific post ID. The lookup allows multilingual plugins (WPML, Polylang) to filter it and resolve the translated nav post for the current language.
@@ -35,6 +36,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added 93 icons to the `lightspeed` collection, sourced from [Phosphor Icons](https://phosphoricons.com/) (MIT licensed), covering navigation, search, contact, social, content/meta, media, tour/commerce, and site-chrome use cases.
 
 ### Changed
+- Changed the Portfolio post type (`project`) to be disabled by default. Existing sites must enable it under **Settings → LightSpeed → Post Types** after updating, or Portfolio content will be hidden. See LS-4288.
 - Changed Back to Top implementation from a standalone custom block to a `core/button` variation.
 - Changed Back to Top frontend targeting to use a dedicated wrapper class (`is-back-to-top`) for reliable JS and CSS behaviour.
 - Changed Back to Top visibility to always display (removed scroll-threshold hide/show behaviour).

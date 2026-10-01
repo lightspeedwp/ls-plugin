@@ -52,6 +52,7 @@ function ls_plugin_init() {
 	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-carousel.php';
 	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-scf-json.php';
 	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-scf-json-validator.php';
+	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-options.php';
 	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-permalinks.php';
 	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-portfolio-terms.php';
 	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-nav-ref-resolver.php';
@@ -72,6 +73,9 @@ function ls_plugin_init() {
 
 	// Configure SCF to use plugin-managed Local JSON paths.
 	new LS_Plugin\SCF_JSON();
+
+	// Settings page: let admins enable the plugin's SCF post types.
+	new LS_Plugin\Options();
 
 	// Manage custom permalinks for SCF post types and taxonomies.
 	new LS_Plugin\Permalinks();
