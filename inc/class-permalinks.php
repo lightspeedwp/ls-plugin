@@ -86,6 +86,11 @@ class Permalinks {
 	 * Register the setting to save custom fields.
 	 */
 	public function register_permalink_settings() {
+		// The slug fields only apply while the Portfolio post type is enabled.
+		if ( ! Options::is_post_type_enabled( 'project' ) ) {
+			return;
+		}
+
 		register_setting(
 			'permalink',
 			'ls_plugin_scf_slugs',
@@ -230,6 +235,7 @@ class Permalinks {
 	 */
 	public function save_custom_permalink_fields() {
 		if (
+			Options::is_post_type_enabled( 'project' ) &&
 			isset( $_POST['ls_plugin_scf_slugs'] ) &&
 			is_array( $_POST['ls_plugin_scf_slugs'] ) &&
 			current_user_can( 'manage_options' )
