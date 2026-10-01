@@ -50,14 +50,22 @@ class Options {
 	private $post_types = null;
 
 	/**
+	 * Cached taxonomies detected from the plugin's JSON files.
+	 *
+	 * @var array<string, string[]>|null
+	 */
+	private $taxonomies = null;
+
+	/**
 	 * Constructor.
 	 */
 	public function __construct() {
 		add_action( 'acf/init', array( $this, 'register_options_page' ) );
 		add_action( 'acf/init', array( $this, 'register_options_fields' ) );
 
-		// SCF registers JSON post types on acf/init priority 6; remove disabled ones straight after.
+		// SCF registers JSON post types and taxonomies on acf/init priority 6; remove disabled ones straight after.
 		add_action( 'acf/init', array( $this, 'unregister_disabled_post_types' ), 7 );
+		add_action( 'acf/init', array( $this, 'unregister_disabled_taxonomies' ), 7 );
 
 		add_action( 'acf/save_post', array( $this, 'flush_rewrite_rules_on_save' ), 20 );
 	}
@@ -155,34 +163,57 @@ class Options {
 	 * @return array<string, string> Post type slug => label.
 	 */
 	public function get_available_post_types() {
-		if ( null !== $this->post_types ) {
-			return $this->post_types;
+		if ( null === $this->post_types ) {
+			$this->load_json_definitions();
 		}
 
+		return $this->post_types;
+	}
+
+	/**
+	 * Get taxonomies defined in the plugin's scf-json folder.
+	 *
+	 * @return array<string, string[]> Taxonomy slug => attached post type slugs.
+	 */
+	public function get_available_taxonomies() {
+		if ( null === $this->taxonomies ) {
+			$this->load_json_definitions();
+		}
+
+		return $this->taxonomies;
+	}
+
+	/**
+	 * Read post type and taxonomy definitions from the plugin's scf-json folder.
+	 *
+	 * @return void
+	 */
+	private function load_json_definitions() {
 		$this->post_types = array();
+		$this->taxonomies = array();
 
 		$files = glob( LS_PLUGIN_PLUGIN_DIR . 'scf-json/*.json' );
 
 		foreach ( $files ? $files : array() as $file ) {
 			$data = json_decode( (string) file_get_contents( $file ), true ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 
-			if ( ! is_array( $data ) || empty( $data['key'] ) || empty( $data['post_type'] ) ) {
+			if ( ! is_array( $data ) || empty( $data['key'] ) ) {
 				continue;
 			}
 
-			if ( 0 !== strpos( $data['key'], 'post_type_' ) ) {
-				continue;
+			if ( 0 === strpos( $data['key'], 'post_type_' ) && ! empty( $data['post_type'] ) ) {
+				$slug  = sanitize_key( $data['post_type'] );
+				$label = ! empty( $data['title'] ) ? $data['title'] : $slug;
+
+				$this->post_types[ $slug ] = $label;
+			} elseif ( 0 === strpos( $data['key'], 'taxonomy_' ) && ! empty( $data['taxonomy'] ) ) {
+				$object_types = isset( $data['object_type'] ) ? (array) $data['object_type'] : array();
+
+				$this->taxonomies[ sanitize_key( $data['taxonomy'] ) ] = array_map( 'sanitize_key', $object_types );
 			}
-
-			$slug  = sanitize_key( $data['post_type'] );
-			$label = ! empty( $data['title'] ) ? $data['title'] : $slug;
-
-			$this->post_types[ $slug ] = $label;
 		}
 
 		asort( $this->post_types );
-
-		return $this->post_types;
 	}
 
 	/**
@@ -223,6 +254,33 @@ class Options {
 			}
 
 			unregister_post_type( $post_type );
+		}
+	}
+
+	/**
+	 * Unregister plugin taxonomies whose plugin post types are all disabled.
+	 *
+	 * Taxonomies follow their post type: a taxonomy stays registered while at
+	 * least one of its post types is enabled or is not managed by this plugin.
+	 *
+	 * @return void
+	 */
+	public function unregister_disabled_taxonomies() {
+		$plugin_post_types = array_keys( $this->get_available_post_types() );
+		$enabled           = self::get_enabled_post_types();
+
+		foreach ( $this->get_available_taxonomies() as $taxonomy => $object_types ) {
+			if ( empty( $object_types ) || ! taxonomy_exists( $taxonomy ) ) {
+				continue;
+			}
+
+			foreach ( $object_types as $object_type ) {
+				if ( ! in_array( $object_type, $plugin_post_types, true ) || in_array( $object_type, $enabled, true ) ) {
+					continue 2;
+				}
+			}
+
+			unregister_taxonomy( $taxonomy );
 		}
 	}
 
