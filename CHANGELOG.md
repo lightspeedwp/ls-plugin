@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Added repeatable FAQ fields (question, answer, optional image) to posts, and a **Post FAQs** variation of the Yoast FAQ block that renders them on the front end. It renders nothing when a post has no FAQs. The questions are passed into Yoast SEO's FAQ schema, so Yoast still outputs the structured data. Other plugins can add post types through the `ls_plugin_faq_post_types` filter. Requires Yoast SEO and Secure Custom Fields.
 - Added a `Template_Parts` class (adapted from Tour Operator) that registers a new **FAQ** template part area, an `ls-plugin/faq` pattern built on the Yoast FAQ block, and a `faq` template part that calls it. The FAQ area, pattern, and template part are only registered while Yoast SEO is active. Further template parts can be added via the `ls_plugin_template_parts` filter.
 - Added 8 more icons to the `lightspeed` icon collection — `circle`, `coins`, `hard-drives`, `chart-bar`, `users-three`, `paper-plane-tilt`, `git-fork`, `chat-circle-dots` — found missing while cross-checking design mockups against the existing set. See [#26](https://github.com/lightspeedwp/ls-plugin/pull/26).
 - Added 5 remaining icons to the `lightspeed` icon collection — `notepad`, `clipboard-text`, `github`, `rocket-launch`, `buildings` — closing out LS-3229's "Missing icons" tracking list.
