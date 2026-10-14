@@ -13,7 +13,6 @@ module.exports = {
 		'js/back-to-top': path.resolve( process.cwd(), 'src/plugins/back-to-top', 'index.js' ),
 		'js/back-to-top-view': path.resolve( process.cwd(), 'src/plugins/back-to-top', 'view.js' ),
 		'css/back-to-top': path.resolve( process.cwd(), 'src/plugins/back-to-top', 'style.scss' ),
-		'js/faq-fields': path.resolve( process.cwd(), 'src/plugins/faq-fields', 'index.js' ),
 		'js/style-switcher': path.resolve( process.cwd(), 'src/js', 'style-switcher.js' ),
 		'js/linkable-blocks-editor': path.resolve( process.cwd(), 'src/js', 'linkable-blocks-editor.js' ),
 		'js/linkable-blocks-frontend': path.resolve( process.cwd(), 'src/js', 'linkable-blocks-frontend.js' ),

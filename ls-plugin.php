@@ -56,11 +56,9 @@ function ls_plugin_init() {
 	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-portfolio-terms.php';
 	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-nav-ref-resolver.php';
 	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-icons.php';
-	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-template-parts.php';
 
 	// 3rd Party
 	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-ai-engine.php';
-	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-faq-fields.php';
 
 	$search_filter = new LS_Plugin\Search_Filter();
 	$search_filter->register_hooks();
@@ -86,14 +84,6 @@ function ls_plugin_init() {
 
 	// Register the LightSpeed SVG icon collection (WordPress 7.1+).
 	new LS_Plugin\Icons();
-
-	// Register template part areas, patterns, and template parts (FAQ requires Yoast SEO).
-	new LS_Plugin\Template_Parts();
-
-	// Repeatable FAQ fields and the "Post FAQs" Yoast FAQ block variation (requires Yoast SEO and SCF).
-	if ( LS_Plugin\FAQ_Fields::is_supported() ) {
-		new LS_Plugin\FAQ_Fields();
-	}
 }
 add_action( 'plugins_loaded', 'ls_plugin_init' );
 
