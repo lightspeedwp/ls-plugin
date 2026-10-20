@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+<ruleset name="LS Plugin" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/PHPCSStandards/PHP_CodeSniffer/master/phpcs.xsd">
+	<description>PHP_CodeSniffer ruleset for the LightSpeed Site Plugin.</description>
+
+	<!-- PHP files only. The default extensions include js and css, which ran out of memory on the minified Swiper bundle. -->
+	<file>.</file>
+	<arg name="extensions" value="php"/>
+	<arg name="colors"/>
+	<arg value="ps"/>
+
+	<!-- Warnings are shown but do not fail the run, so legacy findings do not block commits. -->
+	<config name="ignore_warnings_on_exit" value="1"/>
+
+	<!-- build/ holds generated copies of src/ files. Check the source, not the copy. -->
+	<exclude-pattern>*/vendor/*</exclude-pattern>
+	<exclude-pattern>*/node_modules/*</exclude-pattern>
+	<exclude-pattern>*/build/*</exclude-pattern>
+
+	<rule ref="WordPress">
+		<!--
+			Formatting sniffs that the existing code breaks and that phpcbf can fix automatically.
+			Switched off so existing files can be edited and committed. Re-enable them one at a time
+			after running phpcbf in a separate cleanup.
+		-->
+		<exclude name="WordPress.Arrays.ArrayDeclarationSpacing"/>
+		<exclude name="Universal.Arrays.DisallowShortArraySyntax"/>
+		<exclude name="Squiz.WhiteSpace.SuperfluousWhitespace.EndLine"/>
+		<exclude name="Squiz.Commenting.FunctionComment.SpacingAfterParamType"/>
+		<exclude name="PEAR.Functions.FunctionCallSignature.ContentAfterOpenBracket"/>
+		<exclude name="PEAR.Functions.FunctionCallSignature.CloseBracketLine"/>
+		<exclude name="PSR2.Files.EndFileNewline.NoneFound"/>
+		<exclude name="PSR2.Classes.ClassDeclaration.CloseBraceAfterBody"/>
+		<exclude name="WordPress.WhiteSpace.OperatorSpacing.NoSpaceBefore"/>
+		<exclude name="WordPress.WhiteSpace.ControlStructureSpacing.BlankLineAfterEnd"/>
+		<exclude name="Squiz.Commenting.InlineComment.NoSpaceBefore"/>
+		<exclude name="Squiz.Functions.MultiLineFunctionDeclaration.SpaceAfterFunction"/>
+		<exclude name="Universal.ControlStructures.DisallowLonelyIf.Found"/>
+	</rule>
+
+	<rule ref="WordPress.WP.I18n">
+		<properties>
+			<property name="text_domain" type="array">
+				<element value="ls-plugin"/>
+			</property>
+		</properties>
+	</rule>
+
+	<!--
+		Findings in the existing code that need a human decision rather than an automatic fix.
+		Reported as warnings so they stay visible without blocking a commit.
+	-->
+	<rule ref="WordPress.WP.I18n.MissingTranslatorsComment">
+		<type>warning</type>
+	</rule>
+	<rule ref="WordPress.WP.I18n.UnorderedPlaceholdersText">
+		<type>warning</type>
+	</rule>
+	<rule ref="Squiz.Commenting.InlineComment.InvalidEndChar">
+		<type>warning</type>
+	</rule>
+	<rule ref="Squiz.Commenting.FileComment.SpacingAfterOpen">
+		<type>warning</type>
+	</rule>
+	<rule ref="WordPress.PHP.YodaConditions.NotYoda">
+		<type>warning</type>
+	</rule>
+	<rule ref="WordPress.WP.GlobalVariablesOverride.Prohibited">
+		<type>warning</type>
+	</rule>
+	<rule ref="WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase">
+		<type>warning</type>
+	</rule>
+	<rule ref="Squiz.PHP.DisallowSizeFunctionsInLoops.Found">
+		<type>warning</type>
+	</rule>
+
+	<!--
+		Security sniffs stay as errors everywhere. These two files are excluded from one sniff each
+		because the findings are false positives:
+		- search-filter/render.php echoes get_block_wrapper_attributes() and wp_interactivity_data_wp_context(),
+		  which return already escaped markup.
+		- class-permalinks.php sanitises the input on the next line, and its existing phpcs:ignore comment
+		  names the wrong sniff (WordPress.Security.ValidatedInput instead of ValidatedSanitizedInput).
+	-->
+	<rule ref="WordPress.Security.EscapeOutput.OutputNotEscaped">
+		<exclude-pattern>*/src/blocks/search-filter/render.php</exclude-pattern>
+	</rule>
+	<rule ref="WordPress.Security.ValidatedSanitizedInput.InputNotSanitized">
+		<exclude-pattern>*/inc/class-permalinks.php</exclude-pattern>
+	</rule>
+</ruleset>
