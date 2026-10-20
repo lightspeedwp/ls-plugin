@@ -75,17 +75,10 @@
 	</rule>
 
 	<!--
-		Security sniffs stay as errors everywhere. These two files are excluded from one sniff each
-		because the findings are false positives:
-		- search-filter/render.php echoes get_block_wrapper_attributes() and wp_interactivity_data_wp_context(),
-		  which return already escaped markup.
-		- class-permalinks.php sanitises the input on the next line, and its existing phpcs:ignore comment
-		  names the wrong sniff (WordPress.Security.ValidatedInput instead of ValidatedSanitizedInput).
+		Security sniffs stay as errors everywhere, with no file-wide exclusions. The two known false
+		positives are suppressed inline with a reason, on those statements only:
+		- src/blocks/search-filter/render.php: get_block_wrapper_attributes() and
+		  wp_interactivity_data_wp_context() return already escaped markup.
+		- inc/class-permalinks.php: the input is sanitised by sanitize_permalink_fields() on the next line.
 	-->
-	<rule ref="WordPress.Security.EscapeOutput.OutputNotEscaped">
-		<exclude-pattern>*/src/blocks/search-filter/render.php</exclude-pattern>
-	</rule>
-	<rule ref="WordPress.Security.ValidatedSanitizedInput.InputNotSanitized">
-		<exclude-pattern>*/inc/class-permalinks.php</exclude-pattern>
-	</rule>
 </ruleset>

@@ -33,7 +33,7 @@ The existing code had 119 errors and 46 warnings. So that existing files can be 
 
 - Switched off: 13 formatting sniffs that phpcbf can fix automatically (array spacing, short array syntax, trailing whitespace, function call layout and similar).
 - Warnings only: 8 findings that need a human decision (translators comments, Yoda conditions, global variable overrides and similar).
-- Security sniffs stay on as errors. Two false positives are excluded for one file each: `src/blocks/search-filter/render.php` (echoes `get_block_wrapper_attributes()` and `wp_interactivity_data_wp_context()`, which return escaped markup) and `inc/class-permalinks.php` (sanitises on the next line; its existing `phpcs:ignore` names the wrong sniff).
+- Security sniffs stay on as errors everywhere, with no file-wide exclusions. The two known false positives are suppressed inline, with a reason, on those statements only: the two `echo` lines in `src/blocks/search-filter/render.php` (`get_block_wrapper_attributes()` and `wp_interactivity_data_wp_context()` return escaped markup) and the `$_POST` read in `inc/class-permalinks.php` (sanitised by `sanitize_permalink_fields()` on the next line; the existing `phpcs:ignore` there named the wrong sniff and is corrected). A new violation anywhere else in those files is still caught.
 - Result: 0 errors and 70 warnings across the repo. `ignore_warnings_on_exit` is set, so warnings never fail a run.
 
 To clean up later, run `vendor/bin/phpcbf`, then remove the matching `<exclude>` lines from `phpcs.xml.dist` one at a time.
@@ -48,7 +48,7 @@ To clean up later, run `vendor/bin/phpcbf`, then remove the matching `<exclude>`
 
 Plain `git commit`, `git commit -a`, `--include` and `--amend` all work. A file that is only partly staged is fine: Lefthook hides its unstaged part during the hook.
 
-`webpack.config.cjs` sets `clean: true`, so `build/` is entirely generated and the whole folder is staged, including files the build no longer produces. Do not edit files in `build/` by hand: the next hook run overwrites them.
+`webpack.config.cjs` sets `clean: true`, so `build/` is entirely generated and the whole folder is staged, including files the build no longer produces. Deleting a source file also triggers the job: the build runs, fails if something still imports the file, and otherwise stages the removal of its built output. Do not edit files in `build/` by hand: the next hook run overwrites them.
 
 Some `src/**/style.css` and `.css.map` files are committed next to their `.scss` source, probably from an editor's Sass compiler. They count as source for the guard, so stage them with the `.scss` file.
 
@@ -76,7 +76,6 @@ Personal overrides go in `lefthook-local.yml` (gitignored).
 ## Known limits
 
 - The hook needs `php`, `npm` and `node` on the `PATH`. A Git client that does not load your shell environment can block commits with a message such as `php was not found on the PATH`. Commit from a terminal, or use `git commit --no-verify` for that commit.
-- Deleting a source file on its own does not trigger the `build` job, so its built output is not removed automatically.
 - The webpack entries are listed by hand in `webpack.config.cjs`. A new entry has to be added there, and block entries are found from `block.json`.
 - ESLint, Stylelint and the JSON lint are not part of this hook. They report existing errors (305 in JS, 39 in SCSS) and the `lint:json` script does not work (`--ext` is not an option of `wp-scripts lint-md-docs`, and `|| true` hides the error). They are left for a separate change.
 
@@ -102,6 +101,11 @@ Run as real `git commit` commands in a scratch worktree with its own `node_modul
 | JS syntax error | Commit blocked, webpack error shown, `build/` left intact |
 | Hand edit in `build/` plus a staged source change | The hand edit is overwritten and not committed |
 | Commit with no PHP or `src/` files | Both jobs skip |
+| New unescaped output added to `search-filter/render.php`, or new unsanitised input to `class-permalinks.php` | Commit blocked (the inline ignores cover only the two documented statements) |
+| Harmless edit to either of those two files | Passes |
+| Delete a file that is still imported | Build runs, fails with `Module not found`, commit blocked |
+| Delete a whole block (`git rm -r src/blocks/search-filter`) | Build runs, and the commit includes the removal of its files from `build/` |
+| Delete a source file the build does not use (`style.css.map`), staged or via `commit -a` | Build runs and passes, commit holds only the deletion |
 | Minimal `PATH` (no `php`, no `npm`) | Blocked with a "not found on the PATH" message |
 | Pure rebuild with no source change | No difference from the committed `build/` |
 | `composer run phpcs`, `composer run phplint`, `plugin:validate`, `schema:validate`, `security:scan` | All pass |

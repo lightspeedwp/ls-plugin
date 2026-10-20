@@ -242,7 +242,7 @@ class Permalinks {
 		) {
 			check_admin_referer( 'update-permalink' ); // default nonce for permalink page
 
-			$input     = wp_unslash( $_POST['ls_plugin_scf_slugs'] ); // phpcs:ignore WordPress.Security.ValidatedInput.InputNotSanitized
+			$input     = wp_unslash( $_POST['ls_plugin_scf_slugs'] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Sanitised by sanitize_permalink_fields() on the next line.
 			$sanitized = $this->sanitize_permalink_fields( $input );
 			update_option( 'ls_plugin_scf_slugs', $sanitized );
 		}
