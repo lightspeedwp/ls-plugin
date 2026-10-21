@@ -49,9 +49,9 @@ if ( function_exists( 'wp_enqueue_script_module' ) ) {
 ?>
 
 <div
-	<?php echo $wrapper_attributes; ?>
+	<?php echo $wrapper_attributes; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- get_block_wrapper_attributes() returns escaped markup. ?>
 	data-wp-interactive="lsPluginSearchFilter"
-	<?php echo wp_interactivity_data_wp_context( array( 'searchKey' => $search_key ) ); ?>
+	<?php echo wp_interactivity_data_wp_context( array( 'searchKey' => $search_key ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Returns an escaped data-wp-context attribute. ?>
 >
 	<input
 		class="wp-block-ls-plugin-search-filter__input"
