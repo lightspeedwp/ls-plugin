@@ -47,6 +47,7 @@ function ls_plugin_init() {
 	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/general-functions.php';
 	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/linkable-blocks.php';
 	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-search-filter.php';
+	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-search-noindex-exclude.php';
 	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-taxonomy-filter.php';
 	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-style-switcher.php';
 	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-carousel.php';
@@ -63,6 +64,9 @@ function ls_plugin_init() {
 
 	$search_filter = new LS_Plugin\Search_Filter();
 	$search_filter->register_hooks();
+
+	// Keep Yoast-noindexed pages out of the site search results.
+	new LS_Plugin\Search_Noindex_Exclude();
 
 	new LS_Plugin\Taxonomy_Filter();
 
