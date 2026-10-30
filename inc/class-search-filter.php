@@ -18,6 +18,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Search_Filter {
 
 	/**
+	 * Query var set on a query when this block applied a custom-field search.
+	 *
+	 * A custom-field search only adds a `meta_query` and leaves `s` empty, so
+	 * other code needs this flag to know the query is a search.
+	 *
+	 * @var string
+	 */
+	const SEARCH_APPLIED_QUERY_VAR = 'ls_plugin_search_filter_applied';
+
+	/**
 	 * Registers all WordPress hooks.
 	 *
 	 * @return void
@@ -87,6 +97,7 @@ class Search_Filter {
 
 		if ( $meta_key ) {
 			$query->set( 'meta_query', $this->prepare_meta_query( $query->get( 'meta_query' ), $meta_key, $search ) );
+			$query->set( self::SEARCH_APPLIED_QUERY_VAR, true );
 			return;
 		}
 
@@ -121,6 +132,9 @@ class Search_Filter {
 
 		if ( $meta_key ) {
 			$query['meta_query'] = $this->prepare_meta_query( $query['meta_query'] ?? array(), $meta_key, $search );
+
+			$query[ self::SEARCH_APPLIED_QUERY_VAR ] = true;
+
 			return $query;
 		}
 

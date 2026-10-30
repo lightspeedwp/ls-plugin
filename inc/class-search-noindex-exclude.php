@@ -57,7 +57,9 @@ class Search_Noindex_Exclude {
 			return;
 		}
 
-		if ( '' === (string) $query->get( 's' ) || ! $this->is_enabled() ) {
+		$is_search = '' !== (string) $query->get( 's' ) || (bool) $query->get( Search_Filter::SEARCH_APPLIED_QUERY_VAR );
+
+		if ( ! $is_search || ! $this->is_enabled() ) {
 			return;
 		}
 
@@ -71,7 +73,13 @@ class Search_Noindex_Exclude {
 	 * @return array
 	 */
 	public function filter_query_loop( $query ) {
-		if ( ! is_array( $query ) || empty( $query['s'] ) || ! $this->is_enabled() ) {
+		if ( ! is_array( $query ) ) {
+			return $query;
+		}
+
+		$is_search = ! empty( $query['s'] ) || ! empty( $query[ Search_Filter::SEARCH_APPLIED_QUERY_VAR ] );
+
+		if ( ! $is_search || ! $this->is_enabled() ) {
 			return $query;
 		}
 
