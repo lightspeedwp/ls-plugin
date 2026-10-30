@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Added a front-end search filter that keeps posts set to "noindex" in Yoast SEO out of the site search results, in the main search query and in Query Loop blocks that are searching. Posts with no noindex setting stay searchable, nothing is unpublished, and the admin and REST searches are untouched. Return `false` from the `ls_plugin_search_exclude_noindex` filter to switch it off. See [#29](https://github.com/lightspeedwp/ls-plugin/pull/29).
 - Added a Lefthook `pre-commit` hook (`lefthook.yml`) with two jobs. `php-check` runs `php -l` and PHP_CodeSniffer on staged PHP files. `build` runs `npm run build` when files in `src/` are staged and stages the rebuilt `build/`, so source and built output are committed together. The hook is skipped during merges and rebases, and it stops the commit when `src/` has unstaged or untracked files or when `git commit <file>` is used with source files. `npm install` installs the hook.
 - Added `phpcs.xml.dist`, the PHP_CodeSniffer ruleset for the WordPress Coding Standards. It checks PHP files only and skips `vendor/`, `node_modules/` and `build/`. Formatting sniffs that the existing code breaks are switched off and a few findings are warnings, so existing code passes. Security sniffs stay on everywhere, with two documented false positives suppressed inline.
 - Added `.github/reports/lefthook-setup.md` with install steps, everyday commands, how to bypass the hook, known limits and verification results.
