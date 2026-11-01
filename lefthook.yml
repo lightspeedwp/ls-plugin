@@ -1,0 +1,76 @@
+# Lefthook configuration for ls-plugin.
+# Docs: https://lefthook.dev/configuration/
+# Local-only overrides go in lefthook-local.yml (gitignored).
+
+min_version: 1.10.10
+
+pre-commit:
+  # Run the jobs in order and stop at the first failure.
+  piped: true
+  skip:
+    - merge
+    - rebase
+  jobs:
+    # 1. Check the staged PHP: syntax first, then WordPress Coding Standards (phpcs.xml.dist).
+    #    Errors block the commit; warnings are printed but do not.
+    - name: php-check
+      glob: "*.php"
+      exclude:
+        - "build/**"
+        - "vendor/**"
+      run: |
+        if ! command -v php >/dev/null 2>&1; then
+          echo "php was not found on the PATH. Commit from a terminal, or add PHP to the PATH." >&2
+          exit 1
+        fi
+        for f in {staged_files}; do
+          out=$(php -l "$f" 2>&1) || { echo "$out" >&2; exit 1; }
+        done
+        if [ ! -x vendor/bin/phpcs ]; then
+          echo "phpcs is not installed. Run: composer install" >&2
+          exit 1
+        fi
+        vendor/bin/phpcs {staged_files}
+      fail_text: "PHP check failed. See the message above. Many phpcs formatting errors can be fixed with: vendor/bin/phpcbf <file>"
+
+    # 2. Rebuild build/ from src/ and stage it, so source and built output are committed together.
+    #    The build compiles the whole working tree, so stop first if any source has unstaged changes
+    #    or is untracked (git diff does not see new files). Otherwise build/ would be staged
+    #    with output from a source file that is not in the commit.
+    - name: build
+      glob:
+        - "src/*"
+        - "src/**/*"
+        - "webpack.config.cjs"
+      run: |
+        # git commit <file> (or --only) runs hooks against a temporary index, so build/ staged here
+        # would be committed but then dropped from your real index, leaving a staged revert behind.
+        case "${GIT_INDEX_FILE:-}" in
+          */next-index-*)
+            echo "Committing with a file path (git commit <file>) is not supported for source files. Run git add <file>, then git commit." >&2
+            exit 1
+            ;;
+        esac
+        if ! git diff --quiet -- src webpack.config.cjs; then
+          echo "Unstaged source changes found. Stage or stash them so build/ matches this commit:" >&2
+          git diff --name-only -- src webpack.config.cjs >&2
+          exit 1
+        fi
+        if [ -n "$(git ls-files --others --exclude-standard -- src webpack.config.cjs)" ]; then
+          echo "Untracked source files found. Add them (git add) or remove them so build/ can be rebuilt from the committed source:" >&2
+          git ls-files --others --exclude-standard -- src webpack.config.cjs >&2
+          exit 1
+        fi
+        if ! command -v npm >/dev/null 2>&1; then
+          echo "npm was not found on the PATH. Commit from a terminal, or add Node to the PATH." >&2
+          exit 1
+        fi
+        if [ ! -d node_modules ]; then
+          echo "Dependencies are not installed. Run: npm install" >&2
+          exit 1
+        fi
+        npm run build || exit 1
+        # webpack runs with clean: true, so build/ is entirely generated. Stage all of it, including
+        # files the build no longer produces.
+        git add -A -- build
+      fail_text: "Build stopped. Stage, stash or remove any unstaged or untracked source files, or run npm run build to see a build error."

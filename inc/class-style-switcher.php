@@ -18,6 +18,8 @@
  * @since   1.0.0
  */
 
+namespace LS_Plugin;
+
 // Prevent direct access.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -28,7 +30,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 1.0.0
  */
-class LS_Plugin_Style_Switcher {
+class Style_Switcher {
 
 	/**
 	 * Registers all WordPress hooks.
@@ -57,7 +59,7 @@ class LS_Plugin_Style_Switcher {
 		if ( file_exists( $block_path . '/block.json' ) ) {
 			$block_type = register_block_type( $block_path );
 
-			if ( $block_type instanceof WP_Block_Type ) {
+			if ( $block_type instanceof \WP_Block_Type ) {
 				$this->localize_block_editor_data( $block_type );
 			}
 		}
@@ -68,7 +70,7 @@ class LS_Plugin_Style_Switcher {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param WP_Block_Type $block_type Registered block type object.
+	 * @param \WP_Block_Type $block_type Registered block type object.
 	 * @return void
 	 */
 	private function localize_block_editor_data( $block_type ) {
@@ -285,8 +287,8 @@ class LS_Plugin_Style_Switcher {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param WP_Theme_JSON_Data $theme_json Theme JSON data object.
-	 * @return WP_Theme_JSON_Data Modified theme JSON data object.
+	 * @param \WP_Theme_JSON_Data $theme_json Theme JSON data object.
+	 * @return \WP_Theme_JSON_Data Modified theme JSON data object.
 	 */
 	public function merge_dark_mode_theme_json( $theme_json ) {
 		if ( 'dark' !== $this->get_style_preference() ) {

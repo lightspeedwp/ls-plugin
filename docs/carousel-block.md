@@ -55,7 +55,7 @@ Individual slides within the carousel. Can only be added inside a Carousel block
 
 ## Technical Details
 
-**PHP Class:** `LS_Plugin_Carousel` ([inc/class-carousel.php](inc/class-carousel.php))
+**PHP Class:** `LS_Plugin\Carousel` ([inc/class-carousel.php](inc/class-carousel.php))
 **Source Files:** 
 - [src/blocks/carousel/](src/blocks/carousel/)
 - [src/blocks/carousel-slide/](src/blocks/carousel-slide/)

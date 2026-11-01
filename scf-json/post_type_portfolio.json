@@ -3,7 +3,7 @@
   "title": "Portfolios",
   "menu_order": 0,
   "active": true,
-  "post_type": "ls_plugin_portfolio",
+  "post_type": "project",
   "advanced_configuration": true,
   "labels": {
     "name": "Portfolios",
@@ -66,8 +66,9 @@
     "custom-fields"
   ],
   "taxonomies": [
-    "ls_plugin_portfolio_industry",
-    "ls_plugin_portfolio_service"
+    "project-type",
+    "project-tag",
+    "project-group"
   ],
   "has_archive": true,
   "has_archive_slug": "portfolio",

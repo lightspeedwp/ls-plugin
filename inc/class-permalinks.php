@@ -35,6 +35,23 @@ class Permalinks {
 	);
 
 	/**
+	 * Bump this whenever a change to the Portfolio post type/taxonomy
+	 * registration (slugs, machine names) requires rewrite rules to be
+	 * regenerated, so environments with stale cached rules self-heal
+	 * without a manual permalink resave.
+	 *
+	 * @var string
+	 */
+	const REWRITE_FLUSH_VERSION = '1';
+
+	/**
+	 * Option name used to track which rewrite-flush version has already run.
+	 *
+	 * @var string
+	 */
+	const REWRITE_FLUSHED_OPTION = 'ls_plugin_portfolio_rewrite_flushed_version';
+
+	/**
 	 * Constructor.
 	 */
 	public function __construct() {
@@ -42,12 +59,38 @@ class Permalinks {
 		add_action( 'admin_init', array( $this, 'save_custom_permalink_fields' ), 20 );
 		add_filter( 'acf/post_type/registration_args', array( $this, 'apply_post_type_slugs' ), 10, 2 );
 		add_filter( 'acf/taxonomy/registration_args', array( $this, 'apply_taxonomy_slugs' ), 10, 2 );
+		// Priority 30: after SCF/ACF has registered the post type and taxonomies on 'init'.
+		add_action( 'init', array( $this, 'maybe_flush_rewrite_rules' ), 30 );
+	}
+
+	/**
+	 * Flush rewrite rules once per REWRITE_FLUSH_VERSION.
+	 *
+	 * Restoring the `project` post type/taxonomy registration (LS-3725) does not
+	 * itself refresh rewrite rules that were already persisted under a previous,
+	 * reverted registration (e.g. `ls_plugin_portfolio`) — WordPress caches rewrite
+	 * rules until something explicitly flushes them. This lets any environment that
+	 * cached the reverted registration recover automatically, without requiring a
+	 * manual Permalinks resave.
+	 */
+	public function maybe_flush_rewrite_rules() {
+		if ( get_option( self::REWRITE_FLUSHED_OPTION ) === self::REWRITE_FLUSH_VERSION ) {
+			return;
+		}
+
+		flush_rewrite_rules( false );
+		update_option( self::REWRITE_FLUSHED_OPTION, self::REWRITE_FLUSH_VERSION );
 	}
 
 	/**
 	 * Register the setting to save custom fields.
 	 */
 	public function register_permalink_settings() {
+		// The slug fields only apply while the Portfolio post type is enabled.
+		if ( ! Options::is_post_type_enabled( 'project' ) ) {
+			return;
+		}
+
 		register_setting(
 			'permalink',
 			'ls_plugin_scf_slugs',
@@ -192,13 +235,14 @@ class Permalinks {
 	 */
 	public function save_custom_permalink_fields() {
 		if (
+			Options::is_post_type_enabled( 'project' ) &&
 			isset( $_POST['ls_plugin_scf_slugs'] ) &&
 			is_array( $_POST['ls_plugin_scf_slugs'] ) &&
 			current_user_can( 'manage_options' )
 		) {
 			check_admin_referer( 'update-permalink' ); // default nonce for permalink page
 
-			$input     = wp_unslash( $_POST['ls_plugin_scf_slugs'] ); // phpcs:ignore WordPress.Security.ValidatedInput.InputNotSanitized
+			$input     = wp_unslash( $_POST['ls_plugin_scf_slugs'] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Sanitised by sanitize_permalink_fields() on the next line.
 			$sanitized = $this->sanitize_permalink_fields( $input );
 			update_option( 'ls_plugin_scf_slugs', $sanitized );
 		}
@@ -225,7 +269,7 @@ class Permalinks {
 			return $args;
 		}
 
-		if ( 'ls_plugin_portfolio' === $post_type_slug ) {
+		if ( 'project' === $post_type_slug ) {
 			$field_key   = 'ls_plugin_scf_portfolio';
 			$custom_slug = isset( $slug_options[ $field_key ] ) ? $slug_options[ $field_key ] : '';
 
@@ -256,8 +300,8 @@ class Permalinks {
 
 		// Map taxonomy slugs to custom configuration keys.
 		$taxonomy_mapping = array(
-			'ls_plugin_portfolio_industry' => 'portfolio-industry',
-			'ls_plugin_portfolio_service'  => 'portfolio-service',
+			'project-group' => 'portfolio-industry',
+			'project-tag'   => 'portfolio-service',
 		);
 
 		if ( ! isset( $taxonomy_mapping[ $taxonomy_slug ] ) ) {

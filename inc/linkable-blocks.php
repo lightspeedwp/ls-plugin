@@ -46,7 +46,7 @@ function ls_plugin_register_linkable_block_styles() {
 
 	wp_register_style(
 		'ls-plugin-linkable-blocks',
-		LS_PLUGIN_PLUGIN_URL . 'build/css/style-linkable-blocks.css',
+		LS_PLUGIN_PLUGIN_URL . 'build/css/linkable-blocks.css',
 		$asset['dependencies'] ?? array(),
 		$asset['version'] ?? LS_PLUGIN_VERSION
 	);

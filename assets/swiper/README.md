@@ -11,7 +11,7 @@ Website: https://swiperjs.com/
 
 ## Usage
 
-These files are automatically enqueued by the `LS_Plugin_Carousel` class when the carousel block is present on a page.
+These files are automatically enqueued by the `LS_Plugin\Carousel` class when the carousel block is present on a page.
 
 ## Updates
 

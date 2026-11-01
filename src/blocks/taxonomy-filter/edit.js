@@ -144,6 +144,54 @@ function Edit( {
 		);
 	}, [ taxonomy, orderBy ] );
 
+	const sourceStyles = style || {};
+
+	const normaliseSpacingValue = ( value ) => {
+		if ( typeof value !== 'string' ) {
+			return value;
+		}
+
+		if ( value.startsWith( 'var:preset|spacing|' ) ) {
+			const presetSlug = value.split( '|' )[ 2 ];
+			return `var(--wp--preset--spacing--${ presetSlug })`;
+		}
+
+		return value;
+	};
+
+	const innerSpacingStyles = {};
+	const spacingAttributes = attributes?.style?.spacing || {};
+
+	const applyBoxSpacing = ( type, value ) => {
+		if ( ! value ) {
+			return;
+		}
+
+		if ( typeof value === 'string' ) {
+			innerSpacingStyles[ type ] = normaliseSpacingValue( value );
+			return;
+		}
+
+		if ( typeof value === 'object' ) {
+			const directionsMap = {
+				top: 'Top',
+				right: 'Right',
+				bottom: 'Bottom',
+				left: 'Left',
+			};
+
+			Object.entries( directionsMap ).forEach( ( [ side, suffix ] ) => {
+				if ( value[ side ] ) {
+					innerSpacingStyles[ `${ type }${ suffix }` ] =
+						normaliseSpacingValue( value[ side ] );
+				}
+			} );
+		}
+	};
+
+	applyBoxSpacing( 'margin', spacingAttributes.margin );
+	applyBoxSpacing( 'padding', spacingAttributes.padding );
+
 	const blockClasses = [
 		`taxonomy-filter--${ filterType }`,
 		filterType === 'buttons' && 'is-layout-flex',
@@ -151,6 +199,30 @@ function Edit( {
 		filterType === 'buttons' &&
 			justification &&
 			`is-content-justification-${ justification }`,
+		filterType === 'buttons' &&
+			( buttonTextColor.color || customButtonTextColor ) &&
+			'has-button-text-color',
+		filterType === 'buttons' &&
+			( buttonBackgroundColor.color || customButtonBackgroundColor ) &&
+			'has-button-background-color',
+		filterType === 'buttons' &&
+			( hoverButtonTextColor.color || customHoverButtonTextColor ) &&
+			'has-hover-button-text-color',
+		filterType === 'buttons' &&
+			( hoverButtonBackgroundColor.color ||
+				customHoverButtonBackgroundColor ) &&
+			'has-hover-button-background-color',
+		filterType === 'buttons' &&
+			( activeButtonTextColor.color || customActiveButtonTextColor ) &&
+			'has-active-button-text-color',
+		filterType === 'buttons' &&
+			( activeButtonBackgroundColor.color ||
+				customActiveButtonBackgroundColor ) &&
+			'has-active-button-background-color',
+		filterType === 'buttons' && buttonBorder?.width && 'has-button-border',
+		filterType === 'buttons' &&
+			buttonBorderRadius &&
+			'has-button-border-radius',
 		filterType !== 'buttons' &&
 			textAlign &&
 			`has-text-align-${ textAlign }`,
@@ -158,7 +230,20 @@ function Edit( {
 		.filter( Boolean )
 		.join( ' ' );
 
-	const blockStyles = { ...style };
+	const blockStyles = Object.entries( sourceStyles ).reduce(
+		( acc, [ key, value ] ) => {
+			if ( ! /^(margin|padding)/.test( key ) ) {
+				acc[ key ] = value;
+			}
+
+			return acc;
+		},
+		{}
+	);
+
+	// Keep spacing off the wrapper; it is applied to inner controls instead.
+	blockStyles.margin = 'initial';
+	blockStyles.padding = 'initial';
 
 	// Apply button styles
 	if ( filterType === 'buttons' ) {
@@ -195,9 +280,7 @@ function Edit( {
 				customActiveButtonBackgroundColor;
 		}
 		if ( buttonBorder?.width ) {
-			blockStyles[ '--button-border' ] = buttonBorder.color
-				? `${ buttonBorder.width } solid ${ buttonBorder.color }`
-				: `${ buttonBorder.width } solid`;
+			blockStyles[ '--button-border' ] = `${ buttonBorder.width } solid var(--wp--custom--color--button--fill--border, currentColor)`;
 		}
 		if ( buttonBorderRadius ) {
 			blockStyles[ '--button-border-radius' ] = buttonBorderRadius;
@@ -538,7 +621,7 @@ function Edit( {
 				{ ! isLoaded && <span>{ __( 'Loading...' ) }</span> }
 
 				{ isLoaded && terms && filterType === 'dropdown' && (
-					<select>
+					<select style={ innerSpacingStyles }>
 						<option>
 							{ allItemsText || taxonomy.all_items }
 						</option>
@@ -554,7 +637,10 @@ function Edit( {
 
 				{ isLoaded && terms && filterType === 'buttons' && (
 					<>
-						<a className="wp-element-button taxonomy-filter-current">
+						<a
+							className="wp-element-button taxonomy-filter-current"
+							style={ innerSpacingStyles }
+						>
 							{ allItemsText || taxonomy.all_items }
 						</a>
 						{ terms
@@ -568,6 +654,7 @@ function Edit( {
 								<a
 									key={ term.id }
 									className="wp-element-button"
+									style={ innerSpacingStyles }
 								>
 									{ term.name }
 									{ showCount && ` (${ term.count })` }

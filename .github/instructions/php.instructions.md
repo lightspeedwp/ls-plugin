@@ -57,5 +57,5 @@ esc_attr__( 'String', 'ls-plugin' )
 ## File structure
 
 - PHP includes go in `inc/`.
-- Class files: `inc/class-ls-plugin-name.php`.
+- Class files: `inc/class-name.php`, declaring `namespace LS_Plugin;` and a class named without an `LS_Plugin_` prefix (e.g. `inc/class-permalinks.php` declares `LS_Plugin\Permalinks`).
 - Load includes from the main plugin file via `plugins_loaded`.

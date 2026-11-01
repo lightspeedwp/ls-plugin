@@ -6,6 +6,8 @@
  * @since   1.0.0
  */
 
+namespace LS_Plugin;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -15,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 1.0.0
  */
-class LS_Plugin_SCF_JSON_Validator {
+class SCF_JSON_Validator {
 
 	/**
 	 * Path to JSON schema file.
@@ -34,7 +36,7 @@ class LS_Plugin_SCF_JSON_Validator {
 	/**
 	 * SCF JSON handler instance.
 	 *
-	 * @var LS_Plugin_SCF_JSON
+	 * @var SCF_JSON
 	 */
 	private $scf_json;
 
@@ -79,8 +81,8 @@ class LS_Plugin_SCF_JSON_Validator {
 	public function __construct() {
 		$this->schema_path = LS_PLUGIN_PLUGIN_DIR . '.github/schemas/scf-field-group.schema.json';
 
-		if ( class_exists( 'LS_Plugin_SCF_JSON' ) ) {
-			$this->scf_json = new LS_Plugin_SCF_JSON();
+		if ( class_exists( __NAMESPACE__ . '\SCF_JSON' ) ) {
+			$this->scf_json = new SCF_JSON();
 		}
 
 		$this->load_schema();

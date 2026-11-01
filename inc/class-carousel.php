@@ -7,17 +7,19 @@
  * @package LS_Plugin
  */
 
+namespace LS_Plugin;
+
 // Prevent direct access.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
 /**
- * Class LS_Plugin_Carousel
+ * Class Carousel
  *
  * Handles registration and asset enqueuing for the Carousel blocks.
  */
-class LS_Plugin_Carousel {
+class Carousel {
 
 	/**
 	 * Track if carousel block has been rendered.

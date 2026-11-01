@@ -5,6 +5,8 @@
  * @package LS_Plugin
  */
 
+namespace LS_Plugin;
+
 // Prevent direct access.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -13,7 +15,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Handles the Search Filter block registration and Query Loop filtering.
  */
-class LS_Plugin_Search_Filter {
+class Search_Filter {
+
+	/**
+	 * Query var set on a query when this block applied a custom-field search.
+	 *
+	 * A custom-field search only adds a `meta_query` and leaves `s` empty, so
+	 * other code needs this flag to know the query is a search.
+	 *
+	 * @var string
+	 */
+	const SEARCH_APPLIED_QUERY_VAR = 'ls_plugin_search_filter_applied';
 
 	/**
 	 * Registers all WordPress hooks.
@@ -67,11 +79,11 @@ class LS_Plugin_Search_Filter {
 	/**
 	 * Filters the inherited main query using the block request parameter.
 	 *
-	 * @param WP_Query $query Query object.
+	 * @param \WP_Query $query Query object.
 	 * @return void
 	 */
 	public function filter_main_query( $query ) {
-		if ( ! $query instanceof WP_Query || ! $query->is_main_query() ) {
+		if ( ! $query instanceof \WP_Query || ! $query->is_main_query() ) {
 			return;
 		}
 
@@ -85,6 +97,7 @@ class LS_Plugin_Search_Filter {
 
 		if ( $meta_key ) {
 			$query->set( 'meta_query', $this->prepare_meta_query( $query->get( 'meta_query' ), $meta_key, $search ) );
+			$query->set( self::SEARCH_APPLIED_QUERY_VAR, true );
 			return;
 		}
 
@@ -94,8 +107,8 @@ class LS_Plugin_Search_Filter {
 	/**
 	 * Filters non-inherited Query Loop block queries using the block request parameter.
 	 *
-	 * @param array    $query Query vars.
-	 * @param WP_Block $block Block instance.
+	 * @param array     $query Query vars.
+	 * @param \WP_Block $block Block instance.
 	 * @param int      $page  Current page.
 	 * @return array
 	 */
@@ -119,6 +132,9 @@ class LS_Plugin_Search_Filter {
 
 		if ( $meta_key ) {
 			$query['meta_query'] = $this->prepare_meta_query( $query['meta_query'] ?? array(), $meta_key, $search );
+
+			$query[ self::SEARCH_APPLIED_QUERY_VAR ] = true;
+
 			return $query;
 		}
 
