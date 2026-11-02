@@ -16,6 +16,7 @@ import {
 	BlockControls,
 	AlignmentToolbar,
 	InspectorControls,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis -- No stable equivalent in the supported WP version.
 	__experimentalColorGradientSettingsDropdown as ColorGradientSettingsDropdown,
 	withColors,
 } from '@wordpress/block-editor';
@@ -26,8 +27,11 @@ import {
 	TextControl,
 	ToggleControl,
 	ToolbarDropdownMenu,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis -- No stable equivalent in the supported WP version.
 	__experimentalToggleGroupControl as ToggleGroupControl,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis -- No stable equivalent in the supported WP version.
 	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis -- No stable equivalent in the supported WP version.
 	__experimentalNumberControl as NumberControl,
 } from '@wordpress/components';
 

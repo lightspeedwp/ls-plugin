@@ -13,7 +13,7 @@
     "security:scan": "node plugin-utils.mjs security-scan",
     "lint": "npm run lint:js && npm run lint:css && npm run lint:json",
     "lint:js": "wp-scripts lint-js src",
-    "lint:css": "wp-scripts lint-style src",
+    "lint:css": "wp-scripts lint-style \"src/**/*.{css,scss}\"",
     "lint:json": "wp-scripts lint-md-docs . --ext=.json || true",
     "i18n": "wp-scripts makepot",
     "packages-update": "wp-scripts packages-update",

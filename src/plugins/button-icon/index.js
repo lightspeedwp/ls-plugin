@@ -1,7 +1,14 @@
 import { addFilter } from '@wordpress/hooks';
 import { createHigherOrderComponent } from '@wordpress/compose';
 import { InspectorControls } from '@wordpress/block-editor';
-import { Button, PanelBody, PanelRow, ToggleControl, __experimentalGrid as Grid } from '@wordpress/components';
+import {
+	Button,
+	PanelBody,
+	PanelRow,
+	ToggleControl,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis -- No stable Grid equivalent in the supported WP version.
+	__experimentalGrid as Grid,
+} from '@wordpress/components';
 import { Fragment } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 

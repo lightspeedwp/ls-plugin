@@ -1,3 +1,4 @@
+/* global HTMLElement, requestAnimationFrame */
 /**
  * Smooth scroll utility with back-to-top support and anchor link smooth scrolling.
  * Works with core/button Back to Top variation.
