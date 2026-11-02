@@ -1,8 +1,8 @@
 ( function () {
 	'use strict';
 
-	var linkedBlockSelector = '.ls-plugin-linkable-block.is-linked';
-	var interactiveSelector = [
+	const linkedBlockSelector = '.ls-plugin-linkable-block.is-linked';
+	const interactiveSelector = [
 		'a',
 		'button',
 		'input',
@@ -20,7 +20,7 @@
 		'[role="option"]',
 		'[role="radio"]',
 		'[role="switch"]',
-		'[tabindex]:not([tabindex="-1"])'
+		'[tabindex]:not([tabindex="-1"])',
 	].join( ', ' );
 
 	function getEventTargetElement( event ) {
@@ -40,14 +40,14 @@
 	}
 
 	function hasActiveTextSelection() {
-		var selection = window.getSelection ? window.getSelection() : null;
+		const selection = window.getSelection ? window.getSelection() : null;
 
 		return !! ( selection && String( selection ).trim() );
 	}
 
 	function getWindowFeatures( expandedLink ) {
-		var rel = expandedLink.getAttribute( 'rel' ) || '';
-		var features = [];
+		const rel = expandedLink.getAttribute( 'rel' ) || '';
+		const features = [];
 
 		if ( rel.indexOf( 'noopener' ) !== -1 ) {
 			features.push( 'noopener' );
@@ -61,15 +61,23 @@
 	}
 
 	function navigateToExpandedLink( expandedLink, event ) {
-		var href = expandedLink.href;
-		var openInNewTab = '_blank' === expandedLink.getAttribute( 'target' ) || event.metaKey || event.ctrlKey || event.shiftKey;
+		const href = expandedLink.href;
+		const openInNewTab =
+			'_blank' === expandedLink.getAttribute( 'target' ) ||
+			event.metaKey ||
+			event.ctrlKey ||
+			event.shiftKey;
 
 		if ( ! href ) {
 			return;
 		}
 
 		if ( openInNewTab ) {
-			window.open( href, '_blank', getWindowFeatures( expandedLink ) || undefined );
+			window.open(
+				href,
+				'_blank',
+				getWindowFeatures( expandedLink ) || undefined
+			);
 			return;
 		}
 
@@ -93,9 +101,9 @@
 	}
 
 	function handleLinkedBlockClick( event ) {
-		var targetElement = getEventTargetElement( event );
-		var linkedBlock;
-		var expandedLink;
+		const targetElement = getEventTargetElement( event );
+		let linkedBlock;
+		let expandedLink;
 
 		if ( ! targetElement || 0 !== event.button || event.altKey ) {
 			return;
@@ -109,7 +117,10 @@
 
 		expandedLink = getExpandedLink( linkedBlock );
 
-		if ( ! expandedLink || shouldIgnorePointerActivation( event, targetElement ) ) {
+		if (
+			! expandedLink ||
+			shouldIgnorePointerActivation( event, targetElement )
+		) {
 			return;
 		}
 
@@ -117,9 +128,9 @@
 	}
 
 	function handleLinkedBlockAuxClick( event ) {
-		var targetElement = getEventTargetElement( event );
-		var linkedBlock;
-		var expandedLink;
+		const targetElement = getEventTargetElement( event );
+		let linkedBlock;
+		let expandedLink;
 
 		if ( ! targetElement || 1 !== event.button ) {
 			return;
@@ -133,7 +144,10 @@
 
 		expandedLink = getExpandedLink( linkedBlock );
 
-		if ( ! expandedLink || shouldIgnorePointerActivation( event, targetElement ) ) {
+		if (
+			! expandedLink ||
+			shouldIgnorePointerActivation( event, targetElement )
+		) {
 			return;
 		}
 
@@ -149,4 +163,4 @@
 		document.addEventListener( 'click', handleLinkedBlockClick );
 		document.addEventListener( 'auxclick', handleLinkedBlockAuxClick );
 	}
-}() );
+} )();

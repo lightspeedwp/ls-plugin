@@ -3,7 +3,7 @@
  *
  * Handles client-side navigation for the taxonomy filter block.
  *
- * @package LS_Plugin
+ * @package
  */
 
 import { store, getContext, getElement } from '@wordpress/interactivity';

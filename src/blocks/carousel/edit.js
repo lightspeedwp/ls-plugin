@@ -39,7 +39,9 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 
 	const className = [
 		`ls-carousel-shows-${ attributes.slidesToShow }-slides`,
-	].filter( Boolean ).join( ' ' );
+	]
+		.filter( Boolean )
+		.join( ' ' );
 
 	const blockProps = useBlockProps( {
 		className,
@@ -145,73 +147,95 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 					title={ __( 'Responsive', 'ls-plugin' ) }
 					initialOpen={ false }
 				>
-					{ ( attributes.breakpoints || [] ).map( ( breakpoint, index ) => (
-						<div key={ index } style={ { marginBottom: '30px' } }>
-							<strong>
-								{ __( 'Breakpoint', 'ls-plugin' ) }{ ' ' }
-								{ index + 1 }
-							</strong>
-							<TextControl
-								label={ __(
-									'Min screen width (px)',
-									'ls-plugin'
-								) }
-								value={ breakpoint.breakpoint || '' }
-								type="number"
-								min={ 100 }
-								max={ 2000 }
-								onChange={ ( value ) => {
-									const updated = attributes.breakpoints.map(
-										( bp, i ) =>
-											i === index
-												? {
-														...bp,
-														breakpoint: parseInt(
-															value,
-															10
-														),
-												  }
-												: bp
-									);
-									setAttributes( { breakpoints: updated } );
-								} }
-							/>
-							<RangeControl
-								label={ __( 'Slides to show', 'ls-plugin' ) }
-								value={ breakpoint.slidesToShow }
-								help={ __(
-									'Number of slides to show at the minimum given screen width.',
-									'ls-plugin'
-								) }
-								onChange={ ( value ) => {
-									const updated = attributes.breakpoints.map(
-										( bp, i ) =>
-											i === index
-												? { ...bp, slidesToShow: value }
-												: bp
-									);
-									setAttributes( { breakpoints: updated } );
-								} }
-								min={ 1 }
-								max={ 5 }
-								__nextHasNoMarginBottom
-								__next40pxDefaultSize
-							/>
-							<Button
-								isLink
-								isDestructive
-								onClick={ () => {
-									const updated = attributes.breakpoints.filter(
-										( bp, i ) => i !== index
-									);
-									setAttributes( { breakpoints: updated } );
-								} }
+					{ ( attributes.breakpoints || [] ).map(
+						( breakpoint, index ) => (
+							<div
+								key={ index }
+								style={ { marginBottom: '30px' } }
 							>
-								{ __( 'Remove breakpoint', 'ls-plugin' ) }{ ' ' }
-								{ index + 1 }
-							</Button>
-						</div>
-					) ) }
+								<strong>
+									{ __( 'Breakpoint', 'ls-plugin' ) }{ ' ' }
+									{ index + 1 }
+								</strong>
+								<TextControl
+									label={ __(
+										'Min screen width (px)',
+										'ls-plugin'
+									) }
+									value={ breakpoint.breakpoint || '' }
+									type="number"
+									min={ 100 }
+									max={ 2000 }
+									onChange={ ( value ) => {
+										const updated =
+											attributes.breakpoints.map(
+												( bp, i ) =>
+													i === index
+														? {
+																...bp,
+																breakpoint:
+																	parseInt(
+																		value,
+																		10
+																	),
+														  }
+														: bp
+											);
+										setAttributes( {
+											breakpoints: updated,
+										} );
+									} }
+								/>
+								<RangeControl
+									label={ __(
+										'Slides to show',
+										'ls-plugin'
+									) }
+									value={ breakpoint.slidesToShow }
+									help={ __(
+										'Number of slides to show at the minimum given screen width.',
+										'ls-plugin'
+									) }
+									onChange={ ( value ) => {
+										const updated =
+											attributes.breakpoints.map(
+												( bp, i ) =>
+													i === index
+														? {
+																...bp,
+																slidesToShow:
+																	value,
+														  }
+														: bp
+											);
+										setAttributes( {
+											breakpoints: updated,
+										} );
+									} }
+									min={ 1 }
+									max={ 5 }
+									__nextHasNoMarginBottom
+									__next40pxDefaultSize
+								/>
+								<Button
+									isLink
+									isDestructive
+									onClick={ () => {
+										const updated =
+											attributes.breakpoints.filter(
+												( bp, i ) => i !== index
+											);
+										setAttributes( {
+											breakpoints: updated,
+										} );
+									} }
+								>
+									{ __( 'Remove breakpoint', 'ls-plugin' ) }{ ' ' }
+									{ index + 1 }
+								</Button>
+							</div>
+						)
+					) }
 					{ ( attributes.breakpoints || [] ).length < 3 && (
 						<Button
 							variant="secondary"

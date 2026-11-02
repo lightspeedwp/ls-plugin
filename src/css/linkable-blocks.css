@@ -23,14 +23,14 @@
 	margin: 0;
 	clip: auto;
 	clip-path: none;
-	outline: 2px solid currentColor;
+	outline: 2px solid currentcolor;
 	outline-offset: 2px;
 	z-index: 1;
 }
 
 .ls-plugin-linkable-blocks__popover .components-popover__content {
-	width: min( 22rem, calc( 100vw - 2rem ) );
-	max-width: calc( 100vw - 2rem );
+	width: min(22rem, calc(100vw - 2rem));
+	max-width: calc(100vw - 2rem);
 	overflow: hidden;
 }
 

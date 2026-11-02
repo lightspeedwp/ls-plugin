@@ -51,6 +51,23 @@ import {
  * The edit function describes the structure of your block in the context of the
  * editor. This represents what the editor will render when the block is used.
  *
+ * @param  root0
+ * @param  root0.attributes
+ * @param  root0.setAttributes
+ * @param  root0.buttonTextColor
+ * @param  root0.setButtonTextColor
+ * @param  root0.buttonBackgroundColor
+ * @param  root0.setButtonBackgroundColor
+ * @param  root0.hoverButtonTextColor
+ * @param  root0.setHoverButtonTextColor
+ * @param  root0.hoverButtonBackgroundColor
+ * @param  root0.setHoverButtonBackgroundColor
+ * @param  root0.activeButtonTextColor
+ * @param  root0.setActiveButtonTextColor
+ * @param  root0.activeButtonBackgroundColor
+ * @param  root0.setActiveButtonBackgroundColor
+ * @param  root0.style
+ * @param  root0.clientId
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-edit-save/#edit
  *
  * @return {Element} Element to render.
@@ -284,7 +301,9 @@ function Edit( {
 				customActiveButtonBackgroundColor;
 		}
 		if ( buttonBorder?.width ) {
-			blockStyles[ '--button-border' ] = `${ buttonBorder.width } solid var(--wp--custom--color--button--fill--border, currentColor)`;
+			blockStyles[
+				'--button-border'
+			] = `${ buttonBorder.width } solid var(--wp--custom--color--button--fill--border, currentColor)`;
 		}
 		if ( buttonBorderRadius ) {
 			blockStyles[ '--button-border-radius' ] = buttonBorderRadius;
@@ -327,8 +346,7 @@ function Edit( {
 				{ filterType === 'buttons' ? (
 					<ToolbarDropdownMenu
 						icon={
-							justificationIcons[ justification ] ||
-							justifyLeft
+							justificationIcons[ justification ] || justifyLeft
 						}
 						label={ __( 'Change items justification' ) }
 						controls={ [
@@ -454,9 +472,7 @@ function Edit( {
 					{ filterType === 'buttons' && (
 						<>
 							<ToggleControl
-								label={ __(
-									'Limit number of visible items'
-								) }
+								label={ __( 'Limit number of visible items' ) }
 								checked={ limitVisibleItems }
 								onChange={ () =>
 									setAttributes( {
@@ -538,10 +554,7 @@ function Edit( {
 								},
 							},
 							{
-								label: __(
-									'Button background',
-									'ls-plugin'
-								),
+								label: __( 'Button background', 'ls-plugin' ),
 								colorValue:
 									buttonBackgroundColor.color ||
 									customButtonBackgroundColor,
@@ -553,10 +566,7 @@ function Edit( {
 								},
 							},
 							{
-								label: __(
-									'Hover button text',
-									'ls-plugin'
-								),
+								label: __( 'Hover button text', 'ls-plugin' ),
 								colorValue:
 									hoverButtonTextColor.color ||
 									customHoverButtonTextColor,
@@ -578,16 +588,12 @@ function Edit( {
 								onColorChange: ( value ) => {
 									setHoverButtonBackgroundColor( value );
 									setAttributes( {
-										customHoverButtonBackgroundColor:
-											value,
+										customHoverButtonBackgroundColor: value,
 									} );
 								},
 							},
 							{
-								label: __(
-									'Active button text',
-									'ls-plugin'
-								),
+								label: __( 'Active button text', 'ls-plugin' ),
 								colorValue:
 									activeButtonTextColor.color ||
 									customActiveButtonTextColor,
@@ -626,9 +632,7 @@ function Edit( {
 
 				{ isLoaded && terms && filterType === 'dropdown' && (
 					<select style={ innerSpacingStyles }>
-						<option>
-							{ allItemsText || taxonomy.all_items }
-						</option>
+						<option>{ allItemsText || taxonomy.all_items }</option>
 						{ terms.map( ( term ) => (
 							<option key={ term.id } value={ term.id }>
 								{ showCount

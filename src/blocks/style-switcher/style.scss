@@ -76,11 +76,13 @@
 
 html.dark-mode,
 body.dark-mode {
+
 	.wp-block-ls-plugin-style-switcher__input + .wp-block-ls-plugin-style-switcher__track .wp-block-ls-plugin-style-switcher__selector {
 		transform: translateX(calc(var(--icon-size) * 1.25));
 	}
 
 	.wp-block-ls-plugin-style-switcher[data-icon-behavior="current"] {
+
 		.wp-block-ls-plugin-style-switcher__icon--light {
 			visibility: hidden;
 		}
@@ -91,6 +93,7 @@ body.dark-mode {
 	}
 
 	.wp-block-ls-plugin-style-switcher[data-icon-behavior="switch-to"] {
+
 		.wp-block-ls-plugin-style-switcher__icon--light {
 			visibility: visible;
 		}
@@ -106,6 +109,7 @@ body.dark-mode {
 }
 
 .wp-block-ls-plugin-style-switcher[data-icon-behavior="switch-to"] {
+
 	.wp-block-ls-plugin-style-switcher__icon--light {
 		visibility: hidden;
 	}

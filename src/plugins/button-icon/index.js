@@ -68,7 +68,9 @@ function addInspectorControls( BlockEdit ) {
 									<Button
 										key={ icon.value }
 										label={ icon.label }
-										isPressed={ lsButtonIcon === icon.value }
+										isPressed={
+											lsButtonIcon === icon.value
+										}
 										onClick={ () =>
 											setAttributes( {
 												lsButtonIcon:
@@ -86,7 +88,10 @@ function addInspectorControls( BlockEdit ) {
 						{ lsButtonIcon && (
 							<PanelRow>
 								<ToggleControl
-									label={ __( 'Show icon on left', 'ls-plugin' ) }
+									label={ __(
+										'Show icon on left',
+										'ls-plugin'
+									) }
 									checked={ lsButtonIconPositionLeft }
 									onChange={ () =>
 										setAttributes( {

@@ -1,8 +1,5 @@
 import { __ } from '@wordpress/i18n';
-import {
-	InspectorControls,
-	useBlockProps,
-} from '@wordpress/block-editor';
+import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import {
 	PanelBody,
 	RangeControl,
@@ -17,13 +14,8 @@ const WIDTH_UNIT_OPTIONS = [
 ];
 
 function Edit( { attributes, setAttributes } ) {
-	const {
-		metaKey,
-		placeholder,
-		searchByCustomField,
-		width,
-		widthUnit,
-	} = attributes;
+	const { metaKey, placeholder, searchByCustomField, width, widthUnit } =
+		attributes;
 
 	const maxWidth = '%' === widthUnit ? 100 : 1200;
 	const blockProps = useBlockProps( {
@@ -42,33 +34,43 @@ function Edit( { attributes, setAttributes } ) {
 					<TextControl
 						label={ __( 'Placeholder', 'ls-plugin' ) }
 						value={ placeholder }
-						onChange={ ( value ) => setAttributes( { placeholder: value } ) }
+						onChange={ ( value ) =>
+							setAttributes( { placeholder: value } )
+						}
 					/>
 					<SelectControl
 						label={ __( 'Width unit', 'ls-plugin' ) }
 						value={ widthUnit }
 						options={ WIDTH_UNIT_OPTIONS }
-						onChange={ ( value ) => setAttributes( { widthUnit: value } ) }
+						onChange={ ( value ) =>
+							setAttributes( { widthUnit: value } )
+						}
 					/>
 					<RangeControl
 						label={ __( 'Width', 'ls-plugin' ) }
 						value={ width }
 						min={ '%' === widthUnit ? 25 : 160 }
 						max={ maxWidth }
-						onChange={ ( value ) => setAttributes( { width: value } ) }
+						onChange={ ( value ) =>
+							setAttributes( { width: value } )
+						}
 					/>
 					<ToggleControl
 						label={ __( 'Search by custom field', 'ls-plugin' ) }
 						checked={ searchByCustomField }
 						onChange={ () =>
-							setAttributes( { searchByCustomField: ! searchByCustomField } )
+							setAttributes( {
+								searchByCustomField: ! searchByCustomField,
+							} )
 						}
 					/>
 					{ searchByCustomField && (
 						<TextControl
 							label={ __( 'Meta key', 'ls-plugin' ) }
 							value={ metaKey }
-							onChange={ ( value ) => setAttributes( { metaKey: value } ) }
+							onChange={ ( value ) =>
+								setAttributes( { metaKey: value } )
+							}
 							help={ __(
 								'Filter against a post meta value instead of the post title/content search.',
 								'ls-plugin'

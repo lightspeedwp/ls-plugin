@@ -11,11 +11,12 @@
 	}
 
 	&.taxonomy-filter--dropdown {
+
 		select {
 			width: 100%;
 			padding: 0.5rem;
 			font-size: inherit;
-			border: 1px solid currentColor;
+			border: 1px solid currentcolor;
 			border-radius: 0.25rem;
 			background-color: transparent;
 			color: var(--wp--custom--color--text--default);

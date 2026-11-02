@@ -17,10 +17,15 @@ store( 'lsPluginSearchFilter', {
 			clearTimeout( debounceTimers.get( ref ) );
 
 			const timerId = setTimeout( async () => {
-				const { actions } = await import( '@wordpress/interactivity-router' );
+				const { actions } = await import(
+					'@wordpress/interactivity-router'
+				);
 
 				if ( searchValue !== '' ) {
-					searchUrl.searchParams.set( context.searchKey, searchValue );
+					searchUrl.searchParams.set(
+						context.searchKey,
+						searchValue
+					);
 				} else {
 					searchUrl.searchParams.delete( context.searchKey );
 				}
