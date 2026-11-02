@@ -9,6 +9,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+---
+
+## [1.0.0] - 2026-11-02
+
+### ⚠️ BREAKING CHANGES
+
+- **Namespaced classes.** All classes in `inc/` are now under the `LS_Plugin\` namespace and the `LS_Plugin_` prefix is gone (for example `LS_Plugin_Carousel` is now `LS_Plugin\Carousel`). The files were renamed to match (for example `class-ls-plugin-icons.php` is now `class-icons.php`). No aliases for the old names are provided, so any custom code or theme that references the old class names or file paths must be updated.
+- **Portfolio and other plugin post types are disabled by default.** Existing sites must enable them under **Settings → LightSpeed → Post Types** after updating, or Portfolio content, its taxonomies and its permalink settings are hidden. See LS-4288.
+- **Back to Top block removed.** The standalone `ls-plugin/back-to-top` block no longer exists. Back to Top is now a variation of the `core/button` block, and content that used the old block must be re-created with the Button variation.
+
+See [docs/migrating-to-1.0.md](docs/migrating-to-1.0.md) for upgrade steps.
+
 ### Added
 - Added a front-end search filter that keeps posts set to "noindex" in Yoast SEO out of the site search results, in the main search query and in Query Loop blocks that are searching. Posts with no noindex setting stay searchable, nothing is unpublished, and the admin and REST searches are untouched. Return `false` from the `ls_plugin_search_exclude_noindex` filter to switch it off. See [#29](https://github.com/lightspeedwp/ls-plugin/pull/29).
 - Added a Lefthook `pre-commit` hook (`lefthook.yml`) with two jobs. `php-check` runs `php -l` and PHP_CodeSniffer on staged PHP files. `build` runs `npm run build` when files in `src/` are staged and stages the rebuilt `build/`, so source and built output are committed together. The hook is skipped during merges and rebases, and it stops the commit when `src/` has unstaged or untracked files or when `git commit <file>` is used with source files. `npm install` installs the hook.
@@ -46,7 +58,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Changed the Portfolio post type (`project`) to be disabled by default. Existing sites must enable it under **Settings → LightSpeed → Post Types** after updating, or Portfolio content, its taxonomies (Industry & Software, Service, Project types) and its permalink settings will be hidden. See LS-4288.
 - Changed Back to Top implementation from a standalone custom block to a `core/button` variation.
 - Changed Back to Top frontend targeting to use a dedicated wrapper class (`is-back-to-top`) for reliable JS and CSS behaviour.
-- Changed Back to Top visibility to always display (removed scroll-threshold hide/show behaviour).
 - Changed linkable block source assets to load from `src/` and updated build configuration to match the new asset layout.
 - Changed the plugin bootstrap to load SCF JSON configuration, validation, and permalink management classes.
 - Changed Search Filter block interactivity handling to use a dedicated view script module with debounced query updates and Query Loop integration hooks.
@@ -87,5 +98,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-[Unreleased]: https://github.com/lightspeedwp/ls-plugin/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/lightspeedwp/ls-plugin/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/lightspeedwp/ls-plugin/releases/tag/v1.0.0
 [0.1.0]: https://github.com/lightspeedwp/ls-plugin/releases/tag/v0.1.0
