@@ -28,10 +28,6 @@
 	inset-inline-start: var(--ls-button-fill-icon-inline-end);
 }
 
-.wp-block-button.has-ls-button-icon.has-ls-button-icon-position-left .wp-block-button__link::after {
-	content: none;
-}
-
 .wp-block-button.has-ls-button-icon-arrow-right .wp-block-button__link::after,
 .wp-block-button.has-ls-button-icon-arrow-right.has-ls-button-icon-position-left .wp-block-button__link::before {
 	content: "→" !important;
@@ -60,4 +56,8 @@
 .wp-block-button.has-ls-button-icon-external .wp-block-button__link::after,
 .wp-block-button.has-ls-button-icon-external.has-ls-button-icon-position-left .wp-block-button__link::before {
 	content: "↗" !important;
+}
+
+.wp-block-button.has-ls-button-icon.has-ls-button-icon-position-left .wp-block-button__link::after {
+	content: none;
 }

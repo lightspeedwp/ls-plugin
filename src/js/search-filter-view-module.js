@@ -6,13 +6,14 @@ store( 'lsPluginSearchFilter', {
 	actions: {
 		search() {
 			const { ref } = getElement();
-			const context = getContext();
 			const searchValue = ref?.value ?? '';
 			const searchUrl = new URL( window.location );
 
 			if ( ! ref ) {
 				return;
 			}
+
+			const context = getContext();
 
 			clearTimeout( debounceTimers.get( ref ) );
 

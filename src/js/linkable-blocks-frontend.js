@@ -40,7 +40,9 @@
 	}
 
 	function hasActiveTextSelection() {
-		const selection = window.getSelection ? window.getSelection() : null;
+		const view = document.defaultView;
+		const selection =
+			view && view.getSelection ? view.getSelection() : null;
 
 		return !! ( selection && String( selection ).trim() );
 	}
@@ -102,20 +104,18 @@
 
 	function handleLinkedBlockClick( event ) {
 		const targetElement = getEventTargetElement( event );
-		let linkedBlock;
-		let expandedLink;
 
 		if ( ! targetElement || 0 !== event.button || event.altKey ) {
 			return;
 		}
 
-		linkedBlock = targetElement.closest( linkedBlockSelector );
+		const linkedBlock = targetElement.closest( linkedBlockSelector );
 
 		if ( ! linkedBlock ) {
 			return;
 		}
 
-		expandedLink = getExpandedLink( linkedBlock );
+		const expandedLink = getExpandedLink( linkedBlock );
 
 		if (
 			! expandedLink ||
@@ -129,20 +129,18 @@
 
 	function handleLinkedBlockAuxClick( event ) {
 		const targetElement = getEventTargetElement( event );
-		let linkedBlock;
-		let expandedLink;
 
 		if ( ! targetElement || 1 !== event.button ) {
 			return;
 		}
 
-		linkedBlock = targetElement.closest( linkedBlockSelector );
+		const linkedBlock = targetElement.closest( linkedBlockSelector );
 
 		if ( ! linkedBlock ) {
 			return;
 		}
 
-		expandedLink = getExpandedLink( linkedBlock );
+		const expandedLink = getExpandedLink( linkedBlock );
 
 		if (
 			! expandedLink ||

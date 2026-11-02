@@ -36,7 +36,6 @@ import {
 } from '@wordpress/components';
 
 import { useEffect, useState } from '@wordpress/element';
-import { useSelect } from '@wordpress/data';
 import apiFetch from '@wordpress/api-fetch';
 import { addQueryArgs } from '@wordpress/url';
 
@@ -51,23 +50,23 @@ import {
  * The edit function describes the structure of your block in the context of the
  * editor. This represents what the editor will render when the block is used.
  *
- * @param  root0
- * @param  root0.attributes
- * @param  root0.setAttributes
- * @param  root0.buttonTextColor
- * @param  root0.setButtonTextColor
- * @param  root0.buttonBackgroundColor
- * @param  root0.setButtonBackgroundColor
- * @param  root0.hoverButtonTextColor
- * @param  root0.setHoverButtonTextColor
- * @param  root0.hoverButtonBackgroundColor
- * @param  root0.setHoverButtonBackgroundColor
- * @param  root0.activeButtonTextColor
- * @param  root0.setActiveButtonTextColor
- * @param  root0.activeButtonBackgroundColor
- * @param  root0.setActiveButtonBackgroundColor
- * @param  root0.style
- * @param  root0.clientId
+ * @param {Object}   root0                                Block edit props.
+ * @param {Object}   root0.attributes
+ * @param {Function} root0.setAttributes
+ * @param {Object}   root0.buttonTextColor
+ * @param {Function} root0.setButtonTextColor
+ * @param {Object}   root0.buttonBackgroundColor
+ * @param {Function} root0.setButtonBackgroundColor
+ * @param {Object}   root0.hoverButtonTextColor
+ * @param {Function} root0.setHoverButtonTextColor
+ * @param {Object}   root0.hoverButtonBackgroundColor
+ * @param {Function} root0.setHoverButtonBackgroundColor
+ * @param {Object}   root0.activeButtonTextColor
+ * @param {Function} root0.setActiveButtonTextColor
+ * @param {Object}   root0.activeButtonBackgroundColor
+ * @param {Function} root0.setActiveButtonBackgroundColor
+ * @param {Object}   root0.style
+ * @param {string}   root0.clientId
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-edit-save/#edit
  *
  * @return {Element} Element to render.
@@ -134,6 +133,7 @@ function Edit( {
 				setTaxonomies( taxOptions );
 			},
 			( error ) => {
+				// eslint-disable-next-line no-console -- Report REST API failures to the editor console.
 				console.error( 'Error loading taxonomies:', error );
 			}
 		);
@@ -160,6 +160,7 @@ function Edit( {
 			},
 			( error ) => {
 				setIsLoaded( true );
+				// eslint-disable-next-line no-console -- Report REST API failures to the editor console.
 				console.error( 'Error loading terms:', error );
 			}
 		);
@@ -336,6 +337,7 @@ function Edit( {
 				},
 			} );
 		} catch ( error ) {
+			// eslint-disable-next-line no-console -- Report REST API failures to the editor console.
 			console.error( 'Error fetching taxonomy:', error );
 		}
 	};
@@ -628,6 +630,7 @@ function Edit( {
 			) }
 
 			<div { ...blockProps }>
+				{ /* eslint-disable-next-line @wordpress/i18n-ellipsis -- Keep the existing translatable string unchanged. */ }
 				{ ! isLoaded && <span>{ __( 'Loading...' ) }</span> }
 
 				{ isLoaded && terms && filterType === 'dropdown' && (
@@ -645,6 +648,7 @@ function Edit( {
 
 				{ isLoaded && terms && filterType === 'buttons' && (
 					<>
+						{ /* eslint-disable-next-line jsx-a11y/anchor-is-valid -- Editor-only preview of a button; must not be a navigable link. */ }
 						<a
 							className="wp-element-button taxonomy-filter-current"
 							style={ innerSpacingStyles }
@@ -659,6 +663,7 @@ function Edit( {
 									: terms.length
 							)
 							.map( ( term ) => (
+								// eslint-disable-next-line jsx-a11y/anchor-is-valid -- Editor-only preview of a button; must not be a navigable link.
 								<a
 									key={ term.id }
 									className="wp-element-button"

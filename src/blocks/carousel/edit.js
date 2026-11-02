@@ -27,6 +27,7 @@ import { useSelect } from '@wordpress/data';
  * @return {Element} Element to render.
  */
 export default function Edit( { attributes, setAttributes, clientId } ) {
+	// eslint-disable-next-line no-unused-vars -- Result unused; kept so the component still subscribes to the block count.
 	const { hasChildBlocks } = useSelect(
 		( select ) => {
 			const { getBlockCount } = select( blockEditorStore );

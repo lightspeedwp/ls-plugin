@@ -201,7 +201,6 @@
 	) {
 		const href = attributes.href;
 		const linkDestination = attributes.linkDestination;
-		const linkTarget = attributes.linkTarget;
 
 		return createElement(
 			PanelBody,
@@ -239,7 +238,6 @@
 			const attributes = props.attributes || {};
 			const href = attributes.href;
 			const linkDestination = attributes.linkDestination;
-			const linkTarget = attributes.linkTarget;
 			const editorState = useState( false );
 			const isEditingURL = editorState[ 0 ];
 			const setIsEditingURL = editorState[ 1 ];

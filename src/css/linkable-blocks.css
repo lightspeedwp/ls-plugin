@@ -34,6 +34,26 @@
 	overflow: hidden;
 }
 
+.ls-plugin-linkable-blocks__menu {
+	display: grid;
+	gap: 0.5rem;
+	margin-top: 0.75rem;
+}
+
+.ls-plugin-linkable-blocks__option,
+.ls-plugin-linkable-blocks__selection {
+	align-items: center;
+	background: #fff;
+	border: 1px solid #dcdcde;
+	border-radius: 2px;
+	display: flex;
+	gap: 0.5rem;
+	justify-content: space-between;
+	min-height: 40px;
+	padding: 0.75rem;
+	width: 100%;
+}
+
 .ls-plugin-linkable-blocks__popover .block-editor-link-control,
 .ls-plugin-linkable-blocks__popover .ls-plugin-linkable-blocks__menu,
 .ls-plugin-linkable-blocks__popover .ls-plugin-linkable-blocks__selection {
@@ -63,26 +83,6 @@
 .ls-plugin-linkable-blocks__panel .block-editor-link-control {
 	margin: 0;
 	padding: 0;
-}
-
-.ls-plugin-linkable-blocks__menu {
-	display: grid;
-	gap: 0.5rem;
-	margin-top: 0.75rem;
-}
-
-.ls-plugin-linkable-blocks__option,
-.ls-plugin-linkable-blocks__selection {
-	align-items: center;
-	background: #fff;
-	border: 1px solid #dcdcde;
-	border-radius: 2px;
-	display: flex;
-	gap: 0.5rem;
-	justify-content: space-between;
-	min-height: 40px;
-	padding: 0.75rem;
-	width: 100%;
 }
 
 .ls-plugin-linkable-blocks__option {

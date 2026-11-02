@@ -225,7 +225,7 @@
 
 	/**
 	 * @param {boolean} isDark    Whether dark mode should be enabled.
-	 * @param           styleSlug
+	 * @param {string}  styleSlug Style variation slug to persist when dark mode is enabled.
 	 * @return {void}
 	 */
 	function setModeFromInput( isDark, styleSlug ) {
