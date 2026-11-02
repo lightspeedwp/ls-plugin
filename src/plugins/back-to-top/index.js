@@ -84,35 +84,53 @@ const withBackToTopControls = createHigherOrderComponent( ( BlockEdit ) => {
 					>
 						<SelectControl
 							label={ __( 'Position Mode', 'ls-plugin' ) }
-							value={ attributes.backToTopPositionMode || 'scroll' }
+							value={
+								attributes.backToTopPositionMode || 'scroll'
+							}
 							options={ [
 								{
 									label: __( 'Inline (Scroll)', 'ls-plugin' ),
 									value: 'scroll',
 								},
 								{
-									label: __( 'Sticky (Fixed, Center)', 'ls-plugin' ),
+									label: __(
+										'Sticky (Fixed, Center)',
+										'ls-plugin'
+									),
 									value: 'sticky',
 								},
 								{
-									label: __( 'Fixed (Bottom Right)', 'ls-plugin' ),
+									label: __(
+										'Fixed (Bottom Right)',
+										'ls-plugin'
+									),
 									value: 'fixed',
 								},
 							] }
 							onChange={ ( value ) =>
-								setAttributes( { backToTopPositionMode: value } )
+								setAttributes( {
+									backToTopPositionMode: value,
+								} )
 							}
 							help={ __(
 								'Choose how the button is positioned. Sticky and Fixed modes support scroll-based visibility.',
 								'ls-plugin'
 							) }
 						/>
-						{ ( attributes.backToTopPositionMode === 'sticky' || attributes.backToTopPositionMode === 'fixed' ) && (
+						{ ( attributes.backToTopPositionMode === 'sticky' ||
+							attributes.backToTopPositionMode === 'fixed' ) && (
 							<RangeControl
-								label={ __( 'Visibility Threshold (%)', 'ls-plugin' ) }
-								value={ attributes.backToTopScrollThreshold ?? 75 }
+								label={ __(
+									'Visibility Threshold (%)',
+									'ls-plugin'
+								) }
+								value={
+									attributes.backToTopScrollThreshold ?? 75
+								}
 								onChange={ ( value ) =>
-									setAttributes( { backToTopScrollThreshold: value } )
+									setAttributes( {
+										backToTopScrollThreshold: value,
+									} )
 								}
 								min={ 0 }
 								max={ 100 }
@@ -158,12 +176,17 @@ addFilter(
 		const props = {
 			...extraProps,
 			className: classes,
-			'data-back-to-top-mode': attributes.backToTopPositionMode || 'scroll',
+			'data-back-to-top-mode':
+				attributes.backToTopPositionMode || 'scroll',
 		};
 
 		// Add scroll threshold for sticky and fixed modes
-		if ( attributes.backToTopPositionMode === 'sticky' || attributes.backToTopPositionMode === 'fixed' ) {
-			props[ 'data-scroll-threshold' ] = attributes.backToTopScrollThreshold ?? 75;
+		if (
+			attributes.backToTopPositionMode === 'sticky' ||
+			attributes.backToTopPositionMode === 'fixed'
+		) {
+			props[ 'data-scroll-threshold' ] =
+				attributes.backToTopScrollThreshold ?? 75;
 		}
 
 		return props;

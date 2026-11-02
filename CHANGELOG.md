@@ -52,6 +52,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Changed Search Filter block interactivity handling to use a dedicated view script module with debounced query updates and Query Loop integration hooks.
 - Changed Taxonomy Filter block interactivity handling to use dedicated view script module with client-side navigation and per-instance state management for expand/collapse controls.
 - Changed all `inc/` classes to be namespaced under `LS_Plugin\`, dropping the `LS_Plugin_` prefix from class names (e.g. `LS_Plugin_Carousel` → `LS_Plugin\Carousel`), and renamed the corresponding files to match (e.g. `class-ls-plugin-icons.php` → `class-icons.php`).
+- Changed the lint setup so `npm run lint` passes in CI: Stylelint now checks only `src/**/*.{css,scss}` and ignores the compiled `style.css` and `.map` files via `.stylelintignore`, the `src/` JavaScript and SCSS were auto-fixed or corrected to meet the lint rules, and `build/` is rebuilt to match. See [#30](https://github.com/lightspeedwp/ls-plugin/pull/30).
 
 ### Deprecated
 

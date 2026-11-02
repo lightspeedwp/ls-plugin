@@ -26,7 +26,10 @@ function ArrowLeftIcon() {
 function ChevronRightIcon() {
 	return (
 		<SVG width="20" height="20" viewBox="0 0 24 24" fill="none">
-			<Path fill="currentColor" d="m10 6 6 6-6 6-1.41-1.41L13.17 12 8.59 7.41 10 6z" />
+			<Path
+				fill="currentColor"
+				d="m10 6 6 6-6 6-1.41-1.41L13.17 12 8.59 7.41 10 6z"
+			/>
 		</SVG>
 	);
 }

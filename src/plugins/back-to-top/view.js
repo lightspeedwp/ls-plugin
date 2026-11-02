@@ -1,3 +1,4 @@
+/* global HTMLElement, requestAnimationFrame */
 /**
  * Smooth scroll utility with back-to-top support and anchor link smooth scrolling.
  * Works with core/button Back to Top variation.
@@ -10,11 +11,14 @@
 		'(prefers-reduced-motion: reduce)'
 	).matches;
 
-
 	// Calculate offset for sticky headers
 	const getStickyHeaderOffset = () => {
-		const header = document.querySelector( 'header[sticky="true"], [data-sticky="true"], .is-sticky' );
-		if ( ! header ) return 0;
+		const header = document.querySelector(
+			'header[sticky="true"], [data-sticky="true"], .is-sticky'
+		);
+		if ( ! header ) {
+			return 0;
+		}
 
 		const rect = header.getBoundingClientRect();
 		return Math.max( 0, rect.height + 20 ); // Add 20px padding
@@ -36,14 +40,19 @@
 		const endY =
 			typeof target === 'number'
 				? target
-				: target.getBoundingClientRect().top + startY - getStickyHeaderOffset();
+				: target.getBoundingClientRect().top +
+				  startY -
+				  getStickyHeaderOffset();
 		const distance = endY - startY;
 		const startTime = performance.now();
 
 		const easeInOutCubic = ( progress ) => {
 			return progress < 0.5
 				? 4 * progress * progress * progress
-				: ( progress - 1 ) * ( 2 * progress - 2 ) * ( 2 * progress - 2 ) + 1;
+				: ( progress - 1 ) *
+						( 2 * progress - 2 ) *
+						( 2 * progress - 2 ) +
+						1;
 		};
 
 		const step = ( currentTime ) => {
@@ -65,17 +74,27 @@
 	const initAnchorLinks = () => {
 		document.addEventListener( 'click', ( e ) => {
 			const link = e.target.closest( 'a[href*="#"]' );
-			if ( ! link || link.hostname !== window.location.hostname || link.pathname !== window.location.pathname ) return;
+			if (
+				! link ||
+				link.hostname !== window.location.hostname ||
+				link.pathname !== window.location.pathname
+			) {
+				return;
+			}
 
 			const href = link.getAttribute( 'href' );
 			const hash = href.substring( href.indexOf( '#' ) );
 
 			// Skip if it's just a hash or empty
-			if ( hash === '#' || hash === '' ) return;
+			if ( hash === '#' || hash === '' ) {
+				return;
+			}
 
 			// Check if the target exists
 			const target = document.querySelector( hash );
-			if ( ! target ) return;
+			if ( ! target ) {
+				return;
+			}
 
 			e.preventDefault();
 			smoothScrollTo( target );
@@ -97,7 +116,9 @@
 		wrappers.forEach( ( wrapper ) => {
 			// Find the inner link or button
 			const link = wrapper.querySelector( '.wp-block-button__link' );
-			if ( ! link ) return;
+			if ( ! link ) {
+				return;
+			}
 
 			link.addEventListener( 'click', ( e ) => {
 				e.preventDefault();
@@ -107,7 +128,10 @@
 			// Handle sticky/fixed mode visibility based on scroll
 			const mode = wrapper.getAttribute( 'data-back-to-top-mode' );
 			if ( mode === 'sticky' || mode === 'fixed' ) {
-				const thresholdPercent = parseInt( wrapper.getAttribute( 'data-scroll-threshold' ) || '75', 10 );
+				const thresholdPercent = parseInt(
+					wrapper.getAttribute( 'data-scroll-threshold' ) || '75',
+					10
+				);
 				scrollVisibilityButtons.push( { wrapper, thresholdPercent } );
 			}
 		} );
@@ -120,15 +144,18 @@
 				const documentHeight = document.documentElement.scrollHeight;
 				const scrollableDistance = documentHeight - viewportHeight;
 
-				scrollVisibilityButtons.forEach( ( { wrapper, thresholdPercent } ) => {
-					const threshold = scrollableDistance * ( thresholdPercent / 100 );
+				scrollVisibilityButtons.forEach(
+					( { wrapper, thresholdPercent } ) => {
+						const threshold =
+							scrollableDistance * ( thresholdPercent / 100 );
 
-					if ( scrolled >= threshold ) {
-						wrapper.classList.add( 'is-visible' );
-					} else {
-						wrapper.classList.remove( 'is-visible' );
+						if ( scrolled >= threshold ) {
+							wrapper.classList.add( 'is-visible' );
+						} else {
+							wrapper.classList.remove( 'is-visible' );
+						}
 					}
-				} );
+				);
 			};
 
 			// Use throttle for performance

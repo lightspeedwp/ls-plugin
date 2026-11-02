@@ -16,6 +16,7 @@ import {
 	BlockControls,
 	AlignmentToolbar,
 	InspectorControls,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis -- No stable equivalent in the supported WP version.
 	__experimentalColorGradientSettingsDropdown as ColorGradientSettingsDropdown,
 	withColors,
 } from '@wordpress/block-editor';
@@ -26,13 +27,15 @@ import {
 	TextControl,
 	ToggleControl,
 	ToolbarDropdownMenu,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis -- No stable equivalent in the supported WP version.
 	__experimentalToggleGroupControl as ToggleGroupControl,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis -- No stable equivalent in the supported WP version.
 	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis -- No stable equivalent in the supported WP version.
 	__experimentalNumberControl as NumberControl,
 } from '@wordpress/components';
 
 import { useEffect, useState } from '@wordpress/element';
-import { useSelect } from '@wordpress/data';
 import apiFetch from '@wordpress/api-fetch';
 import { addQueryArgs } from '@wordpress/url';
 
@@ -47,6 +50,23 @@ import {
  * The edit function describes the structure of your block in the context of the
  * editor. This represents what the editor will render when the block is used.
  *
+ * @param {Object}   root0                                Block edit props.
+ * @param {Object}   root0.attributes
+ * @param {Function} root0.setAttributes
+ * @param {Object}   root0.buttonTextColor
+ * @param {Function} root0.setButtonTextColor
+ * @param {Object}   root0.buttonBackgroundColor
+ * @param {Function} root0.setButtonBackgroundColor
+ * @param {Object}   root0.hoverButtonTextColor
+ * @param {Function} root0.setHoverButtonTextColor
+ * @param {Object}   root0.hoverButtonBackgroundColor
+ * @param {Function} root0.setHoverButtonBackgroundColor
+ * @param {Object}   root0.activeButtonTextColor
+ * @param {Function} root0.setActiveButtonTextColor
+ * @param {Object}   root0.activeButtonBackgroundColor
+ * @param {Function} root0.setActiveButtonBackgroundColor
+ * @param {Object}   root0.style
+ * @param {string}   root0.clientId
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-edit-save/#edit
  *
  * @return {Element} Element to render.
@@ -113,6 +133,7 @@ function Edit( {
 				setTaxonomies( taxOptions );
 			},
 			( error ) => {
+				// eslint-disable-next-line no-console -- Report REST API failures to the editor console.
 				console.error( 'Error loading taxonomies:', error );
 			}
 		);
@@ -139,6 +160,7 @@ function Edit( {
 			},
 			( error ) => {
 				setIsLoaded( true );
+				// eslint-disable-next-line no-console -- Report REST API failures to the editor console.
 				console.error( 'Error loading terms:', error );
 			}
 		);
@@ -280,7 +302,9 @@ function Edit( {
 				customActiveButtonBackgroundColor;
 		}
 		if ( buttonBorder?.width ) {
-			blockStyles[ '--button-border' ] = `${ buttonBorder.width } solid var(--wp--custom--color--button--fill--border, currentColor)`;
+			blockStyles[
+				'--button-border'
+			] = `${ buttonBorder.width } solid var(--wp--custom--color--button--fill--border, currentColor)`;
 		}
 		if ( buttonBorderRadius ) {
 			blockStyles[ '--button-border-radius' ] = buttonBorderRadius;
@@ -313,6 +337,7 @@ function Edit( {
 				},
 			} );
 		} catch ( error ) {
+			// eslint-disable-next-line no-console -- Report REST API failures to the editor console.
 			console.error( 'Error fetching taxonomy:', error );
 		}
 	};
@@ -323,8 +348,7 @@ function Edit( {
 				{ filterType === 'buttons' ? (
 					<ToolbarDropdownMenu
 						icon={
-							justificationIcons[ justification ] ||
-							justifyLeft
+							justificationIcons[ justification ] || justifyLeft
 						}
 						label={ __( 'Change items justification' ) }
 						controls={ [
@@ -450,9 +474,7 @@ function Edit( {
 					{ filterType === 'buttons' && (
 						<>
 							<ToggleControl
-								label={ __(
-									'Limit number of visible items'
-								) }
+								label={ __( 'Limit number of visible items' ) }
 								checked={ limitVisibleItems }
 								onChange={ () =>
 									setAttributes( {
@@ -534,10 +556,7 @@ function Edit( {
 								},
 							},
 							{
-								label: __(
-									'Button background',
-									'ls-plugin'
-								),
+								label: __( 'Button background', 'ls-plugin' ),
 								colorValue:
 									buttonBackgroundColor.color ||
 									customButtonBackgroundColor,
@@ -549,10 +568,7 @@ function Edit( {
 								},
 							},
 							{
-								label: __(
-									'Hover button text',
-									'ls-plugin'
-								),
+								label: __( 'Hover button text', 'ls-plugin' ),
 								colorValue:
 									hoverButtonTextColor.color ||
 									customHoverButtonTextColor,
@@ -574,16 +590,12 @@ function Edit( {
 								onColorChange: ( value ) => {
 									setHoverButtonBackgroundColor( value );
 									setAttributes( {
-										customHoverButtonBackgroundColor:
-											value,
+										customHoverButtonBackgroundColor: value,
 									} );
 								},
 							},
 							{
-								label: __(
-									'Active button text',
-									'ls-plugin'
-								),
+								label: __( 'Active button text', 'ls-plugin' ),
 								colorValue:
 									activeButtonTextColor.color ||
 									customActiveButtonTextColor,
@@ -618,13 +630,12 @@ function Edit( {
 			) }
 
 			<div { ...blockProps }>
+				{ /* eslint-disable-next-line @wordpress/i18n-ellipsis -- Keep the existing translatable string unchanged. */ }
 				{ ! isLoaded && <span>{ __( 'Loading...' ) }</span> }
 
 				{ isLoaded && terms && filterType === 'dropdown' && (
 					<select style={ innerSpacingStyles }>
-						<option>
-							{ allItemsText || taxonomy.all_items }
-						</option>
+						<option>{ allItemsText || taxonomy.all_items }</option>
 						{ terms.map( ( term ) => (
 							<option key={ term.id } value={ term.id }>
 								{ showCount
@@ -637,6 +648,7 @@ function Edit( {
 
 				{ isLoaded && terms && filterType === 'buttons' && (
 					<>
+						{ /* eslint-disable-next-line jsx-a11y/anchor-is-valid -- Editor-only preview of a button; must not be a navigable link. */ }
 						<a
 							className="wp-element-button taxonomy-filter-current"
 							style={ innerSpacingStyles }
@@ -651,6 +663,7 @@ function Edit( {
 									: terms.length
 							)
 							.map( ( term ) => (
+								// eslint-disable-next-line jsx-a11y/anchor-is-valid -- Editor-only preview of a button; must not be a navigable link.
 								<a
 									key={ term.id }
 									className="wp-element-button"

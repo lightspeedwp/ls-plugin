@@ -6,7 +6,6 @@ store( 'lsPluginSearchFilter', {
 	actions: {
 		search() {
 			const { ref } = getElement();
-			const context = getContext();
 			const searchValue = ref?.value ?? '';
 			const searchUrl = new URL( window.location );
 
@@ -14,13 +13,20 @@ store( 'lsPluginSearchFilter', {
 				return;
 			}
 
+			const context = getContext();
+
 			clearTimeout( debounceTimers.get( ref ) );
 
 			const timerId = setTimeout( async () => {
-				const { actions } = await import( '@wordpress/interactivity-router' );
+				const { actions } = await import(
+					'@wordpress/interactivity-router'
+				);
 
 				if ( searchValue !== '' ) {
-					searchUrl.searchParams.set( context.searchKey, searchValue );
+					searchUrl.searchParams.set(
+						context.searchKey,
+						searchValue
+					);
 				} else {
 					searchUrl.searchParams.delete( context.searchKey );
 				}

@@ -23,15 +23,35 @@
 	margin: 0;
 	clip: auto;
 	clip-path: none;
-	outline: 2px solid currentColor;
+	outline: 2px solid currentcolor;
 	outline-offset: 2px;
 	z-index: 1;
 }
 
 .ls-plugin-linkable-blocks__popover .components-popover__content {
-	width: min( 22rem, calc( 100vw - 2rem ) );
-	max-width: calc( 100vw - 2rem );
+	width: min(22rem, calc(100vw - 2rem));
+	max-width: calc(100vw - 2rem);
 	overflow: hidden;
+}
+
+.ls-plugin-linkable-blocks__menu {
+	display: grid;
+	gap: 0.5rem;
+	margin-top: 0.75rem;
+}
+
+.ls-plugin-linkable-blocks__option,
+.ls-plugin-linkable-blocks__selection {
+	align-items: center;
+	background: #fff;
+	border: 1px solid #dcdcde;
+	border-radius: 2px;
+	display: flex;
+	gap: 0.5rem;
+	justify-content: space-between;
+	min-height: 40px;
+	padding: 0.75rem;
+	width: 100%;
 }
 
 .ls-plugin-linkable-blocks__popover .block-editor-link-control,
@@ -63,26 +83,6 @@
 .ls-plugin-linkable-blocks__panel .block-editor-link-control {
 	margin: 0;
 	padding: 0;
-}
-
-.ls-plugin-linkable-blocks__menu {
-	display: grid;
-	gap: 0.5rem;
-	margin-top: 0.75rem;
-}
-
-.ls-plugin-linkable-blocks__option,
-.ls-plugin-linkable-blocks__selection {
-	align-items: center;
-	background: #fff;
-	border: 1px solid #dcdcde;
-	border-radius: 2px;
-	display: flex;
-	gap: 0.5rem;
-	justify-content: space-between;
-	min-height: 40px;
-	padding: 0.75rem;
-	width: 100%;
 }
 
 .ls-plugin-linkable-blocks__option {

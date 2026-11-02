@@ -34,7 +34,10 @@ export default function Edit( { attributes, setAttributes } ) {
 								value: 'current',
 							},
 							{
-								label: __( 'Switch-To Style Icon', 'ls-plugin' ),
+								label: __(
+									'Switch-To Style Icon',
+									'ls-plugin'
+								),
 								value: 'switch-to',
 							},
 						] }
@@ -56,13 +59,13 @@ export default function Edit( { attributes, setAttributes } ) {
 						help={
 							availableStyles.length
 								? __(
-									'Select which registered style variation should be used when dark mode is enabled.',
-									'ls-plugin'
-							  )
+										'Select which registered style variation should be used when dark mode is enabled.',
+										'ls-plugin'
+								  )
 								: __(
-									'No style variations found in the active theme styles directory.',
-									'ls-plugin'
-							  )
+										'No style variations found in the active theme styles directory.',
+										'ls-plugin'
+								  )
 						}
 						disabled={ ! availableStyles.length }
 					/>

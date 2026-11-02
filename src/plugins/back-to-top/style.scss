@@ -6,17 +6,38 @@
 
 /* Back to Top button specific positioning */
 .wp-block-button.is-back-to-top {
+
 	/* Ensure button displays without text (icon-only support) */
 	.wp-block-button__link {
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		
+		transition: all 0.2s ease-in-out;
+
 		/* Set minimum dimensions for text-less/icon-only buttons */
 		&:empty,
 		&:blank {
 			min-width: 2.5rem;
 			min-height: 2.5rem;
+		}
+
+		&:hover {
+			transform: translateY(-2px);
+			box-shadow:
+				0 4px 6px -1px rgba(0, 0, 0, 0.1),
+				0 2px 4px -2px rgba(0, 0, 0, 0.1);
+		}
+
+		&:active {
+			transform: translateY(0);
+		}
+
+		@media ( prefers-reduced-motion: reduce ) {
+			transition: none;
+
+			&:hover {
+				transform: none;
+			}
 		}
 	}
 
@@ -50,7 +71,7 @@
 		position: fixed;
 		bottom: 2rem;
 		left: 50%;
-		transform: translateX( -50% );
+		transform: translateX(-50%);
 		z-index: 40;
 		opacity: 0;
 		visibility: hidden;
@@ -67,29 +88,6 @@
 
 		@media ( prefers-reduced-motion: reduce ) {
 			transition: none;
-		}
-	}
-
-	/* Smooth transitions for hover state */
-	.wp-block-button__link {
-		transition: all 0.2s ease-in-out;
-
-		&:hover {
-			transform: translateY( -2px );
-			box-shadow: 0 4px 6px -1px rgba( 0, 0, 0, 0.1 ),
-				0 2px 4px -2px rgba( 0, 0, 0, 0.1 );
-		}
-
-		&:active {
-			transform: translateY( 0 );
-		}
-
-		@media ( prefers-reduced-motion: reduce ) {
-			transition: none;
-
-			&:hover {
-				transform: none;
-			}
 		}
 	}
 }

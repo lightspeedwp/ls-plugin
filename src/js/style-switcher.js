@@ -198,7 +198,9 @@
 			return fromInput;
 		}
 
-		const blockElement = input.closest( '.wp-block-ls-plugin-style-switcher' );
+		const blockElement = input.closest(
+			'.wp-block-ls-plugin-style-switcher'
+		);
 
 		if ( blockElement && blockElement.dataset.styleVariation ) {
 			return blockElement.dataset.styleVariation;
@@ -222,7 +224,8 @@
 	}
 
 	/**
-	 * @param {boolean} isDark Whether dark mode should be enabled.
+	 * @param {boolean} isDark    Whether dark mode should be enabled.
+	 * @param {string}  styleSlug Style variation slug to persist when dark mode is enabled.
 	 * @return {void}
 	 */
 	function setModeFromInput( isDark, styleSlug ) {

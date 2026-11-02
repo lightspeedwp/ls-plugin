@@ -3,12 +3,13 @@
  *
  * Handles client-side navigation for the taxonomy filter block.
  *
- * @package LS_Plugin
+ * @package
  */
 
 import { store, getContext, getElement } from '@wordpress/interactivity';
 
 // WeakMap for per-instance debounce timers.
+// eslint-disable-next-line no-unused-vars -- Declared but not yet wired up; kept pending a decision.
 const debounceTimers = new WeakMap();
 
 store( 'lsPluginTaxonomyFilter', {
