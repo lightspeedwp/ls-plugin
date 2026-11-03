@@ -1,18 +1,19 @@
 {
   "name": "ls-plugin",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "LightSpeed Site Plugin provides custom blocks and site-specific functionality for the LightSpeed website, separate from theme responsibilities.",
   "type": "module",
   "private": true,
   "scripts": {
-    "build": "wp-scripts build",
-    "start": "wp-scripts start",
+    "build": "wp-scripts build --config webpack.config.cjs",
+    "build:production": "NODE_ENV=production npm run build",
+    "start": "wp-scripts start --config webpack.config.cjs",
     "plugin:validate": "node plugin-utils.mjs validate-plugin",
     "schema:validate": "node plugin-utils.mjs validate-schema",
     "security:scan": "node plugin-utils.mjs security-scan",
     "lint": "npm run lint:js && npm run lint:css && npm run lint:json",
     "lint:js": "wp-scripts lint-js src",
-    "lint:css": "wp-scripts lint-style src",
+    "lint:css": "wp-scripts lint-style \"src/**/*.{css,scss}\"",
     "lint:json": "wp-scripts lint-md-docs . --ext=.json || true",
     "i18n": "wp-scripts makepot",
     "packages-update": "wp-scripts packages-update",
@@ -22,6 +23,9 @@
     "node": ">=20.0.0"
   },
   "devDependencies": {
-    "@wordpress/scripts": "^30.0.0"
+    "@wordpress/icons": "^12.2.0",
+    "@wordpress/scripts": "^30.0.0",
+    "lefthook": "^2.2.2",
+    "webpack-remove-empty-scripts": "^1.0.0"
   }
 }

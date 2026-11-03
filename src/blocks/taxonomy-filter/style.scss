@@ -1,0 +1,110 @@
+/**
+ * Taxonomy Filter Block Styles
+ */
+
+.wp-block-ls-plugin-taxonomy-filter {
+	// In the editor canvas, spacing support is applied to the wrapper block
+	// element.
+	// Keep wrapper spacing neutral so spacing appears only on inner controls.
+	&.block-editor-block-list__block {
+		margin: 0 !important;
+		padding: 0 !important;
+	}
+
+	&.taxonomy-filter--dropdown {
+
+		select {
+			width: 100%;
+			padding: 0.5rem;
+			font-size: inherit;
+			border: 1px solid currentcolor;
+			border-radius: 0.25rem;
+			background-color: transparent;
+			color: var(--wp--custom--color--text--default);
+			cursor: pointer;
+		}
+	}
+
+	&.taxonomy-filter--buttons {
+		--taxonomy-filter-button-background: var(--wp--custom--color--button--fill--background, transparent);
+		--taxonomy-filter-button-text: var(--wp--custom--color--button--fill--text, inherit);
+		--taxonomy-filter-button-background-hover: var(--wp--custom--color--button--fill--background-hover, currentColor);
+		--taxonomy-filter-button-text-hover: var(--wp--custom--color--button--fill--text-hover, var(--wp--preset--color--base, #fff));
+
+		&.is-layout-flex {
+			flex-wrap: wrap;
+			gap: 0.5rem;
+		}
+
+		.wp-element-button {
+			margin: 0;
+			padding: 0.5rem 1rem;
+			border-radius: 0.25rem;
+			background-color: var(--taxonomy-filter-button-background);
+			color: var(--taxonomy-filter-button-text);
+			text-decoration: none;
+			cursor: pointer;
+			transition: all 0.2s ease;
+			box-sizing: border-box;
+
+			&:hover {
+				background-color: var(--taxonomy-filter-button-background-hover);
+				color: var(--taxonomy-filter-button-text-hover);
+			}
+
+			&.taxonomy-filter-current {
+				background-color: var(--taxonomy-filter-button-background-hover);
+				color: var(--taxonomy-filter-button-text-hover);
+				font-weight: 600;
+			}
+		}
+
+		// Custom color support
+		&.has-button-text-color .wp-element-button {
+			color: var(--button-text-color);
+		}
+
+		&.has-button-background-color .wp-element-button {
+			background-color: var(--button-background-color);
+		}
+
+		&.has-button-border .wp-element-button {
+			border: var(--button-border);
+		}
+
+		&.has-button-border-radius .wp-element-button {
+			border-radius: var(--button-border-radius);
+		}
+
+		&.has-hover-button-text-color .wp-element-button:hover {
+			color: var(--hover-button-text-color);
+		}
+
+		&.has-hover-button-background-color .wp-element-button:hover {
+			background-color: var(--hover-button-background-color);
+		}
+
+		&.has-active-button-text-color .wp-element-button.taxonomy-filter-current {
+			color: var(--active-button-text-color);
+		}
+
+		&.has-active-button-background-color .wp-element-button.taxonomy-filter-current {
+			background-color: var(--active-button-background-color);
+		}
+	}
+
+	.taxonomy-filter-show-more {
+		margin-top: 0.5rem;
+		padding: 0.5rem;
+		border: none;
+		background: transparent;
+		color: inherit;
+		text-decoration: underline;
+		cursor: pointer;
+		font-size: inherit;
+
+		&:hover {
+			opacity: 0.8;
+		}
+	}
+}

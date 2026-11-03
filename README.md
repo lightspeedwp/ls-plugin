@@ -112,6 +112,16 @@ composer run phpcs
 
 ---
 
+## Back to Top variation (how to use)
+
+1. In the editor, insert a Button block.
+2. Select the Back to Top variation from block styles/variations.
+3. Publish or update the page.
+
+When clicked on the frontend, the button smoothly scrolls to the top of the page.
+
+---
+
 ## AI workflows
 
 | Folder | Purpose |

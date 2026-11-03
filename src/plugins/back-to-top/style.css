@@ -1,0 +1,89 @@
+/**
+ * Back to Top Button Styles
+ * Minimal styling for Back to Top variation of core/button
+ * Handles positioning modes and visibility transitions
+ */
+/* Back to Top button specific positioning */
+.wp-block-button.is-back-to-top {
+  /* Ensure button displays without text (icon-only support) */
+  /* Fixed mode (bottom right, appears on scroll) */
+  /* Sticky mode (centered above footer, appears on scroll) */
+  /* Smooth transitions for hover state */
+}
+.wp-block-button.is-back-to-top .wp-block-button__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* Set minimum dimensions for text-less/icon-only buttons */
+}
+.wp-block-button.is-back-to-top .wp-block-button__link:empty, .wp-block-button.is-back-to-top .wp-block-button__link:blank {
+  min-width: 2.5rem;
+  min-height: 2.5rem;
+}
+.wp-block-button.is-back-to-top[data-back-to-top-mode=fixed] {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 40;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+}
+.wp-block-button.is-back-to-top[data-back-to-top-mode=fixed].is-visible {
+  opacity: 1;
+  visibility: visible;
+}
+@media (max-width: 640px) {
+  .wp-block-button.is-back-to-top[data-back-to-top-mode=fixed] {
+    bottom: 1rem;
+    right: 1rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wp-block-button.is-back-to-top[data-back-to-top-mode=fixed] {
+    transition: none;
+  }
+}
+.wp-block-button.is-back-to-top[data-back-to-top-mode=sticky] {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 40;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+}
+.wp-block-button.is-back-to-top[data-back-to-top-mode=sticky].is-visible {
+  opacity: 1;
+  visibility: visible;
+}
+@media (max-width: 640px) {
+  .wp-block-button.is-back-to-top[data-back-to-top-mode=sticky] {
+    bottom: 1rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wp-block-button.is-back-to-top[data-back-to-top-mode=sticky] {
+    transition: none;
+  }
+}
+.wp-block-button.is-back-to-top .wp-block-button__link {
+  transition: all 0.2s ease-in-out;
+}
+.wp-block-button.is-back-to-top .wp-block-button__link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+}
+.wp-block-button.is-back-to-top .wp-block-button__link:active {
+  transform: translateY(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .wp-block-button.is-back-to-top .wp-block-button__link {
+    transition: none;
+  }
+  .wp-block-button.is-back-to-top .wp-block-button__link:hover {
+    transform: none;
+  }
+}
+/*# sourceMappingURL=style.css.map */

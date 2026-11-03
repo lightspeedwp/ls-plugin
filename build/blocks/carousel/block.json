@@ -1,0 +1,84 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "ls-plugin/carousel",
+  "version": "1.0.0",
+  "title": "Carousel",
+  "category": "media",
+  "description": "A responsive carousel slider for displaying content slides.",
+  "keywords": [
+    "carousel",
+    "slider",
+    "swiper",
+    "slideshow"
+  ],
+  "textdomain": "ls-plugin",
+  "editorScript": "file:./index.js",
+  "style": "file:./style-index.css",
+  "supports": {
+    "align": [
+      "wide",
+      "full"
+    ],
+    "html": false,
+    "anchor": true,
+    "spacing": {
+      "padding": true,
+      "margin": true,
+      "__experimentalDefaultControls": {
+        "padding": true,
+        "margin": true
+      }
+    }
+  },
+  "attributes": {
+    "templateLock": {
+      "type": [
+        "string",
+        "boolean"
+      ],
+      "enum": [
+        "all",
+        "insert",
+        "contentOnly",
+        false
+      ]
+    },
+    "slidesToShow": {
+      "type": "number",
+      "default": 3
+    },
+    "columnGap": {
+      "type": "number",
+      "default": 30
+    },
+    "pagination": {
+      "type": "boolean",
+      "default": false
+    },
+    "navigation": {
+      "type": "boolean",
+      "default": false
+    },
+    "autoplay": {
+      "type": "boolean",
+      "default": false
+    },
+    "delay": {
+      "type": "number",
+      "default": 2000
+    },
+    "loop": {
+      "type": "boolean",
+      "default": false
+    },
+    "speed": {
+      "type": "number",
+      "default": 300
+    },
+    "breakpoints": {
+      "type": "array",
+      "default": []
+    }
+  }
+}

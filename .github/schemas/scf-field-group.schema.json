@@ -1,0 +1,91 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://lightspeedwp.agency/schemas/scf-field-group.schema.json",
+  "title": "SCF Field Group",
+  "description": "Schema for Secure Custom Fields field group JSON exports.",
+  "type": "object",
+  "required": [
+    "key",
+    "title",
+    "fields",
+    "location"
+  ],
+  "properties": {
+    "key": {
+      "type": "string",
+      "pattern": "^group_"
+    },
+    "title": {
+      "type": "string"
+    },
+    "fields": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["key", "type"],
+        "properties": {
+          "key": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "sub_fields": {
+            "type": "array"
+          },
+          "layouts": {
+            "type": "array"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "location": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["param", "operator", "value"],
+          "properties": {
+            "param": {
+              "type": "string"
+            },
+            "operator": {
+              "type": "string"
+            },
+            "value": {
+              "type": ["string", "number", "boolean"]
+            }
+          },
+          "additionalProperties": true
+        }
+      }
+    },
+    "position": {
+      "type": "string"
+    },
+    "style": {
+      "type": "string"
+    },
+    "label_placement": {
+      "type": "string"
+    },
+    "instruction_placement": {
+      "type": "string"
+    },
+    "hide_on_screen": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": true
+}

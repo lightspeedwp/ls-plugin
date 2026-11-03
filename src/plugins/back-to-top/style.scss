@@ -1,0 +1,93 @@
+/**
+ * Back to Top Button Styles
+ * Minimal styling for Back to Top variation of core/button
+ * Handles positioning modes and visibility transitions
+ */
+
+/* Back to Top button specific positioning */
+.wp-block-button.is-back-to-top {
+
+	/* Ensure button displays without text (icon-only support) */
+	.wp-block-button__link {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		transition: all 0.2s ease-in-out;
+
+		/* Set minimum dimensions for text-less/icon-only buttons */
+		&:empty,
+		&:blank {
+			min-width: 2.5rem;
+			min-height: 2.5rem;
+		}
+
+		&:hover {
+			transform: translateY(-2px);
+			box-shadow:
+				0 4px 6px -1px rgba(0, 0, 0, 0.1),
+				0 2px 4px -2px rgba(0, 0, 0, 0.1);
+		}
+
+		&:active {
+			transform: translateY(0);
+		}
+
+		@media ( prefers-reduced-motion: reduce ) {
+			transition: none;
+
+			&:hover {
+				transform: none;
+			}
+		}
+	}
+
+	/* Fixed mode (bottom right, appears on scroll) */
+	&[data-back-to-top-mode="fixed"] {
+		position: fixed;
+		bottom: 2rem;
+		right: 2rem;
+		z-index: 40;
+		opacity: 0;
+		visibility: hidden;
+		transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+
+		&.is-visible {
+			opacity: 1;
+			visibility: visible;
+		}
+
+		@media ( max-width: 640px ) {
+			bottom: 1rem;
+			right: 1rem;
+		}
+
+		@media ( prefers-reduced-motion: reduce ) {
+			transition: none;
+		}
+	}
+
+	/* Sticky mode (centered above footer, appears on scroll) */
+	&[data-back-to-top-mode="sticky"] {
+		position: fixed;
+		bottom: 2rem;
+		left: 50%;
+		transform: translateX(-50%);
+		z-index: 40;
+		opacity: 0;
+		visibility: hidden;
+		transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+
+		&.is-visible {
+			opacity: 1;
+			visibility: visible;
+		}
+
+		@media ( max-width: 640px ) {
+			bottom: 1rem;
+		}
+
+		@media ( prefers-reduced-motion: reduce ) {
+			transition: none;
+		}
+	}
+}

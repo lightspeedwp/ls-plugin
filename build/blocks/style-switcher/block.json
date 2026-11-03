@@ -1,0 +1,38 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "ls-plugin/style-switcher",
+  "title": "Style Switcher",
+  "category": "design",
+  "description": "Allow visitors to switch between light and dark styles.",
+  "textdomain": "ls-plugin",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "supports": {
+    "html": false,
+    "spacing": {
+      "margin": true,
+      "padding": true
+    },
+    "color": {
+      "background": true,
+      "text": true,
+      "link": false
+    }
+  },
+  "attributes": {
+    "size": {
+      "type": "string",
+      "default": "small"
+    },
+    "darkStyleSlug": {
+      "type": "string",
+      "default": "dark"
+    },
+    "iconBehavior": {
+      "type": "string",
+      "default": "current"
+    }
+  }
+}
