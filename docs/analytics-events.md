@@ -29,7 +29,7 @@ Marking an event as a conversion (key event) is done in the Google Analytics int
 
 ## How each event is detected
 
-- **Forms that show a message on the same page** (Website Brief): the event is sent when Gravity Forms reports the confirmation.
+- **Forms that show a confirmation message** (Website Brief): the forms on this site submit with a normal page reload, so the event is sent when the page loads with Gravity Forms' confirmation message on it. A "form saved" notice (Save and Continue) does not count. Forms set to submit with AJAX are covered too, through the Gravity Forms confirmation event.
 - **Forms that redirect to a thank-you page** (Free Consultation, Contact and Newsletter): the form leaves the page, so the event is sent when the thank-you page loads. Reloading the thank-you page does not send it again for 30 minutes in the same browser tab.
 - **Consultation CTA**: a click on an element with the Popup Maker trigger class `pum-triggercta`, or on a link to the Free Consultation page.
 - **Portfolio read**: on a single case study (the `project` post type), the event is sent once per page view after about 30 seconds with the tab visible, or when half the page has been scrolled, whichever comes first.

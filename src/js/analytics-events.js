@@ -76,7 +76,7 @@
 	};
 
 	/**
-	 * Forms that confirm on the same page (Gravity Forms confirmation event).
+	 * Forms that submit with AJAX (Gravity Forms confirmation event).
 	 *
 	 * @return {boolean} Whether the listener was attached.
 	 */
@@ -96,6 +96,35 @@
 		} );
 
 		return true;
+	};
+
+	/**
+	 * Forms that confirm with a message after a normal page reload.
+	 *
+	 * Gravity Forms only fires its confirmation event for AJAX submits. The
+	 * forms on this site submit with a page reload, so look for the
+	 * confirmation message in the page instead.
+	 */
+	const trackPageConfirmations = () => {
+		Object.keys( config.forms || {} ).forEach( ( formId ) => {
+			const item = config.forms[ formId ];
+			const wrapper = document.getElementById(
+				'gform_confirmation_wrapper_' + formId
+			);
+
+			// A "form saved" notice (Save and Continue) is not a submission.
+			if (
+				item &&
+				wrapper &&
+				! wrapper.classList.contains( 'form_saved_message_sent' )
+			) {
+				sendOnce(
+					item.event,
+					{ form_name: item.form },
+					30 * 60 * 1000
+				);
+			}
+		} );
 	};
 
 	/**
@@ -244,6 +273,7 @@
 	};
 
 	const init = () => {
+		trackPageConfirmations();
 		trackThankYouPage();
 		bindCtaClicks();
 		trackPortfolioRead();
