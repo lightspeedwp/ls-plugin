@@ -2,7 +2,7 @@
 
 The plugin sends a small set of events to Google Analytics 4 so the site's enquiries and case-study reads can be measured. The events are written in code (not Google Tag Manager), so every change is reviewed and version controlled.
 
-They are sent through the `gtag()` function that Site Kit already loads. If `gtag()` is not available (for example for logged-in users, whom Site Kit does not track, or when a visitor has not given consent), nothing is sent.
+They are sent through the `gtag()` function that Site Kit already loads. If `gtag()` is not available (for example for logged-in users, whom Site Kit does not track, or when it is blocked), nothing is sent. Consent is not decided by this plugin: it relies on Site Kit's consent mode settings. With consent mode, `gtag()` stays available even when consent is denied, so Google can still receive cookieless signals.
 
 No form field values are ever read or sent, so no personal data leaves the site.
 

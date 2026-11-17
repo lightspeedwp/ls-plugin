@@ -11,9 +11,11 @@
  * passes that to `build/js/analytics-events.js`. The script does the tracking.
  *
  * No form field values are ever read or sent, so no personal data leaves the
- * site. Consent is handled by Site Kit's consent mode: when `gtag()` is not
- * available (for example for logged-in users, who Site Kit does not track) the
- * script does nothing.
+ * site. Consent is not handled here: the script relies on Site Kit's consent
+ * mode settings. When `gtag()` is not available (for example for logged-in
+ * users, who Site Kit does not track, or when it is blocked) the script does
+ * nothing. When consent is denied, consent mode keeps `gtag()` available and
+ * Google may still receive cookieless signals.
  *
  * @package LS_Plugin
  * @since   0.2.0

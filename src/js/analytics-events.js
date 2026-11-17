@@ -9,7 +9,8 @@
  * newsletter_subscribe, consultation_cta_click and portfolio_read.
  *
  * No form field values are read or sent. If `gtag()` is not available
- * (logged-in users, consent not given, blocked) the events are skipped.
+ * (logged-in users, blocked) the events are skipped. Consent is left to
+ * Site Kit's consent mode settings.
  */
 
 ( () => {
@@ -21,6 +22,7 @@
 	 *
 	 * @param {string} name   Event name.
 	 * @param {Object} params Event parameters.
+	 * @return {boolean} True if the event was handed to gtag(), false if skipped.
 	 */
 	const send = ( name, params = {} ) => {
 		if ( config.debug && window.console ) {
@@ -29,10 +31,12 @@
 		}
 
 		if ( typeof window.gtag !== 'function' ) {
-			return;
+			return false;
 		}
 
 		window.gtag( 'event', name, params );
+
+		return true;
 	};
 
 	/**
@@ -66,13 +70,17 @@
 			return;
 		}
 
+		// Only remember the event once it was handed to gtag(), so a skipped
+		// event can still be sent on a later attempt.
+		if ( ! send( name, params ) ) {
+			return;
+		}
+
 		try {
 			window.sessionStorage.setItem( storagePrefix + name, Date.now() );
 		} catch ( error ) {
-			// Storage is not available. Send anyway.
+			// Storage is not available. The event was already sent.
 		}
-
-		send( name, params );
 	};
 
 	/**
