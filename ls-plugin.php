@@ -63,6 +63,7 @@ function ls_plugin_init() {
 	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-portfolio-terms.php';
 	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-nav-ref-resolver.php';
 	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-icons.php';
+	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-analytics-events.php';
 
 	// 3rd Party
 	require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-ai-engine.php';
@@ -97,6 +98,9 @@ function ls_plugin_init() {
 
 	// Register the LightSpeed SVG icon collection (WordPress 7.1+).
 	new LS_Plugin\Icons();
+
+	// Send conversion and engagement events to Google Analytics 4 (via Site Kit's gtag).
+	new LS_Plugin\Analytics_Events();
 }
 add_action( 'plugins_loaded', 'ls_plugin_init' );
 
