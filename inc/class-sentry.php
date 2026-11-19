@@ -44,18 +44,14 @@ class Sentry {
 	const RELEASE_PACKAGE = 'ls-plugin';
 
 	/**
-	 * Request headers that must never be sent to Sentry (lower case).
+	 * Extra key terms whose values must never be sent to Sentry, on top of the SDK's own deny list.
+	 *
+	 * The SDK already filters keys containing auth, token, secret, password, pwd, key, csrf, session
+	 * and similar. A key is matched when it contains a term, so `api.key` and `email[]` are caught.
 	 *
 	 * @var string[]
 	 */
-	const SENSITIVE_HEADERS = array( 'authorization', 'cookie', 'set-cookie', 'x-wp-nonce', 'x-csrf-token' );
-
-	/**
-	 * Query string parameters whose values must never be sent to Sentry (lower case).
-	 *
-	 * @var string[]
-	 */
-	const SENSITIVE_QUERY_KEYS = array( '_wpnonce', 'nonce', 'password', 'pwd', 'token', 'key', 'api_key', 'secret', 'email' );
+	const SENSITIVE_TERMS = array( 'nonce', 'email' );
 
 	/**
 	 * Starts Sentry if a DSN is configured and the SDK is available.
@@ -160,61 +156,40 @@ class Sentry {
 			'max_request_body_size' => 'none',
 			// Report warnings and worse only.
 			'error_types'           => E_ALL & ~E_NOTICE & ~E_USER_NOTICE & ~E_DEPRECATED & ~E_USER_DEPRECATED,
-			'before_send'           => array( __CLASS__, 'scrub_event' ),
+			'data_collection'       => self::get_data_collection(),
 		);
 	}
 
 	/**
-	 * Removes cookies, auth headers, body data, server variables and sensitive query values from an
-	 * event before it is sent.
+	 * Returns the SDK's data collection settings: the minimum an error report needs.
 	 *
-	 * @param \Sentry\Event $event The event about to be sent.
-	 * @return \Sentry\Event
-	 */
-	public static function scrub_event( $event ) {
-		$request = $event->getRequest();
-
-		if ( empty( $request ) ) {
-			return $event;
-		}
-
-		unset( $request['cookies'], $request['data'], $request['env'] );
-
-		if ( isset( $request['headers'] ) && is_array( $request['headers'] ) ) {
-			foreach ( array_keys( $request['headers'] ) as $header ) {
-				if ( in_array( strtolower( (string) $header ), self::SENSITIVE_HEADERS, true ) ) {
-					unset( $request['headers'][ $header ] );
-				}
-			}
-		}
-
-		if ( isset( $request['query_string'] ) && is_string( $request['query_string'] ) && '' !== $request['query_string'] ) {
-			$request['query_string'] = self::scrub_query_string( $request['query_string'] );
-		}
-
-		$event->setRequest( $request );
-
-		return $event;
-	}
-
-	/**
-	 * Replaces the values of sensitive query string parameters with [Filtered].
+	 * Setting this switches the SDK to its newer data collection mode, which filters the request URL,
+	 * the query string and the URL inside the Referer header with the same term list. It also
+	 * controls stack frame variables, which `send_default_pii` does not.
 	 *
-	 * @param string $query_string Raw query string.
-	 * @return string
+	 * @return array<string, mixed>
 	 */
-	public static function scrub_query_string( $query_string ) {
-		$parts = explode( '&', $query_string );
-
-		foreach ( $parts as $index => $part ) {
-			$pair = explode( '=', $part, 2 );
-
-			if ( in_array( strtolower( urldecode( $pair[0] ) ), self::SENSITIVE_QUERY_KEYS, true ) ) {
-				$parts[ $index ] = $pair[0] . '=[Filtered]';
-			}
-		}
-
-		return implode( '&', $parts );
+	public static function get_data_collection() {
+		return array(
+			// No IP address or user details.
+			'user_info'             => false,
+			'cookies'               => array( 'mode' => 'off' ),
+			'http_headers'          => array(
+				'request'  => array(
+					'mode'  => 'denyList',
+					'terms' => self::SENSITIVE_TERMS,
+				),
+				'response' => array( 'mode' => 'off' ),
+			),
+			// Forms post personal data: never send request or response bodies.
+			'http_bodies'           => array(),
+			'url_query_params'      => array(
+				'mode'  => 'denyList',
+				'terms' => self::SENSITIVE_TERMS,
+			),
+			// Function arguments can hold passwords or tokens.
+			'stack_frame_variables' => false,
+		);
 	}
 
 	/**
