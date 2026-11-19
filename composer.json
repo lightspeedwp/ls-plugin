@@ -1,5 +1,6 @@
 {
   "name": "lightspeedwp/ls-plugin",
+  "description": "Custom blocks and site-specific functionality for the LightSpeed website.",
   "type": "wordpress-plugin",
   "license": "GPL-2.0-or-later",
   "authors": [
