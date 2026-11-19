@@ -73,7 +73,12 @@ class Sentry {
 			return false;
 		}
 
-		\Sentry\init( self::get_options( $dsn ) );
+		// Error reporting must never stop the site from loading, so a failed start just stays off.
+		try {
+			\Sentry\init( self::get_options( $dsn ) );
+		} catch ( \Throwable $e ) {
+			return false;
+		}
 
 		\Sentry\configureScope(
 			static function ( \Sentry\State\Scope $scope ) {
@@ -195,7 +200,10 @@ class Sentry {
 	/**
 	 * Loads the Composer autoloader if the SDK is not already loaded.
 	 *
-	 * @return bool True when the SDK is available.
+	 * The SDK must support `data_collection`. An older SDK loaded by another plugin would ignore it
+	 * or reject it, and the privacy settings would not apply, so Sentry stays off in that case.
+	 *
+	 * @return bool True when a compatible SDK is available.
 	 */
 	private static function load_sdk() {
 		$autoload = LS_PLUGIN_PLUGIN_DIR . 'vendor/autoload.php';
@@ -204,6 +212,6 @@ class Sentry {
 			require_once $autoload;
 		}
 
-		return class_exists( '\Sentry\SentrySdk' );
+		return class_exists( '\Sentry\SentrySdk' ) && class_exists( '\Sentry\DataCollection\DataCollectionOptions' );
 	}
 }
