@@ -27,6 +27,11 @@ define( 'LS_PLUGIN_PLUGIN_FILE', __FILE__ );
 define( 'LS_PLUGIN_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'LS_PLUGIN_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
+// Start Sentry as early as possible so errors from plugins loaded after this one are captured.
+// Does nothing unless SENTRY_DSN is defined and the SDK is installed in vendor/.
+require_once LS_PLUGIN_PLUGIN_DIR . 'inc/class-sentry.php';
+LS_Plugin\Sentry::init();
+
 /**
  * Load the plugin text domain for translation.
  */
